@@ -1,40 +1,37 @@
-import KompiBase from './KompiBase';
+import Kompi from './Kompi';
 
-export default function collection(...kompis) {
-  return class Collection extends KompiBase {
-    constructor(stream$, collection) {
-      super(stream$);
-
-      this.collection = collection || null;
+export default function collection(...middlewares) {
+  return {
+    init(stream$) {
+      const all = [];
 
       const getCollection = (i) => ({
-        collection: this,
+        all,
         index: i,
-        get all() {
-          return this.collection.all;
-        },
         get parent() {
-          return this.all[i - 1] || null;
+          return this.collection[i - 1] || null;
         },
         get child() {
-          return this.all[i + 1] || null;
+          return this.collection[i + 1] || null;
         }
       });
 
-      this.all = [];
-      for (let i = 0; i < kompis.length; i++) {
-        const Kompi = kompis[i];
-        const kompi = new Kompi(stream$, getCollection(i));
-        this.all.push(kompi);
+      for (let i = 0; i < middlewares.length; i++) {
+        const middleware = middlewares[i];
+        const kompi = new Kompi(middleware, stream$, getCollection(i));
+        all.push(kompi);
         stream$ = kompi.out$;
       }
-    }
-    get out$() {
-      return this.all[this.all.length - 1].out$;
-    }
+
+      this.all = all;
+      return all[all.length - 1].out$;
+    },
+    subscription() {
+      this.all.forEach((kompi) => kompi.subscription());
+    },
     mount() {
       this.all.forEach((kompi) => kompi.mount());
-    }
+    },
     unmount() {
       this.all.forEach((kompi) => kompi.unmount());
     }
