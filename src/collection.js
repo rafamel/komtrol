@@ -2,7 +2,10 @@ import Kompi from './Kompi';
 
 export default function collection(...middlewares) {
   return {
-    init(stream$) {
+    options: {
+      pure: true
+    },
+    stream(stream$) {
       const all = [];
 
       const getCollection = (i) => ({
@@ -18,16 +21,14 @@ export default function collection(...middlewares) {
 
       for (let i = 0; i < middlewares.length; i++) {
         const middleware = middlewares[i];
-        const kompi = new Kompi(middleware, stream$, getCollection(i));
+        const kompi = new Kompi(middleware, getCollection(i));
+        kompi.provide(stream$);
         all.push(kompi);
         stream$ = kompi.out$;
       }
 
       this.all = all;
       return all[all.length - 1].out$;
-    },
-    subscription() {
-      this.all.forEach((kompi) => kompi.subscription());
     },
     mount() {
       this.all.forEach((kompi) => kompi.mount());

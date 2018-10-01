@@ -1,46 +1,115 @@
-import { Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Observable, Subject, merge, combineLatest } from 'rxjs';
+import { switchMap, map, tap, take } from 'rxjs/operators';
 
+const ERR = {
+  NOT_PROVIDED: new Error(
+    "Kompi instance hasn't been provided for yet: kompi.provide(props$, providers$)."
+  ),
+  NOT_INITIALIZED: new Error('Kompi instance has not been initialized yet.')
+};
 export default class Kompi {
-  constructor(middleware, stream$, collection) {
-    Object.assign(this, middleware);
+  constructor(middleware, collection) {
+    Object.entries(middleware).forEach(([key, value]) => {
+      if (typeof value === 'function') this[key] = value.bind(this);
+      else this[key] = value;
+    });
 
-    this.in$ = stream$;
+    this.options = Object.assign(
+      {
+        pure: false
+      },
+      middleware.options || {}
+    );
+
     this.collection = collection || null;
-    this.stream$ = (this.init && this.init(stream$)) || stream$;
+    this.initialized = false;
+    this.provided = false;
+  }
+  provide(in$) {
+    this.in$ = in$;
+    const stream$ = this.stream(in$);
 
-    const create = (res) => {
-      return Observable.create((obs) => {
-        this.next = (props) => obs.next(props);
-        this.change
-          ? this.change(res.props, res.providers)
-          : this.next(res.props);
+    if (this.options.pure) {
+      // PURE
+      this.out$ = stream$;
+    } else {
+      // NOT PURE
+      let _next;
+      const subject = new Subject();
+      const obs = Observable.create((obs) => {
+        _next = obs.next.bind(obs);
+        this.change(this.props, this.providers);
+        _next = subject.next.bind(subject);
       });
-    };
+      const setNext = (inProps, providers) => {
+        this.next = function next(props, { merge } = {}) {
+          const promise = new Promise((resolve) => {
+            return resolveQueue.push(resolve);
+          });
+          _next([merge ? { ...inProps, ...props } : props, providers]);
+          return promise;
+        };
+      };
 
-    let subscription = false;
-    this.out$ = this.stream$.pipe(
-      switchMap((res) => {
-        const providers = res.providers;
-
-        if (!subscription) {
-          subscription = true;
-          this.props = res.props;
-          this.providers = providers;
-          this.subscription();
-        }
-
-        return create(res).pipe(
-          map((props) => {
+      const resolveQueue = [];
+      this.out$ = stream$.pipe(
+        switchMap(([props, providers]) => {
+          const piping = tap((props) => {
             this.props = props;
             this.providers = providers;
-            return { props, providers };
-          })
-        );
-      })
-    );
+            resolveQueue.shift()();
+          });
+
+          if (!this.initialized) {
+            this.props = props;
+            this.providers = providers;
+            setNext(props, providers);
+            this.init();
+            this.initialized = true;
+            return merge(obs, subject).pipe(piping);
+          } else {
+            setNext(props, providers);
+          }
+
+          this.change(props, providers);
+          return subject.pipe(piping);
+        })
+      );
+    }
+
+    return this;
   }
-  subscription() {}
+  get in$() {
+    throw ERR.NOT_PROVIDED;
+  }
+  set in$(value) {
+    Object.defineProperty(this, 'in$', { value });
+  }
+  get out$() {
+    throw ERR.NOT_PROVIDED;
+  }
+  set out$(value) {
+    Object.defineProperty(this, 'out$', { value });
+  }
+  get props$() {
+    throw ERR.NOT_INITIALIZED;
+  }
+  set props$(value) {
+    Object.defineProperty(this, 'props$', { value });
+  }
+  get providers$() {
+    throw ERR.NOT_INITIALIZED;
+  }
+  set providers$(value) {
+    Object.defineProperty(this, 'providers$', { value });
+  }
+  stream(stream$) {
+    return stream$;
+  }
+  init() {}
+  change(props, providers) {
+    this.next(props);
+  }
   mount() {}
   unmount() {}
 }
