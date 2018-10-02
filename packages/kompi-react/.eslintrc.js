@@ -3,7 +3,14 @@ const globals = require('eslint-restricted-globals');
 module.exports = {
   root: true,
   parser: 'babel-eslint',
-  extends: ['standard', 'plugin:import/errors', 'prettier'],
+  extends: [
+    'react-app',
+    'standard',
+    'plugin:import/errors',
+    'plugin:jsx-a11y/recommended',
+    'plugin:react/recommended',
+    'prettier'
+  ],
   env: {
     node: true,
     jest: true
@@ -11,7 +18,7 @@ module.exports = {
   parserOptions: {
     impliedStrict: true
   },
-  plugins: ['prettier', 'jest', 'import', 'babel'],
+  plugins: ['prettier', 'jest', 'react', 'jsx-a11y', 'import', 'babel'],
   globals: {},
   rules: {
     'no-warning-comments': [
@@ -24,8 +31,10 @@ module.exports = {
     // eslint-plugin-babel
     'babel/no-invalid-this': 1,
     'babel/semi': 1,
+    // Breaking change of jsx-x11y with 'react-app' defaults
+    'jsx-a11y/href-no-hash': 0,
     // Prettier
-    'prettier/prettier': [2, require('./.prettierrc')]
+    'prettier/prettier': [2, require('../../.prettierrc')]
   },
   settings: {
     // babel-plugin-module-resolver

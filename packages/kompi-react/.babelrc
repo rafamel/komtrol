@@ -1,0 +1,30 @@
+{
+  "presets": [
+    "env",
+    "react"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src/lib"
+        ],
+        "alias": {
+          "~": "./src"
+        }
+      }
+    ],
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    [
+      "transform-object-rest-spread",
+      {
+        "useBuiltIns": true
+      }
+    ]
+  ],
+  "ignore": [
+    "node_modules"
+  ]
+}

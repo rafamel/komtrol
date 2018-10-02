@@ -1,5 +1,5 @@
-import { Observable, Subject, merge, combineLatest } from 'rxjs';
-import { switchMap, map, tap, take } from 'rxjs/operators';
+import { Observable, Subject, merge } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 const ERR = {
   NOT_PROVIDED: new Error(

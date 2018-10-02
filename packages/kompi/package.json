@@ -1,0 +1,56 @@
+{
+  "name": "kompi",
+  "version": "0.0.0",
+  "author": "Rafa Mel",
+  "description": "Reactive component props composition.",
+  "keywords": [
+    "component",
+    "composition",
+    "rxjs",
+    "recompose",
+    "react"
+  ],
+  "main": "lib/index.js",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "start": "npm run watch",
+    "build": "nps build",
+    "publish": "nps publish",
+    "watch": "nps watch",
+    "fix": "nps fix",
+    "lint": "nps lint",
+    "lint:test": "nps lint.test",
+    "lint:md": "nps lint.md",
+    "test": "nps test",
+    "test:watch": "nps test.watch",
+    "validate": "nps validate",
+    "update": "nps update",
+    "clean": "nps clean"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/rafamel/kompi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafamel/kompi"
+  },
+  "bugs": {
+    "url": "https://github.com/rafamel/kompi/issues"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "nps": "^5.9.2"
+  },
+  "dependencies": {
+    "rxjs": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts,jsx}"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib"
+    ]
+  }
+}
