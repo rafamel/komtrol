@@ -24,6 +24,12 @@ Object.defineProperty(exports, 'Komfu', {
     return _interopRequireDefault(_Komfu).default;
   }
 });
+Object.defineProperty(exports, 'PureKomfu', {
+  enumerable: true,
+  get: function get() {
+    return _Komfu.PureKomfu;
+  }
+});
 
 var _collection = require('./collection');
 

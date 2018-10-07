@@ -1,10 +1,7 @@
-import Komfu from './Komfu';
+import { PureKomfu } from '~/Komfu';
 
 export default function collection(...middlewares) {
-  return {
-    options: {
-      pure: true
-    },
+  return class Collection extends PureKomfu {
     stream(stream$) {
       const all = [];
 
@@ -20,21 +17,21 @@ export default function collection(...middlewares) {
       });
 
       for (let i = 0; i < middlewares.length; i++) {
-        const middleware = middlewares[i];
-        const komfu = new Komfu(middleware, getCollection(i));
-        komfu.provide(stream$);
-        all.push(komfu);
-        stream$ = komfu.out$;
+        const Middleware = middlewares[i];
+        const middleware = new Middleware(getCollection(i));
+        middleware.provide(stream$);
+        all.push(middleware);
+        stream$ = middleware.out$;
       }
 
       this.all = all;
       return all[all.length - 1].out$;
-    },
+    }
     mount() {
-      this.all.forEach((komfu) => komfu.mount());
-    },
+      this.all.forEach((middleware) => middleware.mount());
+    }
     unmount() {
-      this.all.forEach((komfu) => komfu.unmount());
+      this.all.forEach((middleware) => middleware.unmount());
     }
   };
 }

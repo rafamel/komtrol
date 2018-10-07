@@ -46,24 +46,28 @@ TODO
 ### Example
 
 ```javascript
+import { Komfu } from 'komfu';
+
 // This middleware will add the props 'name' and 'setName' to the incoming
 // stream of props. When 'setName' is called, it will send the new name
 // down the stream.
-const myMiddleware = {
+class myMiddleware extends Komfu {
   // Middleware-specific
-  name: 'Initial name',
-  setName(value) {
-    // Functions are automatically bind to the instance
-    // so they can be passed downstream
+  name = 'Initial name';
+  setName = (value) => {
+    // As we're gonna pass setName downstream
+    // we need it to be bind to the class instance,
+    // which is why we use an arrow function,
+    // though alternatively, we could bind it on init()
     this.name = value;
     this.doNext();
-  },
+  }
   doNext() {
     return this.next(
       { name: this.name, setName: this.setName },
       { merge: true }
     );
-  },
+  }
   // Lifecycle
   change(props, providers) {
     return this.doNext();
@@ -82,8 +86,10 @@ You can also override `komfu` middleware logic and directly intervene in the pro
   * The incoming stream maps to an array with props and providers (`[props, providers]`); similarly, the returning observable **must** map to those also. Otherwise, all middlewares downstream will he hijacked.
 
 ```javascript
-const myMiddleware = {
-  options: { pure: true },
+import { Komfu } from 'komfu';
+
+class myMiddleware extends Komfu {
+  static options = { pure: true },
   stream(stream$) {
     return stream$.pipe(
       map(([props, providers]) => [{...props, name: 'My name' }, providers])

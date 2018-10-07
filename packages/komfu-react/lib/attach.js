@@ -26,18 +26,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 // Must be the same object, otherwise Subjects shallow equality
 // won't work. Setting as constant
 var DEFAULT_CONTEXT = {};
 
 function attach() {
-  for (var _len = arguments.length, middleware = Array(_len), _key = 0; _key < _len; _key++) {
-    middleware[_key] = arguments[_key];
-  }
-
-  if (middleware[1]) middleware = _komfu.collection.apply(undefined, _toConsumableArray(middleware));else middleware = middleware[0];
+  var Middleware = (arguments.length <= 1 ? undefined : arguments[1]) ? _komfu.collection.apply(undefined, arguments) : arguments.length <= 0 ? undefined : arguments[0];
 
   return function (Component) {
     return function (_React$Component) {
@@ -50,13 +44,13 @@ function attach() {
 
         _classCallCheck(this, KomfuAttach);
 
-        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          args[_key2] = arguments[_key2];
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = KomfuAttach.__proto__ || Object.getPrototypeOf(KomfuAttach)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
           props: null
-        }, _this.subjects = new _komfu.Subjects(), _this.sec = new _komfu.Subjects(), _this.komfu = new _komfu.Komfu(middleware).provide(_this.subjects.$), _temp), _possibleConstructorReturn(_this, _ret);
+        }, _this.subjects = new _komfu.Subjects(), _this.sec = new _komfu.Subjects(), _this.komfu = new Middleware().provide(_this.subjects.$), _temp), _possibleConstructorReturn(_this, _ret);
       }
 
       _createClass(KomfuAttach, [{

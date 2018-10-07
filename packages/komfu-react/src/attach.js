@@ -1,14 +1,13 @@
 import React from 'react';
 import { KomfuConsumer } from './context';
-import { Komfu, collection, Subjects } from 'komfu';
+import { collection, Subjects } from 'komfu';
 
 // Must be the same object, otherwise Subjects shallow equality
 // won't work. Setting as constant
 const DEFAULT_CONTEXT = {};
 
 export default function attach(...middleware) {
-  if (middleware[1]) middleware = collection(...middleware);
-  else middleware = middleware[0];
+  const Middleware = middleware[1] ? collection(...middleware) : middleware[0];
 
   return function(Component) {
     return class KomfuAttach extends React.Component {
@@ -17,7 +16,7 @@ export default function attach(...middleware) {
       };
       subjects = new Subjects();
       sec = new Subjects();
-      komfu = new Komfu(middleware).provide(this.subjects.$);
+      komfu = new Middleware().provide(this.subjects.$);
       // eslint-disable-next-line camelcase
       UNSAFE_componentWillReceiveProps(props) {
         if (this._isMounted) this.subjects.props(props);

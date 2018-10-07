@@ -4,6 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _withObservable = require('./with-observable');
+
+Object.defineProperty(exports, 'withObservable', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_withObservable).default;
+  }
+});
+
 var _withState = require('./with-state');
 
 Object.defineProperty(exports, 'withState', {
