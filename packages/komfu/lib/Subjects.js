@@ -13,6 +13,8 @@ var _operators = require('rxjs/operators');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var INIT_VAL = {};
+
 var Subjects = function () {
   function Subjects() {
     var _this = this;
@@ -20,29 +22,19 @@ var Subjects = function () {
     _classCallCheck(this, Subjects);
 
     this.subjects = {
-      props: new _rxjs.Subject(),
-      context: new _rxjs.Subject()
+      props: new _rxjs.BehaviorSubject(INIT_VAL),
+      context: new _rxjs.BehaviorSubject(INIT_VAL)
     };
 
-    var INIT_VAL = {};
-    var lastContext = null;
-    this.$ = (0, _rxjs.combineLatest)(this.subjects.props.asObservable(), this.subjects.context.pipe((0, _operators.map)(function (x) {
-      return !x ? INIT_VAL : x;
-    }), (0, _operators.filter)(function (x) {
-      if (x === lastContext) return false;
-
-      lastContext = x;
-      return true;
+    this.$ = (0, _rxjs.combineLatest)(this.subjects.props.pipe((0, _operators.filter)(function (x) {
+      return x !== INIT_VAL;
+    })).asObservable(), this.subjects.context.pipe((0, _operators.distinctUntilChanged)(), (0, _operators.filter)(function (x) {
+      return x !== INIT_VAL;
     })).asObservable());
 
     this.ready = false;
     this.$.pipe((0, _operators.take)(1)).toPromise().then(function () {
-      console.log(111);
-      _this.ready = true;
-    });
-    this.$.pipe((0, _operators.take)(1)).toPromise().then(function () {
-      console.log(111);
-      _this.ready = true;
+      return _this.ready = true;
     });
   }
 

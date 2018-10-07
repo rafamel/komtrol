@@ -3,11 +3,11 @@ import { switchMap, tap } from 'rxjs/operators';
 
 const ERR = {
   NOT_PROVIDED: new Error(
-    "Kompi instance hasn't been provided for yet: kompi.provide(props$, providers$)."
+    "Komfu instance hasn't been provided for yet: komfu.provide(props$, providers$)."
   ),
-  NOT_INITIALIZED: new Error('Kompi instance has not been initialized yet.')
+  NOT_INITIALIZED: new Error('Komfu instance has not been initialized yet.')
 };
-export default class Kompi {
+export default class Komfu {
   constructor(middleware, collection) {
     Object.entries(middleware).forEach(([key, value]) => {
       if (typeof value === 'function') this[key] = value.bind(this);

@@ -3,20 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.KompiConsumer = exports.KompiProvider = exports.attach = undefined;
+exports.KomfuConsumer = exports.KomfuProvider = exports.attach = undefined;
 
 var _context = require('./context');
 
-Object.defineProperty(exports, 'KompiProvider', {
+Object.defineProperty(exports, 'KomfuProvider', {
   enumerable: true,
   get: function get() {
-    return _context.KompiProvider;
+    return _context.KomfuProvider;
   }
 });
-Object.defineProperty(exports, 'KompiConsumer', {
+Object.defineProperty(exports, 'KomfuConsumer', {
   enumerable: true,
   get: function get() {
-    return _context.KompiConsumer;
+    return _context.KomfuConsumer;
   }
 });
 

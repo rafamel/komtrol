@@ -16,15 +16,15 @@ var _operators = require('rxjs/operators');
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ERR = {
-  NOT_PROVIDED: new Error("Kompi instance hasn't been provided for yet: kompi.provide(props$, providers$)."),
-  NOT_INITIALIZED: new Error('Kompi instance has not been initialized yet.')
+  NOT_PROVIDED: new Error("Komfu instance hasn't been provided for yet: komfu.provide(props$, providers$)."),
+  NOT_INITIALIZED: new Error('Komfu instance has not been initialized yet.')
 };
 
-var Kompi = function () {
-  function Kompi(middleware, collection) {
+var Komfu = function () {
+  function Komfu(middleware, collection) {
     var _this = this;
 
-    _classCallCheck(this, Kompi);
+    _classCallCheck(this, Komfu);
 
     Object.entries(middleware).forEach(function (_ref) {
       var _ref2 = _slicedToArray(_ref, 2),
@@ -43,7 +43,7 @@ var Kompi = function () {
     this.provided = false;
   }
 
-  _createClass(Kompi, [{
+  _createClass(Komfu, [{
     key: 'provide',
     value: function provide(in$) {
       var _this2 = this;
@@ -159,7 +159,7 @@ var Kompi = function () {
     }
   }]);
 
-  return Kompi;
+  return Komfu;
 }();
 
-exports.default = Kompi;
+exports.default = Komfu;

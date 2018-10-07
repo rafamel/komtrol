@@ -1,5 +1,5 @@
 {
-  "name": "kompi-root",
+  "name": "komfu-root",
   "private": true,
   "scripts": {
     "precommit": "cross-env MSG=\"Committing in:\" lerna run validate",

@@ -6,4 +6,4 @@ export default {
 };
 
 export { attach };
-export { KompiProvider, KompiConsumer } from './context';
+export { KomfuProvider, KomfuConsumer } from './context';

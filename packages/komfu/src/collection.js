@@ -1,4 +1,4 @@
-import Kompi from './Kompi';
+import Komfu from './Komfu';
 
 export default function collection(...middlewares) {
   return {
@@ -21,20 +21,20 @@ export default function collection(...middlewares) {
 
       for (let i = 0; i < middlewares.length; i++) {
         const middleware = middlewares[i];
-        const kompi = new Kompi(middleware, getCollection(i));
-        kompi.provide(stream$);
-        all.push(kompi);
-        stream$ = kompi.out$;
+        const komfu = new Komfu(middleware, getCollection(i));
+        komfu.provide(stream$);
+        all.push(komfu);
+        stream$ = komfu.out$;
       }
 
       this.all = all;
       return all[all.length - 1].out$;
     },
     mount() {
-      this.all.forEach((kompi) => kompi.mount());
+      this.all.forEach((komfu) => komfu.mount());
     },
     unmount() {
-      this.all.forEach((kompi) => kompi.unmount());
+      this.all.forEach((komfu) => komfu.unmount());
     }
   };
 }

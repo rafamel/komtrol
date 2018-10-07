@@ -4,12 +4,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Kompi = require('./Kompi');
+var _functions = require('./functions');
 
-Object.defineProperty(exports, 'Kompi', {
+Object.keys(_functions).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _functions[key];
+    }
+  });
+});
+
+var _Komfu = require('./Komfu');
+
+Object.defineProperty(exports, 'Komfu', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Kompi).default;
+    return _interopRequireDefault(_Komfu).default;
   }
 });
 
