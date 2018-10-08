@@ -1,22 +1,16 @@
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { take, filter, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest, ReplaySubject } from 'rxjs';
+import { take, distinctUntilChanged } from 'rxjs/operators';
 
-const INIT_VAL = {};
 export default class Subjects {
   constructor() {
     this.subjects = {
-      props: new BehaviorSubject(INIT_VAL),
-      context: new BehaviorSubject(INIT_VAL)
+      props: new ReplaySubject(1),
+      context: new ReplaySubject(1)
     };
 
     this.$ = combineLatest(
-      this.subjects.props.pipe(filter((x) => x !== INIT_VAL)).asObservable(),
-      this.subjects.context
-        .pipe(
-          distinctUntilChanged(),
-          filter((x) => x !== INIT_VAL)
-        )
-        .asObservable()
+      this.subjects.props.asObservable(),
+      this.subjects.context.pipe(distinctUntilChanged()).asObservable()
     );
 
     this.ready = false;

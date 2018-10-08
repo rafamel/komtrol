@@ -6,6 +6,7 @@
     "postinstall": "npm run bootstrap",
     "prepublishOnly": "exit 1",
     "bootstrap": "lerna bootstrap",
+    "link": "lerna link",
     "build": "lerna run build --stream",
     "watch": "lerna run watch --stream --parallel",
     "publish": "lerna publish",

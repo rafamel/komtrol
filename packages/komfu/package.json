@@ -41,7 +41,8 @@
     "nps": "^5.9.2"
   },
   "dependencies": {
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "uuid": "^3.3.2"
   },
   "jest": {
     "testEnvironment": "node",

@@ -5,6 +5,7 @@
 #############################
 _test.js
 build
+lib
 dist
 .cache
 .env

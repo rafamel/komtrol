@@ -52,8 +52,14 @@ import { Komfu } from 'komfu';
 // stream of props. When 'setName' is called, it will send the new name
 // down the stream.
 class myMiddleware extends Komfu {
+  // Lifecycle
+  init() {
+    this.name = 'Initial name';
+  }
+  onChange(props, providers) {
+    return this.doNext();
+  }  
   // Middleware-specific
-  name = 'Initial name';
   setName = (value) => {
     // As we're gonna pass setName downstream
     // we need it to be bind to the class instance,
@@ -68,28 +74,23 @@ class myMiddleware extends Komfu {
       { merge: true }
     );
   }
-  // Lifecycle
-  change(props, providers) {
-    return this.doNext();
-  }
 };
 ```
 
-### *"I know what I'm doing"*
+### PureKomfu
 
-You can also override `komfu` middleware logic and directly intervene in the props and providers stream. Middlewares can also have properties:
+`PureKomfu` allows you to directly intervene in the props and providers stream.
 
-* `options`: *Object,* with optional properties:
-  * `pure`: *Boolean,* when `true`, `komfu` will not call either the `init` nor the `change` method, it will not update `this.props` and `this.providers` for instances of the middleware, and it will also not make `this.next()` available, for those cases in which you are only manipulating the stream. Default: `false`.
+When inheriting from `PureKomfu`, the lifecycle hooks `init` and `onChange` won't be called, nor will `this.props` and `this.providers` be updated. It will also not make `this.next()` available.
+
 * `stream`: *Function,* taking the incoming stream as a parameter:
   * If present, it **must** return a RxJS observable. Default: `(stream$) => stream$`
   * The incoming stream maps to an array with props and providers (`[props, providers]`); similarly, the returning observable **must** map to those also. Otherwise, all middlewares downstream will he hijacked.
 
 ```javascript
-import { Komfu } from 'komfu';
+import { PureKomfu } from 'komfu';
 
-class myMiddleware extends Komfu {
-  static options = { pure: true },
+class myMiddleware extends PureKomfu {
   stream(stream$) {
     return stream$.pipe(
       map(([props, providers]) => [{...props, name: 'My name' }, providers])
