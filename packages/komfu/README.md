@@ -46,40 +46,35 @@ TODO
 ### Example
 
 ```javascript
-import { Komfu } from 'komfu';
-
 // This middleware will add the props 'name' and 'setName' to the incoming
 // stream of props. When 'setName' is called, it will send the new name
 // down the stream.
-class myMiddleware extends Komfu {
-  // Lifecycle
-  init() {
+const myMiddleware = {
+  init(props, providers) {
     this.name = 'Initial name';
-  }
-  onChange(props, providers) {
-    return this.doNext();
-  }  
-  // Middleware-specific
-  setName = (value) => {
-    // As we're gonna pass setName downstream
-    // we need it to be bind to the class instance,
-    // which is why we use an arrow function,
-    // though alternatively, we could bind it on init()
-    this.name = value;
-    this.doNext();
-  }
-  doNext() {
-    return this.next(
-      { name: this.name, setName: this.setName },
-      { merge: true }
-    );
+  },
+  change(props, providers) {
+    return this.send();
+  },
+  methods: {
+    // Methods in the method key are automagically bind to the instance,
+    // so we can safely pass then downstream (as we'll do for setName).
+    setName(value) {
+      this.name = value;
+      this.send();
+    },
+    send() {
+      // this.next() merges new props with the latest that came downstream,
+      // we can deactivate this behavior via this.next(object, { merge: false })
+      return this.next({ name: this.name, setName: this.setName });
+    }
   }
 };
 ```
 
-### PureKomfu
+### Pure
 
-`PureKomfu` allows you to directly intervene in the props and providers stream.
+Allows you to directly intervene in the props and providers stream.
 
 When inheriting from `PureKomfu`, the lifecycle hooks `init` and `onChange` won't be called, nor will `this.props` and `this.providers` be updated. It will also not make `this.next()` available.
 
@@ -88,15 +83,14 @@ When inheriting from `PureKomfu`, the lifecycle hooks `init` and `onChange` won'
   * The incoming stream maps to an array with props and providers (`[props, providers]`); similarly, the returning observable **must** map to those also. Otherwise, all middlewares downstream will he hijacked.
 
 ```javascript
-import { PureKomfu } from 'komfu';
-
-class myMiddleware extends PureKomfu {
+const myMiddleware = {
+  options: { pure: true },
   stream(stream$) {
     return stream$.pipe(
       map(([props, providers]) => [{...props, name: 'My name' }, providers])
     );
   }
-};
+}
 ```
 
 ## Similar projects

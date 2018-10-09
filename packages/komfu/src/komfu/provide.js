@@ -6,27 +6,15 @@ import {
   distinctUntilChanged,
   skipUntil
 } from 'rxjs/operators';
-import PureKomfu from './PureKomfu';
 import uuid from 'uuid/v4';
 
-const INITIALIZED = Symbol('initialized');
-const MOUNT_PENDING = Symbol('pending');
-
-export default class Komfu extends PureKomfu {
-  constructor(...args) {
-    super(...args);
-    this[INITIALIZED] = false;
-    this[MOUNT_PENDING] = false;
-  }
-  mount() {
-    if (this[INITIALIZED]) return this.onMount();
-    else this[MOUNT_PENDING] = true;
-  }
-  unmount() {
-    if (!this[MOUNT_PENDING]) return this.onUnmount();
-    else this[MOUNT_PENDING] = false;
-  }
-  provide(in$) {
+export default {
+  pure(in$) {
+    this.in$ = in$;
+    const stream$ = this.stream(in$);
+    this.out$ = stream$;
+  },
+  komfu(in$) {
     this.in$ = in$;
 
     const resolvers = {};
@@ -46,15 +34,7 @@ export default class Komfu extends PureKomfu {
     const init$ = Observable.create(async (obs) => {
       const res = await in$.pipe(take(1)).toPromise();
       const [props, providers] = res;
-      setNext(props);
-      this.props = props;
-      this.providers = providers;
       this.init(props, providers);
-      this[INITIALIZED] = true;
-      if (this[MOUNT_PENDING]) {
-        this.onMount();
-        this[MOUNT_PENDING] = false;
-      }
       obs.next(res);
       obs.complete();
     });
@@ -66,12 +46,12 @@ export default class Komfu extends PureKomfu {
     this.out$ = stream$.pipe(
       switchMap(([props, providers]) => {
         setNext(props, providers);
-        this.onChange(props, providers);
-        this.providers = providers;
+        this.change(props, providers);
         return subject.pipe(
           map(([id, res]) => {
             const [props] = res;
             this.props = props;
+            this.providers = providers;
 
             if (resolvers[id]) {
               resolvers[id]();
@@ -84,7 +64,5 @@ export default class Komfu extends PureKomfu {
       }),
       distinctUntilChanged()
     );
-
-    return this;
   }
-}
+};
