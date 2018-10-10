@@ -83,12 +83,43 @@ When inheriting from `PureKomfu`, the lifecycle hooks `init` and `onChange` won'
   * The incoming stream maps to an array with props and providers (`[props, providers]`); similarly, the returning observable **must** map to those also. Otherwise, all middlewares downstream will he hijacked.
 
 ```javascript
-const myMiddleware = {
+const pureMiddleware = {
   options: { pure: true },
   stream(stream$) {
     return stream$.pipe(
       map(([props, providers]) => [{...props, name: 'My name' }, providers])
     );
+  }
+}
+```
+
+Pure middlewares can be used to combine other middlewares, which is in fact what `collection()` does:
+
+```javascript
+import { create } from 'komfu';
+import { middleware1, middleware2, middleware3 } from './middlewares';
+
+const M1 = create(middleware1);
+const M2 = create(middleware2);
+const M3 = create(middleware3);
+
+const pureMiddleware = {
+  options: { pure: true },
+  stream(stream$) {
+    this.m1 = new M1(stream$);
+    this.m2 = new M2(this.m1.out$);
+    this.m3 = new M3(this.m2.out$);
+    return this.m3.out$;
+  },
+  mount() {
+    this.m1.mount && this.m1.mount();
+    this.m2.mount && this.m2.mount();
+    this.m3.mount && this.m3.mount();
+  },
+  unmount() {
+    this.m1.unmount && this.m1.unmount();
+    this.m2.unmount && this.m2.unmount();
+    this.m3.unmount && this.m3.unmount();
   }
 }
 ```

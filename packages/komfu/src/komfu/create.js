@@ -37,6 +37,8 @@ export default function create(middleware = {}) {
       return super.stream ? super.stream(stream$) : stream$;
     }
     init(...all) {
+      if (this.initialized) return false;
+
       const ans = super.init ? super.init(...all) : false;
       this.initialized = true;
       if (this.pending) this.mount();

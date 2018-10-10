@@ -1,6 +1,6 @@
 import React from 'react';
 import { KomfuConsumer } from './context';
-import { komfu, Subjects } from 'komfu';
+import { komfu, Emitter } from 'komfu';
 
 // Must be the same object, otherwise Subjects shallow equality
 // won't work. Setting as constant
@@ -14,15 +14,15 @@ export default function attach(...middleware) {
       state = {
         props: null
       };
-      subjects = new Subjects();
-      komfu = new Middleware(this.subjects.$);
+      emitter = new Emitter();
+      komfu = new Middleware(this.emitter.$);
       // eslint-disable-next-line camelcase
       UNSAFE_componentWillReceiveProps(props) {
-        if (this._isMounted) this.subjects.props(props);
+        if (this._isMounted) this.emitter.props(props);
       }
       componentDidMount() {
         this.komfu.mount();
-        this.subjects.props(this.props);
+        this.emitter.props(this.props);
         this._isMounted = true;
 
         this.subscription = this.komfu.out$.subscribe(([props]) => {
@@ -35,13 +35,13 @@ export default function attach(...middleware) {
         this.komfu.unmount();
       }
       shouldComponentUpdate(nextProps, nextState) {
-        return this.state.props !== nextState.props || !this.subjects.ready;
+        return this.state.props !== nextState.props || !this.emitter.ready;
       }
       render() {
         return (
           <KomfuConsumer>
             {(context) => {
-              this.subjects.context(context || DEFAULT_CONTEXT);
+              this.emitter.context(context || DEFAULT_CONTEXT);
               return this.state.props ? (
                 <Component {...this.state.props} />
               ) : null;

@@ -33,8 +33,7 @@ export default {
 
     const init$ = Observable.create(async (obs) => {
       const res = await in$.pipe(take(1)).toPromise();
-      const [props, providers] = res;
-      this.init(props, providers);
+      this.init(...res);
       obs.next(res);
       obs.complete();
     });
@@ -44,21 +43,20 @@ export default {
     );
 
     this.out$ = stream$.pipe(
-      switchMap(([props, providers]) => {
-        setNext(props, providers);
-        this.change(props, providers);
+      switchMap((res) => {
+        setNext(...res);
+        this.change(...res);
         return subject.pipe(
-          map(([id, res]) => {
-            const [props] = res;
-            this.props = props;
-            this.providers = providers;
+          map(([id, inner]) => {
+            this.props = inner.props;
+            this.context = res.context;
 
             if (resolvers[id]) {
               resolvers[id]();
               delete resolvers[id];
             }
 
-            return res;
+            return inner;
           })
         );
       }),

@@ -1,8 +1,8 @@
-import { combineLatest, ReplaySubject } from 'rxjs';
+import { combineLatest, ReplaySubject, of as observableOf } from 'rxjs';
 import { take, distinctUntilChanged } from 'rxjs/operators';
 
-export default class Subjects {
-  constructor() {
+export default class Emitter {
+  constructor(state = {}) {
     this.subjects = {
       props: new ReplaySubject(1),
       context: new ReplaySubject(1)
@@ -10,7 +10,8 @@ export default class Subjects {
 
     this.$ = combineLatest(
       this.subjects.props.asObservable(),
-      this.subjects.context.pipe(distinctUntilChanged()).asObservable()
+      this.subjects.context.pipe(distinctUntilChanged()).asObservable(),
+      observableOf(state)
     );
 
     this.ready = false;
