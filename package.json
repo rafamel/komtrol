@@ -81,7 +81,9 @@
     "rxjs": "^6.5.2",
     "typescript": "3.4.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ts-functional-pipe": "^2.0.0"
+  },
   "peerDependencies": {
     "rxjs": "^6.5.2"
   },
