@@ -81,7 +81,9 @@
     "prettier": "^1.18.2",
     "react": "^16.8.6",
     "rxjs": "^6.5.2",
-    "typescript": "3.4.3"
+    "typescript": "3.4.3",
+    "urql": "^1.1.3",
+    "wonka": "^3.0.0"
   },
   "dependencies": {
     "mobx-utils": "^5.4.1",
@@ -91,7 +93,9 @@
   "peerDependencies": {
     "mobx": "^5.11.0",
     "react": "^16.8.6",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.5.2",
+    "urql": "^1.1.3",
+    "wonka": "^3.0.0"
   },
   "@pika/pack": {
     "pipeline": [

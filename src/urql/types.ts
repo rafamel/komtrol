@@ -1,0 +1,27 @@
+import { Client, CombinedError, UseQueryArgs } from 'urql';
+
+// eslint-disable-next-line @typescript-eslint/prefer-interface
+export type TGql<T> = { [key: string]: any };
+
+export interface IRequestOptions<T> {
+  client?: Client;
+  query: TGql<T> | string;
+}
+export interface IResponse<T> {
+  fetching: boolean;
+  error?: CombinedError;
+  data?: T;
+}
+
+/* Query */
+export type TQueryOptions<T, V> = IRequestOptions<T> &
+  Pick<UseQueryArgs<V>, 'variables' | 'requestPolicy'>;
+export interface IQueryResponse<T> extends IResponse<T> {
+  execute: TQueryExecute;
+}
+export type TQueryExecute = (options?: TQueryExecuteOptions) => void;
+export type TQueryExecuteOptions = Pick<UseQueryArgs<any>, 'requestPolicy'>;
+export type TQueryOnResponse<A, B> = (
+  update: IQueryResponse<B>,
+  context: { self: A; current: IQueryResponse<B> }
+) => boolean | Promise<boolean>;

@@ -8,4 +8,5 @@ export { default as lift } from './lift';
 
 // TODO: move to own packages
 export * from './react';
+export * from './urql';
 export { default as withMobx } from './mobx';
