@@ -25,3 +25,19 @@ export type TQueryOnResponse<A, B> = (
   update: IQueryResponse<B>,
   context: { self: A; current: IQueryResponse<B> }
 ) => boolean | Promise<boolean>;
+
+/* Mutation */
+export type TMutationOptions<T> = IRequestOptions<T>;
+export interface IMutationResponse<T> extends IResponse<T> {
+  execute: TMutationExecute;
+}
+export type TMutationExecute = <V = object>(
+  options?: IMutationExecuteOptions<V>
+) => void;
+export interface IMutationExecuteOptions<V> {
+  variables?: V;
+}
+export type TMutationOnResponse<A, B> = (
+  update: IMutationResponse<B>,
+  context: { self: A; current: IMutationResponse<B> }
+) => boolean | Promise<boolean>;
