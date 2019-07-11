@@ -1,7 +1,7 @@
 import { fu } from '~/abstracts';
 import { TFu } from '~/types';
 import { map } from 'rxjs/operators';
-import lift from '../lift';
+import { connect } from '~/mounts';
 import { mapTo } from '~/utils';
 
 export default withAction;
@@ -32,5 +32,5 @@ function withAction<A extends object, B, K extends string>(
     });
   }
 
-  return lift((self) => trunk(field(self)));
+  return connect((self) => trunk(field(self)));
 }
