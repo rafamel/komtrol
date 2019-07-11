@@ -2,6 +2,7 @@ import fu from '~/fu';
 import { TFu } from '~/types';
 import { map } from 'rxjs/operators';
 import { shallowEqualProps as equal } from 'shallow-equal-props';
+import { keyMap } from '~/utils';
 
 export default withComputed;
 
@@ -20,21 +21,18 @@ function withComputed<A, B, D extends object, K extends string>(
   b: ((deps: D, self: A) => B) | ((self: A) => D),
   c?: (deps: D, self: A) => B
 ): TFu<A, A & (B | { [P in K]: B })> {
-  return fu((instance) => {
-    const hasKey = typeof a === 'string';
-    const key = hasKey ? (a as K) : null;
-    const dependencies = (hasKey ? b : a) as (self: A) => D;
-    const compute = (hasKey ? c : b) as (deps: D, self: A) => B;
+  const hasKey = typeof a === 'string';
+  const key = hasKey ? (a as K) : null;
+  const dependencies = (hasKey ? b : a) as (self: A) => D;
+  const compute = (hasKey ? c : b) as (deps: D, self: A) => B;
+  const mapper = keyMap(key);
 
+  return fu((instance) => {
     let lastDeps = dependencies(instance.initial);
     let current = compute(lastDeps, instance.initial);
 
-    const mapping = hasKey
-      ? (a: A, b: B) => ({ ...a, [key as K]: b } as A & { [P in K]: B })
-      : (a: A, b: B) => ({ ...a, ...b });
-
     return {
-      initial: mapping(instance.initial, current),
+      initial: mapper(instance.initial, current),
       subscriber: instance.subscriber.pipe(
         map((a) => {
           const deps = dependencies(a);
@@ -44,7 +42,7 @@ function withComputed<A, B, D extends object, K extends string>(
             lastDeps = deps;
           }
 
-          return mapping(a, current);
+          return mapper(a, current);
         })
       )
     };

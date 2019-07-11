@@ -1,29 +1,28 @@
 import fu from '~/fu';
 import { TFu } from '~/types';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 import combineMerge from '~/utils/combine-merge';
 import createSetter from '~/utils/create-setter';
 
-export default function withState<A, K extends string, SK extends string, T>(
+export type TWithState<A, T, K extends string, SK extends string> = A &
+  { [P in K]: T } &
+  { [P in SK]: (update: T | ((value: T) => T)) => void };
+
+export default function withState<A, T, K extends string, SK extends string>(
   key: K,
   setKey: SK,
   initial: T | (() => T)
-): TFu<
-  A,
-  A & { [P in K]: T } & { [P in SK]: (update: T | ((value: T) => T)) => void }
-> {
+): TFu<A, TWithState<A, T, K, SK>> {
   return fu((instance) => {
     const initialValue = isInitialFn(initial) ? initial() : initial;
     const $value = new BehaviorSubject(initialValue);
     const set = createSetter($value);
 
     return combineMerge(
-      [instance.initial, { [key]: initialValue, [setKey]: set } as any],
-      [
-        instance.subscriber,
-        $value.pipe(map((b) => ({ [key]: b, [setKey]: set } as any)))
-      ]
+      [instance.initial, initialValue],
+      [instance.subscriber, $value],
+      (a: A, b: T) =>
+        ({ ...a, [key]: b, [setKey]: set } as TWithState<A, T, K, SK>)
     );
   });
 }
