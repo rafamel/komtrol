@@ -1,15 +1,43 @@
 import fu from '~/fu';
 import { TFu } from '~/types';
 import { map } from 'rxjs/operators';
+import lift from '~/lift';
 
-export default function withField<A, B, K extends string>(
+export default withField;
+
+function withField<A, B extends object>(
+  fields: B | ((self: A) => B)
+): TFu<A, A & B>;
+function withField<A, B, K extends string>(
   key: K,
-  field: B
-): TFu<A, A & { [P in K]: B }> {
-  return fu((instance) => ({
-    initial: { ...instance.initial, [key]: field } as any,
-    subscriber: instance.subscriber.pipe(
-      map((a) => ({ ...a, [key]: field } as any))
-    )
-  }));
+  field: B | ((self: A) => B)
+): TFu<A, A & { [P in K]: B }>;
+
+function withField<A, B, K extends string>(
+  a: K | B | ((self: A) => B),
+  b?: B | ((self: A) => B)
+): TFu<A, A & (B | { [P in K]: B })> {
+  const hasKey = typeof a === 'string';
+  const key = hasKey ? (a as K) : null;
+  const field = (hasKey ? b : a) as B | ((self: A) => B);
+  const mapper = hasKey
+    ? (a: A, b: B) => ({ ...a, [key as K]: b } as A & { [P in K]: B })
+    : (a: A, b: B) => ({ ...a, ...b });
+
+  function trunk(value: B): TFu<A, A & (B | { [P in K]: B })> {
+    return fu((instance) => {
+      return {
+        initial: mapper(instance.initial, value),
+        subscriber: instance.subscriber.pipe(map((a) => mapper(a, value)))
+      };
+    });
+  }
+
+  return isFieldFn(field) ? lift((self) => trunk(field(self))) : trunk(field);
+}
+
+export function isFieldFn<A, B>(
+  field: B | ((self: A) => B)
+): field is (self: A) => B {
+  return typeof field === 'function';
 }
