@@ -8,3 +8,4 @@ export * from './types';
 
 // TODO: move to own packages
 export * from './react';
+export { default as withMobx } from './mobx';
