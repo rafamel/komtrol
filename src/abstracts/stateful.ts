@@ -9,7 +9,7 @@ export interface IStateful<T> {
   set: TSetter<T>;
 }
 
-export default function stateful<A, B, C extends A>(
+export default function stateful<A extends object, B, C extends A>(
   initial: B | (() => B),
   initialize: (state: IStateful<B>) => IFuInstanceStateful<A, B, C>
 ): TFu<A, C> {

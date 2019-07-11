@@ -1,6 +1,6 @@
 import { TFuInitialize, TFu, IFuInstance } from '~/types';
 
-export default function fu<A, B extends A>(
+export default function fu<A extends object, B extends object>(
   initialize: TFuInitialize<A, B>
 ): TFu<A, B> {
   return (instance) => {

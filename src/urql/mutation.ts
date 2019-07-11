@@ -16,26 +16,26 @@ import { mapTo, combine } from '~/utils';
 
 export default withMutation;
 
-function withMutation<A, T = any>(
+function withMutation<A extends object, T = any>(
   options: TMutationOptions<T> | ((self: A) => TMutationOptions<T>),
   onResponse?: TMutationOnResponse<A, T>
 ): TFu<A, A & IMutationResponse<T>>;
-function withMutation<A>(
+function withMutation<A extends object>(
   options: TMutationOptions<any> | ((self: A) => TMutationOptions<any>),
   onResponse?: TMutationOnResponse<A, any>
 ): TFu<A, A & IMutationResponse<any>>;
-function withMutation<A, K extends string, T = any>(
+function withMutation<A extends object, K extends string, T = any>(
   key: K,
   options: TMutationOptions<T> | ((self: A) => TMutationOptions<T>),
   onResponse?: TMutationOnResponse<A, T>
 ): TFu<A, A & { [P in K]: IMutationResponse<T> }>;
-function withMutation<A, K extends string>(
+function withMutation<A extends object, K extends string>(
   key: K,
   options: TMutationOptions<any> | ((self: A) => TMutationOptions<any>),
   onResponse?: TMutationOnResponse<A, any>
 ): TFu<A, A & { [P in K]: IMutationResponse<any> }>;
 
-function withMutation<A, K extends string, T = any>(
+function withMutation<A extends object, K extends string, T = any>(
   a: TMutationOptions<T> | ((self: A) => TMutationOptions<T>) | K,
   b?:
     | TMutationOnResponse<A, T>

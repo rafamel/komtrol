@@ -6,10 +6,10 @@ import { mapTo } from '~/utils';
 
 export default withField;
 
-function withField<A, B extends object>(
+function withField<A extends object, B extends object>(
   fields: B | ((self: A) => B)
 ): TFu<A, A & B>;
-function withField<A, B, K extends string>(
+function withField<A extends object, B, K extends string>(
   key: K,
   field: B | ((self: A) => B)
 ): TFu<A, A & { [P in K]: B }>;

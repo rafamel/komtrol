@@ -16,26 +16,40 @@ import { mapTo, combine } from '~/utils';
 
 export default withQuery;
 
-function withQuery<A, T = any, V extends object = object>(
+function withQuery<A extends object, T = any, V extends object = object>(
   options: TQueryOptions<T, V> | ((self: A) => TQueryOptions<T, V>),
   onResponse?: TQueryOnResponse<A, T>
-): TFu<A, A & { query: IQueryResponse<T> }>;
-function withQuery<A, V extends object = object>(
+): TFu<A, A & IQueryResponse<T>>;
+function withQuery<A extends object, V extends object = object>(
   options: TQueryOptions<any, V> | ((self: A) => TQueryOptions<any, V>),
   onResponse?: TQueryOnResponse<A, any>
-): TFu<A, A & { query: IQueryResponse<any> }>;
-function withQuery<A, K extends string, T = any, V extends object = object>(
+): TFu<A, A & IQueryResponse<any>>;
+function withQuery<
+  A extends object,
+  K extends string,
+  T = any,
+  V extends object = object
+>(
   key: K,
   options: TQueryOptions<T, V> | ((self: A) => TQueryOptions<T, V>),
   onResponse?: TQueryOnResponse<A, T>
 ): TFu<A, A & { [P in K]: IQueryResponse<T> }>;
-function withQuery<A, K extends string, V extends object = object>(
+function withQuery<
+  A extends object,
+  K extends string,
+  V extends object = object
+>(
   key: any,
   options: TQueryOptions<any, V> | ((self: A) => TQueryOptions<any, V>),
   onResponse?: TQueryOnResponse<A, any>
 ): TFu<A, A & { [P in K]: IQueryResponse<any> }>;
 
-function withQuery<A, K extends string, T = any, V extends object = object>(
+function withQuery<
+  A extends object,
+  K extends string,
+  T = any,
+  V extends object = object
+>(
   a: TQueryOptions<T, V> | ((self: A) => TQueryOptions<T, V>) | K,
   b?:
     | TQueryOnResponse<A, T>

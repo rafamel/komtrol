@@ -1,7 +1,7 @@
 import { Observable, combineLatest } from 'rxjs';
 import { map as _map } from 'rxjs/operators';
 
-export default function combine<A, B, C extends A>(
+export default function combine<A extends object, B, C extends A>(
   initials: [A, B],
   subscribers: [Observable<A>, Observable<B>],
   map: (a: A, b: B) => C

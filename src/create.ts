@@ -3,11 +3,13 @@ import { of } from 'rxjs';
 
 export default create;
 
-function create<A extends {}, B extends A>(
+function create<A extends object, B extends A>(
   provider: TFu<A, B>,
   initial: A
 ): Required<IFuInstance<B>>;
-function create<B extends {}>(provider: TFu<{}, B>): Required<IFuInstance<B>>;
+function create<B extends object>(
+  provider: TFu<any, B>
+): Required<IFuInstance<B>>;
 
 function create(
   provider: TFu<any, any>,

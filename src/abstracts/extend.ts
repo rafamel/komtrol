@@ -2,7 +2,7 @@ import fu from './fu';
 import { TFu, IFuInstanceExtend } from '~/types';
 import { combine } from '~/utils';
 
-export default function extend<A, B, C extends A = A & B>(
+export default function extend<A extends object, B, C extends A = A & B>(
   initialize: () => IFuInstanceExtend<A, B, C>
 ): TFu<A, C> {
   return fu(({ initial, subscriber }) => {

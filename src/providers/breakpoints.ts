@@ -12,15 +12,20 @@ export type TActiveBreakpoints<T extends IBreakpoints> = {
 
 export default withBreakpoints;
 
-function withBreakpoints<A, T extends IBreakpoints>(
+function withBreakpoints<A extends object, T extends IBreakpoints>(
   breakpoints: T
 ): TFu<A, A & TActiveBreakpoints<T>>;
-function withBreakpoints<A, T extends IBreakpoints, K extends string>(
-  key: K,
-  breakpoints: T
-): TFu<A, A & { [P in K]: TActiveBreakpoints<T> }>;
+function withBreakpoints<
+  A extends object,
+  T extends IBreakpoints,
+  K extends string
+>(key: K, breakpoints: T): TFu<A, A & { [P in K]: TActiveBreakpoints<T> }>;
 
-function withBreakpoints<A, T extends IBreakpoints, K extends string>(
+function withBreakpoints<
+  A extends object,
+  T extends IBreakpoints,
+  K extends string
+>(
   a: K | T,
   b?: T
 ): TFu<A, A & (TActiveBreakpoints<T> | { [P in K]: TActiveBreakpoints<T> })> {

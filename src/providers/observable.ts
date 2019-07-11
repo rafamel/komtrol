@@ -5,17 +5,17 @@ import { mapTo, isFn } from '~/utils';
 
 export default withObservable;
 
-function withObservable<A, B extends object>(
+function withObservable<A extends object, B extends object>(
   initial: B | (() => B),
   observable: Observable<B> | (() => Observable<B>)
 ): TFu<A, A & B>;
-function withObservable<A, B, K extends string>(
+function withObservable<A extends object, B, K extends string>(
   key: K,
   initial: B | (() => B),
   observable: Observable<B> | (() => Observable<B>)
 ): TFu<A, A & { [P in K]: B }>;
 
-function withObservable<A, B, K extends string>(
+function withObservable<A extends object, B, K extends string>(
   a: B | (() => B) | K,
   b: B | (() => B) | Observable<B> | (() => Observable<B>),
   c?: Observable<B> | (() => Observable<B>)

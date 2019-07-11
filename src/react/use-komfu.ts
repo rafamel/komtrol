@@ -9,8 +9,8 @@ import { BehaviorSubject } from 'rxjs';
 
 export default useKomfu;
 
-function useKomfu<B extends {}>(provider: TFu<{}, B>): B;
-function useKomfu<A extends {}, B extends A, P>(
+function useKomfu<B extends object>(provider: TFu<any, B>): B;
+function useKomfu<A extends object, B extends A, P>(
   provider: TFu<A, B>,
   props: P
 ): B;

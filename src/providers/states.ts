@@ -6,7 +6,7 @@ export interface IStates<T extends object> {
   setState(update: Partial<T> | ((value: T) => Partial<T>)): void;
 }
 
-export default function withStates<A, T extends object>(
+export default function withStates<A extends object, T extends object>(
   initial: T | (() => T)
 ): TFu<A, A & IStates<T>> {
   return stateful(initial, (state) => {

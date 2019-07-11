@@ -7,14 +7,17 @@ export type TEffect<A, T> = (deps: T, self: A) => void | (() => void);
 
 export default withEffect;
 
-function withEffect<A>(effect: TEffect<A, A>): TFu<A, A>;
-function withEffect<A>(dependencies: null, effect: TEffect<A, null>): TFu<A, A>;
-function withEffect<A, D extends object>(
+function withEffect<A extends object>(effect: TEffect<A, A>): TFu<A, A>;
+function withEffect<A extends object>(
+  dependencies: null,
+  effect: TEffect<A, null>
+): TFu<A, A>;
+function withEffect<A extends object, D extends object>(
   dependencies: (self: A) => D,
   effect: TEffect<A, D>
 ): TFu<A, A>;
 
-function withEffect<A, D extends object>(
+function withEffect<A extends object, D extends object>(
   a: TEffect<A, A> | null | ((self: A) => D),
   b?: TEffect<A, null> | TEffect<A, D>
 ): TFu<A, A> {

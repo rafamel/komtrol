@@ -6,17 +6,17 @@ import { mapTo } from '~/utils';
 
 export default withComputed;
 
-function withComputed<A, B extends object, D extends object>(
+function withComputed<A extends object, B extends object, D extends object>(
   dependencies: (self: A) => D,
   compute: (deps: D, self: A) => B
 ): TFu<A, A & B>;
-function withComputed<A, B, D extends object, K extends string>(
+function withComputed<A extends object, B, D extends object, K extends string>(
   key: K,
   dependencies: (self: A) => D,
   compute: (deps: D, self: A) => B
 ): TFu<A, A & { [P in K]: B }>;
 
-function withComputed<A, B, D extends object, K extends string>(
+function withComputed<A extends object, B, D extends object, K extends string>(
   a: K | ((self: A) => D),
   b: ((deps: D, self: A) => B) | ((self: A) => D),
   c?: (deps: D, self: A) => B
