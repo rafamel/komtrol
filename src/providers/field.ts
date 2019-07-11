@@ -1,8 +1,8 @@
-import fu from '~/fu';
+import { fu } from '~/abstracts';
 import { TFu } from '~/types';
 import { map } from 'rxjs/operators';
 import lift from '~/lift';
-import { keyMap } from '~/utils';
+import { mapTo } from '~/utils';
 
 export default withField;
 
@@ -14,14 +14,14 @@ function withField<A, B, K extends string>(
   field: B | ((self: A) => B)
 ): TFu<A, A & { [P in K]: B }>;
 
-function withField<A, B, K extends string>(
+function withField<A extends object, B, K extends string>(
   a: K | B | ((self: A) => B),
   b?: B | ((self: A) => B)
 ): TFu<A, A & (B | { [P in K]: B })> {
   const hasKey = typeof a === 'string';
   const key = hasKey ? (a as K) : null;
   const field = (hasKey ? b : a) as B | ((self: A) => B);
-  const mapper = keyMap(key);
+  const mapper = mapTo(key);
 
   function trunk(value: B): TFu<A, A & (B | { [P in K]: B })> {
     return fu((instance) => {

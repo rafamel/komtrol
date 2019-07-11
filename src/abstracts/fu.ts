@@ -1,4 +1,4 @@
-import { TFuInitialize, TFu, IFuInstance } from './types';
+import { TFuInitialize, TFu, IFuInstance } from '~/types';
 
 export default function fu<A, B extends A>(
   initialize: TFuInitialize<A, B>

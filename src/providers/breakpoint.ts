@@ -1,6 +1,6 @@
-import fu from '~/fu';
+import { stateful } from '~/abstracts';
 import { TFu } from '~/types';
-import { createState } from '~/utils';
+import { mapTo } from '~/utils';
 
 export interface IBreakpoints {
   [key: string]: number | string;
@@ -32,29 +32,27 @@ function withBreakpoint<
   const w: any = typeof window !== 'undefined' && window;
   if (!w) throw Error(`withBreakpoint must be run in the browser`);
 
-  return fu((instance) => {
-    function calculate(): (keyof T) | null {
-      const width = w.innerWidth;
-      for (let [name, value] of arr) {
-        if (width >= value) return name;
-      }
-      return null;
+  function calculate(): (keyof T) | null {
+    const width = w.innerWidth;
+    for (let [name, value] of arr) {
+      if (width >= value) return name;
     }
+    return null;
+  }
 
-    const stateful = createState(key, calculate(), instance);
-
+  return stateful(calculate, (state) => {
     let timeout: NodeJS.Timer | null = null;
     const listener = (): void => {
       if (timeout) clearTimeout(timeout);
       timeout = setTimeout(() => {
         const res = calculate();
-        if (res !== stateful.subject.value) stateful.set(res);
+        if (res !== state.current) state.set(res);
       }, 100);
     };
 
     w.addEventListener('resize', listener);
     return {
-      ...stateful.instance,
+      map: mapTo<A, (keyof T) | null, K | 'breakpoint'>(key),
       teardown() {
         return w.removeEventListener('resize', calculate);
       }

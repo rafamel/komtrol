@@ -1,8 +1,8 @@
-import fu from './fu';
+import { fu } from '~/abstracts';
 import { TFu } from './types';
 import { tap } from 'rxjs/operators';
 
-export default function lift<A, B extends A>(
+export default function lift<A extends object, B extends A>(
   fn: (self: A) => TFu<A, B>
 ): TFu<A, B> {
   return fu((instance) => {

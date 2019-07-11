@@ -1,4 +1,4 @@
-import fu from '~/fu';
+import { fu } from '~/abstracts';
 import { TFu } from '~/types';
 import { map as _map } from 'rxjs/operators';
 

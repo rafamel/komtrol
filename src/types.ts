@@ -15,3 +15,15 @@ export interface IFuInstance<T> {
   subscriber?: Observable<T>;
   teardown?: () => void;
 }
+
+export interface IFuInstanceExtend<A, B, C extends A = A & B>
+  extends IFuInstance<B> {
+  initial: B;
+  subscriber: Observable<B>;
+  map?: (a: A, b: B) => C;
+}
+
+export interface IFuInstanceStateful<A, B, C extends A = A & B> {
+  map?: (a: A, b: B) => C;
+  teardown?: () => void;
+}

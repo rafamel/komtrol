@@ -1,22 +1,21 @@
 import { useState, useEffect, useMemo } from 'react';
+import { extend } from '~/abstracts';
 import { TFu } from '~/types';
 import create from '~/create';
 import pipe from '~/pipe';
 import { shallowEqualProps as equal } from 'shallow-equal-props';
 import { useContext } from './context';
 import { BehaviorSubject } from 'rxjs';
-import fu from '~/fu';
-import { combineMerge } from '../utils';
 
 export default useKomfu;
 
-function useKomfu<B extends {}>(initialize: TFu<{}, B>): B;
+function useKomfu<B extends {}>(provider: TFu<{}, B>): B;
 function useKomfu<A extends {}, B extends A, P>(
-  initialize: TFu<A, B>,
+  provider: TFu<A, B>,
   props: P
 ): B;
 
-function useKomfu(initialize: TFu<any, any>, props?: any): any {
+function useKomfu(provider: TFu<any, any>, props?: any): any {
   const context = useContext();
   const subject = useMemo(
     () => new BehaviorSubject(props ? { context } : { context, props }),
@@ -26,16 +25,14 @@ function useKomfu(initialize: TFu<any, any>, props?: any): any {
   const instance = useMemo(() => {
     return create(
       pipe(
-        fu((instance) =>
-          combineMerge(
-            [instance.initial, subject.value],
-            [instance.subscriber, subject]
-          )
-        ),
-        initialize
+        extend(() => ({
+          initial: subject.value,
+          subscriber: subject
+        })),
+        provider
       )
     );
-  }, [initialize, subject]);
+  }, [provider, subject]);
   const [state, setState] = useState(instance.initial);
 
   useEffect(() => {

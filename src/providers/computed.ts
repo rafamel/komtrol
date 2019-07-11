@@ -1,8 +1,8 @@
-import fu from '~/fu';
+import { fu } from '~/abstracts';
 import { TFu } from '~/types';
 import { map } from 'rxjs/operators';
 import { shallowEqualProps as equal } from 'shallow-equal-props';
-import { keyMap } from '~/utils';
+import { mapTo } from '~/utils';
 
 export default withComputed;
 
@@ -25,7 +25,7 @@ function withComputed<A, B, D extends object, K extends string>(
   const key = hasKey ? (a as K) : null;
   const dependencies = (hasKey ? b : a) as (self: A) => D;
   const compute = (hasKey ? c : b) as (deps: D, self: A) => B;
-  const mapper = keyMap(key);
+  const mapper = mapTo(key);
 
   return fu((instance) => {
     let lastDeps = dependencies(instance.initial);

@@ -1,4 +1,4 @@
-import fu from '~/fu';
+import { fu } from '~/abstracts';
 import { TFu } from '~/types';
 import { map } from 'rxjs/operators';
 import { shallowEqualProps as equal } from 'shallow-equal-props';

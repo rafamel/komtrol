@@ -4,18 +4,18 @@ import { of } from 'rxjs';
 export default create;
 
 function create<A extends {}, B extends A>(
-  initialize: TFu<A, B>,
+  provider: TFu<A, B>,
   initial: A
 ): Required<IFuInstance<B>>;
-function create<B extends {}>(initialize: TFu<{}, B>): Required<IFuInstance<B>>;
+function create<B extends {}>(provider: TFu<{}, B>): Required<IFuInstance<B>>;
 
 function create(
-  initialize: TFu<any, any>,
+  provider: TFu<any, any>,
   initial?: any
 ): Required<IFuInstance<any>> {
   if (!initial) initial = {};
 
-  return initialize({
+  return provider({
     initial,
     subscriber: of(initial),
     teardown: () => {}

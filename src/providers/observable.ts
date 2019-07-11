@@ -1,7 +1,7 @@
-import fu from '~/fu';
+import { extend } from '~/abstracts';
 import { TFu } from '~/types';
-import { Observable } from 'rxjs';
-import { keyMap, combineMerge } from '~/utils';
+import { Observable, of, concat } from 'rxjs';
+import { mapTo, isFn } from '~/utils';
 
 export default withObservable;
 
@@ -24,19 +24,16 @@ function withObservable<A, B, K extends string>(
   const key = hasKey ? (a as K) : null;
   const initial = (hasKey ? b : a) as B | (() => B);
   const observable = (hasKey ? c : b) as Observable<B> | (() => Observable<B>);
-  const mapper = keyMap(key);
+  const mapper = mapTo<A, B, K>(key);
 
-  return fu((instance) => {
-    const initialValue = isNoParamsFn(initial) ? initial() : initial;
-    const observable$ = isNoParamsFn(observable) ? observable() : observable;
-    return combineMerge(
-      [instance.initial, initialValue],
-      [instance.subscriber, observable$],
-      mapper
-    );
+  return extend(() => {
+    const initialValue = isFn(initial) ? initial() : initial;
+    const observable$ = isFn(observable) ? observable() : observable;
+
+    return {
+      initial: initialValue,
+      subscriber: concat(of(initialValue), observable$),
+      map: mapper
+    };
   });
-}
-
-export function isNoParamsFn<T>(value: T | (() => T)): value is () => T {
-  return typeof value === 'function';
 }

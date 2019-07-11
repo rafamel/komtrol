@@ -1,7 +1,6 @@
+import { stateful } from '~/abstracts';
 import { TFu } from '~/types';
-import fu from '~/fu';
-import { combineMerge } from '~/utils';
-import { BehaviorSubject } from 'rxjs';
+import { mapTo } from '~/utils';
 import { toStream } from 'mobx-utils';
 
 export default withMobx;
@@ -15,29 +14,18 @@ function withMobx<A, B, K extends string>(
 function withMobx<A, B, K extends string>(
   a: K | (() => B),
   b?: () => B
-): TFu<A, A & ({ [P in K]: B } | B)> {
+): TFu<A, A & (B | { [P in K]: B })> {
   const hasKey = typeof a === 'string';
   const key = hasKey ? (a as K) : null;
   const fn = (hasKey ? b : a) as (() => B);
+  const mapper = mapTo<A, B, K>(key);
 
-  return fu((instance) => {
-    const initial = hasKey ? ({ [key as K]: fn() } as { [P in K]: B }) : fn();
-    const subject = new BehaviorSubject(initial);
+  return stateful(fn(), (stateful) => {
     const stream = toStream(fn);
-    const subscription = stream.subscribe(
-      hasKey
-        ? (value) => subject.next({ [key as K]: value } as { [P in K]: B })
-        : (value) => subject.next(value)
-    );
-
+    const subscription = stream.subscribe((value) => stateful.set(value));
     return {
-      ...combineMerge(
-        [instance.initial, initial],
-        [instance.subscriber, subject]
-      ),
-      teardown() {
-        subscription.unsubscribe();
-      }
+      map: mapper,
+      teardown: subscription.unsubscribe
     };
   });
 }
