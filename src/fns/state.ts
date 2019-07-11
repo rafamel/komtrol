@@ -8,21 +8,26 @@ import createSetter from '~/utils/create-setter';
 export default function withState<A, K extends string, SK extends string, T>(
   key: K,
   setKey: SK,
-  initial: T
+  initial: T | (() => T)
 ): TFu<
   A,
   A & { [P in K]: T } & { [P in SK]: (update: T | ((value: T) => T)) => void }
 > {
   return fu((instance) => {
-    const $value = new BehaviorSubject(initial);
+    const initialValue = isInitialFn(initial) ? initial() : initial;
+    const $value = new BehaviorSubject(initialValue);
     const set = createSetter($value);
 
     return combineMerge(
-      [instance.initial, { [key]: initial, [setKey]: set } as any],
+      [instance.initial, { [key]: initialValue, [setKey]: set } as any],
       [
         instance.subscriber,
         $value.pipe(map((b) => ({ [key]: b, [setKey]: set } as any)))
       ]
     );
   });
+}
+
+export function isInitialFn<T>(initial: T | (() => T)): initial is () => T {
+  return typeof initial === 'function';
 }
