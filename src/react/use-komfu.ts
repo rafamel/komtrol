@@ -18,7 +18,7 @@ function useKomfu<A extends object, B extends A, P>(
 function useKomfu(provider: TFu<any, any>, props?: any): any {
   const context = useContext();
   const subject = useMemo(
-    () => new BehaviorSubject(props ? { context } : { context, props }),
+    () => new BehaviorSubject(props ? { context, props } : { context }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
