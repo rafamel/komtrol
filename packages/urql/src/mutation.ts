@@ -1,5 +1,4 @@
-import { fu } from '~/abstracts';
-import { TFu } from '~/types';
+import { fu, mapTo, combine, TFu } from 'komfu';
 import {
   IMutationResponse,
   TMutationOptions,
@@ -12,7 +11,6 @@ import noOp from './utils/no-op';
 import getClient from './utils/get-client';
 import { tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { mapTo, combine } from '~/utils';
 
 export default withMutation;
 

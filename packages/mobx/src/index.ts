@@ -1,6 +1,4 @@
-import { stateful } from '~/abstracts';
-import { TFu } from '~/types';
-import { mapTo } from '~/utils';
+import { stateful, mapTo, TFu } from 'komfu';
 import { toStream } from 'mobx-utils';
 
 export default withMobx;
