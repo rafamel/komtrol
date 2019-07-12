@@ -1,101 +1,54 @@
 import { fu } from '~/abstracts';
-import { TFu } from '~/types';
+import { TFu, TUpdatePolicy } from '~/types';
 import { map } from 'rxjs/operators';
-import { shallowEqualProps as equal } from 'shallow-equal-props';
-import { mapTo } from '~/utils';
+import { mapTo, initializePolicy } from '~/utils';
 
-export type TCompute<A, B, D> = (deps: D, self: A) => B;
+export type TCompute<A, B> = (self: A) => B;
 
 export default withComputed;
 
 function withComputed<A extends object, B extends object>(
-  compute: TCompute<A, B, A>
+  compute: TCompute<A, B>
 ): TFu<A, A & B>;
 function withComputed<A extends object, B extends object>(
-  dependencies: null,
-  compute: TCompute<A, B, null>
-): TFu<A, A & B>;
-function withComputed<A extends object, B extends object, D extends object>(
-  dependencies: (self: A) => D,
-  compute: TCompute<A, B, D>
+  policy: TUpdatePolicy<A>,
+  compute: TCompute<A, B>
 ): TFu<A, A & B>;
 function withComputed<A extends object, B, K extends string>(
   key: K,
-  compute: TCompute<A, B, A>
+  compute: TCompute<A, B>
 ): TFu<A, A & { [P in K]: B }>;
 function withComputed<A extends object, B, K extends string>(
   key: K,
-  dependencies: null,
-  compute: TCompute<A, B, null>
-): TFu<A, A & { [P in K]: B }>;
-function withComputed<A extends object, B, D extends object, K extends string>(
-  key: K,
-  dependencies: (self: A) => D,
-  compute: TCompute<A, B, D>
+  policy: TUpdatePolicy<A>,
+  compute: TCompute<A, B>
 ): TFu<A, A & { [P in K]: B }>;
 
-function withComputed<A extends object, B, D extends object, K extends string>(
-  a: TCompute<A, B, A> | null | ((self: A) => D) | K,
-  b?: TCompute<A, B, null | A | D> | null | ((self: A) => D),
-  c?: TCompute<A, B, null | D>
+function withComputed<A extends object, B, K extends string>(
+  a: TCompute<A, B> | TUpdatePolicy<A> | K,
+  b?: TCompute<A, B> | TUpdatePolicy<A>,
+  c?: TCompute<A, B>
 ): TFu<A, A & (B | { [P in K]: B })> {
   const hasKey = typeof a === 'string';
-  const hasDependencies = hasKey ? c !== undefined : b !== undefined;
-
+  const hasPolicy = hasKey ? c !== undefined : b !== undefined;
   const key = hasKey ? (a as K) : null;
-  let dependencies: undefined | null | ((self: A) => D);
-  let compute: TCompute<A, B, A | null | D>;
-  if (hasKey) {
-    dependencies = hasDependencies ? (b as any) : undefined;
-    compute = hasDependencies ? c : (b as any);
-  } else {
-    dependencies = hasDependencies ? (a as any) : undefined;
-    compute = hasDependencies ? b : (a as any);
-  }
+  const policy = (hasPolicy ? (hasKey ? b : a) : false) as TUpdatePolicy<A>;
+  const compute = (hasKey
+    ? hasPolicy
+      ? c
+      : b
+    : hasPolicy
+    ? b
+    : a) as TCompute<A, B>;
   const mapper = mapTo(key);
 
-  // dependencies is null; only execute on init
-  if (hasDependencies && !dependencies) {
-    return fu((instance) => {
-      const current = compute(null, instance.initial);
-      return {
-        initial: mapper(instance.initial, current),
-        subscriber: instance.subscriber.pipe(map((a) => mapper(a, current)))
-      };
-    });
-  }
-
-  // has actual dependencies
-  if (hasDependencies) {
-    return fu((instance) => {
-      const doDependencies = dependencies as (self: A) => D;
-      let lastDeps = doDependencies(instance.initial);
-      let current = compute(lastDeps, instance.initial);
-
-      return {
-        initial: mapper(instance.initial, current),
-        subscriber: instance.subscriber.pipe(
-          map((a) => {
-            const deps = doDependencies(a);
-
-            if (!equal(deps, lastDeps)) {
-              current = compute(deps, a);
-              lastDeps = deps;
-            }
-
-            return mapper(a, current);
-          })
-        )
-      };
-    });
-  }
-
-  // doesn't have dependencies; compute on each update
-  return fu((instance) => ({
-    initial: mapper(
-      instance.initial,
-      compute(instance.initial, instance.initial)
-    ),
-    subscriber: instance.subscriber.pipe(map((a) => mapper(a, compute(a, a))))
-  }));
+  return fu((instance) => {
+    const enactPolicy = initializePolicy(policy, compute);
+    return {
+      initial: mapper(instance.initial, enactPolicy(instance.initial)),
+      subscriber: instance.subscriber.pipe(
+        map((a) => mapper(a, enactPolicy(a)))
+      )
+    };
+  });
 }

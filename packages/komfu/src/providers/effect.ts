@@ -1,90 +1,38 @@
 import { fu } from '~/abstracts';
-import { TFu } from '~/types';
+import { TFu, TUpdatePolicy } from '~/types';
 import { map } from 'rxjs/operators';
-import { shallowEqualProps as equal } from 'shallow-equal-props';
+import { initializePolicy } from '~/utils';
 
-export type TEffect<A, T> = (deps: T, self: A) => void | (() => void);
+export type TEffect<A> = (self: A) => void | (() => void);
 
 export default withEffect;
 
-function withEffect<A extends object>(effect: TEffect<A, A>): TFu<A, A>;
+function withEffect<A extends object>(effect: TEffect<A>): TFu<A, A>;
 function withEffect<A extends object>(
-  dependencies: null,
-  effect: TEffect<A, null>
-): TFu<A, A>;
-function withEffect<A extends object, D extends object>(
-  dependencies: (self: A) => D,
-  effect: TEffect<A, D>
+  policy: TUpdatePolicy<A>,
+  effect: TEffect<A>
 ): TFu<A, A>;
 
-function withEffect<A extends object, D extends object>(
-  a: TEffect<A, A> | null | ((self: A) => D),
-  b?: TEffect<A, null> | TEffect<A, D>
+function withEffect<A extends object>(
+  a: TEffect<A> | TUpdatePolicy<A>,
+  b?: TEffect<A>
 ): TFu<A, A> {
-  const hasDependencies = typeof b === 'function';
-  const dependencies = hasDependencies ? (a as (self: A) => D) : null;
-  const effect = hasDependencies
-    ? (b as TEffect<A, null | D>)
-    : (a as TEffect<A, A>);
+  const hasPolicy = b !== undefined;
+  const effect = (hasPolicy ? b : a) as TEffect<A>;
+  const policy = (hasPolicy ? a : false) as TUpdatePolicy<A>;
 
-  // dependencies is null; only execute on init
-  if (hasDependencies && !dependencies) {
-    return fu((instance) => {
-      const doEffect = effect as TEffect<A, null>;
-      let teardown = doEffect(null, instance.initial);
-      return {
-        teardown() {
-          if (teardown) {
-            teardown();
-            teardown = undefined;
-          }
-        }
-      };
-    });
-  }
-
-  // has actual dependencies
-  if (hasDependencies) {
-    return fu((instance) => {
-      const doDependencies = dependencies as (self: A) => D;
-      const doEffect = effect as TEffect<A, D>;
-      let lastDeps = doDependencies(instance.initial);
-      let teardown = doEffect(lastDeps, instance.initial);
-
-      return {
-        subscriber: instance.subscriber.pipe(
-          map((a) => {
-            const deps = doDependencies(a);
-
-            if (!equal(deps, lastDeps)) {
-              if (teardown) teardown();
-              teardown = doEffect(deps, a);
-              lastDeps = deps;
-            }
-
-            return a;
-          })
-        ),
-        teardown() {
-          if (teardown) {
-            teardown();
-            teardown = undefined;
-          }
-        }
-      };
-    });
-  }
-
-  // doesn't have dependencies; execute on each update
   return fu((instance) => {
-    const doEffect = effect as TEffect<A, A>;
-    let teardown = doEffect(instance.initial, instance.initial);
+    let teardown: void | (() => void);
+    const enactPolicy = initializePolicy(policy, (self) => {
+      if (teardown) teardown();
+      teardown = effect(self);
+    });
 
+    enactPolicy(instance.initial);
     return {
       subscriber: instance.subscriber.pipe(
         map((a) => {
-          if (teardown) teardown();
-          teardown = doEffect(a, a);
+          enactPolicy(a);
           return a;
         })
       ),

@@ -27,3 +27,6 @@ export interface IFuInstanceStateful<A extends object, B, C extends A = A & B> {
   map?: (a: A, b: B) => C;
   teardown?: () => void;
 }
+
+export type TUpdatePolicy<T> = boolean | null | TUpdatePolicyFn<T>;
+export type TUpdatePolicyFn<T> = () => (self: T, next: T) => boolean;
