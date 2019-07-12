@@ -9,7 +9,7 @@ export interface IStates<T extends object> {
 
 export default function withStates<A extends object, T extends object>(
   initial: T | ((self: A) => T)
-): TFu<A, A & IStates<T>> {
+): TFu<A, A & IStates<Readonly<T>>> {
   return stateful(
     isSelfFn(initial) ? (self) => initial(self) : initial,
     (state) => {

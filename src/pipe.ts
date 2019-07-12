@@ -9,7 +9,7 @@ function pipeT<T>() {
 }
 
 function pipeP<T = any>() {
-  return pipeT<{ props: T }>();
+  return pipeT<{ props: Readonly<T> }>();
 }
 
 function pipeC<T = any>() {
@@ -17,7 +17,7 @@ function pipeC<T = any>() {
 }
 
 function pipePC<P = any, C = any>() {
-  return pipeT<{ props: P; context: C }>();
+  return pipeT<{ props: Readonly<P>; context: C }>();
 }
 
 export type Pipe = typeof _pipe & {

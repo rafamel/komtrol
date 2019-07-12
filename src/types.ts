@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 
 export type TFu<A extends object, B extends object> = (
   instance: Required<IFuInstance<A>>
-) => Required<IFuInstance<B>>;
+) => Required<IFuInstance<Readonly<B>>>;
 
 export type TFuInitialize<A extends object, B extends object> = (
   instance: Required<IFuInstance<A>>
