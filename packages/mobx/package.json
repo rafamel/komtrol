@@ -67,15 +67,17 @@
     "url": "https://github.com/rafamel/komfu/issues"
   },
   "devDependencies": {
+    "komfu": "^0.0.0",
     "mobx": "^5.11.0",
-    "komfu": "^0.0.0"
+    "rxjs": "^6.5.2"
   },
   "dependencies": {
     "mobx-utils": "^5.4.1"
   },
   "peerDependencies": {
     "mobx": "^5.11.0",
-    "komfu": "^0.0.0"
+    "komfu": "^0.0.0",
+    "rxjs": "^6.5.2"
   },
   "@pika/pack": {
     "pipeline": [
