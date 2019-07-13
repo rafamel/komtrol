@@ -1,7 +1,7 @@
 import { stateful } from '~/abstracts';
 import { TFu } from '~/types';
 import { mapTo } from '~/utils';
-import { shallowEqualProps as equal } from 'shallow-equal-props';
+import { shallowEqual as equal } from 'shallow-equal-object';
 
 export interface IBreakpoints {
   [key: string]: number | string;
