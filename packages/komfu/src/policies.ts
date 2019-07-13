@@ -15,7 +15,10 @@ export function depends<A extends object>(
     let last: any[];
     return (self, next) => {
       if (!last) last = dependencies(self);
-      return !equal(last, dependencies(next));
+      const current = dependencies(next);
+      const shouldUpdate = !equal(last, current);
+      last = current;
+      return shouldUpdate;
     };
   };
 }
@@ -27,7 +30,10 @@ export function reacts<A extends object>(
     let last: any[];
     return (self, next) => {
       if (!last) last = dependencies(self);
-      return !equalProps(last, dependencies(next));
+      const current = dependencies(next);
+      const shouldUpdate = !equalProps(last, current);
+      last = current;
+      return shouldUpdate;
     };
   };
 }
