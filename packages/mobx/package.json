@@ -75,9 +75,9 @@
     "mobx-utils": "^5.4.1"
   },
   "peerDependencies": {
-    "mobx": "^5.11.0",
+    "mobx": "4.x || 5.x",
     "komfu": "^0.0.0",
-    "rxjs": "^6.5.2"
+    "rxjs": "6.x"
   },
   "@pika/pack": {
     "pipeline": [
