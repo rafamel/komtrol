@@ -1,4 +1,4 @@
-import { fu, mapTo, combine, TFu } from 'komfu';
+import { fu, createMap, combine, TFu } from 'komfu';
 import {
   IQueryResponse,
   TQueryOptions,
@@ -61,13 +61,13 @@ function withQuery<
     | TQueryOptions<T, V>
     | ((self: A) => TQueryOptions<T, V>));
   const onResponse = hasKey ? c : (b as TQueryOnResponse<A, T>);
-  const mapper = mapTo<A, IQueryResponse<T>, K>(key);
+  const mapper = createMap<A, IQueryResponse<T>, K>(key);
 
-  return fu((instance) => {
-    let globalSelf: A = instance.initial;
+  return fu(({ subscriber, collect }) => {
     const globalExecute = (execOpts?: TQueryExecuteOptions): void => {
-      const [request, opts] = getRequestOptions<A, T, V>(options, globalSelf);
-      execute(request, execOpts ? { ...opts, ...execOpts } : opts, globalSelf);
+      const self = collect();
+      const [request, opts] = getRequestOptions<A, T, V>(options, self);
+      execute(request, execOpts ? { ...opts, ...execOpts } : opts, self);
     };
 
     const subject = new BehaviorSubject({ ...noOp(), execute: globalExecute });
@@ -104,28 +104,28 @@ function withQuery<
     }
 
     let lastKey: null | number = null;
-    return {
-      ...combine(
-        [instance.initial, subject.value],
-        [
-          instance.subscriber.pipe(
-            tap((a) => {
-              globalSelf = a;
-              const [request, opts] = getRequestOptions(options, a);
-              if (request.key !== lastKey) {
-                lastKey = request.key;
-                execute(request, opts, a);
-              }
-            })
-          ),
-          subject
-        ],
-        mapper
-      ),
-      teardown() {
-        unsubscribe();
-      }
-    };
+    return combine(
+      {
+        collect,
+        subscriber: subscriber.pipe(
+          tap((a) => {
+            const [request, opts] = getRequestOptions(options, a);
+            if (request.key !== lastKey) {
+              lastKey = request.key;
+              execute(request, opts, a);
+            }
+          })
+        )
+      },
+      {
+        initial: subject.value,
+        subscriber: subject,
+        teardown() {
+          unsubscribe();
+        }
+      },
+      mapper
+    );
   });
 }
 

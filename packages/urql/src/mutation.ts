@@ -1,4 +1,4 @@
-import { fu, mapTo, combine, TFu } from 'komfu';
+import { fu, createMap, combine, TFu } from 'komfu';
 import {
   IMutationResponse,
   TMutationOptions,
@@ -9,7 +9,6 @@ import { createRequest } from 'urql';
 import { pipe as wonkaPipe, toPromise as wonkaToPromise } from 'wonka';
 import noOp from './utils/no-op';
 import getClient from './utils/get-client';
-import { tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 export default withMutation;
@@ -47,15 +46,15 @@ function withMutation<A extends object, K extends string, T = any>(
     | TMutationOptions<T>
     | ((self: A) => TMutationOptions<T>);
   const onResponse = hasKey ? c : (b as TMutationOnResponse<A, T>);
-  const mapper = mapTo<A, IMutationResponse<T>, K>(key);
+  const mapper = createMap<A, IMutationResponse<T>, K>(key);
 
-  return fu((instance) => {
-    let self: A = instance.initial;
+  return fu((parent) => {
     const subject = new BehaviorSubject({ ...noOp(), execute });
 
     function execute<V = object>(
       execOpts: IMutationExecuteOptions<V> = {}
     ): void {
+      const self = parent.collect();
       const opts = typeof options === 'function' ? options(self) : options;
       const request = createRequest(opts.query, execOpts.variables as any);
       const client = getClient(opts, self);
@@ -81,8 +80,8 @@ function withMutation<A extends object, K extends string, T = any>(
     }
 
     return combine(
-      [instance.initial, subject.value],
-      [instance.subscriber.pipe(tap((a) => (self = a))), subject],
+      parent,
+      { initial: subject.value, subscriber: subject },
       mapper
     );
   });
