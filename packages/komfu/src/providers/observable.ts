@@ -1,7 +1,7 @@
 import { extend } from '~/abstracts';
 import { TFu, TFn } from '~/types';
 import { Observable, of, concat } from 'rxjs';
-import { mapTo, isFn } from '~/utils';
+import { isFn, createMap } from '~/utils';
 
 export default withObservable;
 
@@ -24,7 +24,7 @@ function withObservable<A extends object, B, K extends string>(
   const key = hasKey ? (a as K) : null;
   const initial = (hasKey ? b : a) as B | TFn<A, B>;
   const observable = (hasKey ? c : b) as Observable<B> | TFn<A, Observable<B>>;
-  const mapper = mapTo<A, B, K>(key);
+  const mapper = createMap<A, B, K>(key);
 
   return extend((self, collect) => {
     const initialValue = isFn(initial) ? initial(self, collect) : initial;

@@ -1,7 +1,7 @@
 import { fu } from '~/abstracts';
 import { TFu, TUpdatePolicy, TFn } from '~/types';
 import { map } from 'rxjs/operators';
-import { mapTo, createMemo } from '~/utils';
+import { createMap, createMemo } from '~/utils';
 
 export default withComputed;
 
@@ -35,7 +35,7 @@ function withComputed<A extends object, B, K extends string>(
     A,
     B
   >;
-  const mapper = mapTo(key);
+  const mapper = createMap(key);
 
   return fu(({ subscriber, collect }) => {
     const memo = createMemo(policy, (self) => compute(self, collect));

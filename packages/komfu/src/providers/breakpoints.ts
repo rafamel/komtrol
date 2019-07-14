@@ -1,6 +1,6 @@
 import { stateful } from '~/abstracts';
 import { TFu } from '~/types';
-import { mapTo } from '~/utils';
+import { createMap } from '~/utils';
 import { shallowEqual as equal } from 'shallow-equal-object';
 
 export interface IBreakpoints {
@@ -54,7 +54,7 @@ function withBreakpoints<
   const key = hasKey ? (a as K) : null;
   const breakpoints = (hasKey ? b : a) as T;
   const map = hasKey ? c : (b as (active: TActiveBreakpoints<T>) => U);
-  const mapper = mapTo<A, TActiveBreakpoints<T> | U, K>(key);
+  const mapper = createMap<A, TActiveBreakpoints<T> | U, K>(key);
 
   const arr = Object.entries(breakpoints)
     .map(([name, value]): [keyof T, number] => [name, parseInt(String(value))])

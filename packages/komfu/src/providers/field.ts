@@ -1,7 +1,7 @@
 import { TFu, TFn } from '~/types';
 import { fu } from '~/abstracts';
 import { map } from 'rxjs/operators';
-import { mapTo } from '~/utils';
+import { createMap } from '~/utils';
 
 export default withField;
 
@@ -20,7 +20,7 @@ function withField<A extends object, B extends object, K extends string>(
   const hasKey = typeof a === 'string';
   const key = hasKey ? (a as K) : null;
   const initial = (hasKey ? b : a) as TFn<A, B>;
-  const mapper = mapTo(key);
+  const mapper = createMap(key);
 
   return fu(({ subscriber, collect }) => {
     const fields = initial(collect(), collect);
