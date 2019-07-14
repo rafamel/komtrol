@@ -3,24 +3,13 @@ import { TFu, TUpdatePolicy, TFn } from '~/types';
 import { tap } from 'rxjs/operators';
 import { createMemo } from '~/utils';
 
-export type TEffect<A> = TFn<A, void | (() => void)>;
-
-export default withEffect;
-
-function withEffect<A extends object>(effect: TEffect<A>): TFu<A, A>;
-function withEffect<A extends object>(
+/**
+ * Takes a `effect` callback to be run on initialization and on each update for which `policy` is or returns `true`. See also `withAction` and `withCompute`.
+ */
+export default function withEffect<A extends object>(
   policy: TUpdatePolicy<A>,
-  effect: TEffect<A>
-): TFu<A, A>;
-
-function withEffect<A extends object>(
-  a: TEffect<A> | TUpdatePolicy<A>,
-  b?: TEffect<A>
+  effect: TFn<A, void | (() => void)>
 ): TFu<A, A> {
-  const hasPolicy = b !== undefined;
-  const effect = (hasPolicy ? b : a) as TEffect<A>;
-  const policy = (hasPolicy ? a : false) as TUpdatePolicy<A>;
-
   return fu(({ subscriber, collect }) => {
     let teardown: void | (() => void);
     const memo = createMemo(policy, (self) => {

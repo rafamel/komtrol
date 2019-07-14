@@ -13,6 +13,9 @@ function withField<A extends object, B, K extends string>(
   initial: TFn<A, B>
 ): TFu<A, A & { [P in K]: B }>;
 
+/**
+ * Takes a value returning `initial` callback to be run on initialization. It's a specialized version of `withComputed`, which might be used to make it explicit values won't update on changes as they'll be set only on initialization.
+ */
 function withField<A extends object, B extends object, K extends string>(
   a: K | TFn<A, B>,
   b?: TFn<A, B>
