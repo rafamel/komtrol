@@ -1,8 +1,8 @@
-import { TFu, IFuInstanceStateful } from '~/types';
+import { TFu, TFn, IStatefulInstance } from '~/types';
 import { BehaviorSubject } from 'rxjs';
 import extend from './extend';
 import createSetter, { TSetter } from '~/utils/create-setter';
-import { isSelfFn } from '~/utils';
+import { isFn } from '~/utils';
 
 export interface IStateful<T> {
   current: T;
@@ -10,11 +10,11 @@ export interface IStateful<T> {
 }
 
 export default function stateful<A extends object, B, C extends A>(
-  initial: B | ((self: A) => B),
-  initialize: (state: IStateful<B>) => IFuInstanceStateful<A, B, C>
+  initial: B | TFn<A, B>,
+  initialize: (state: IStateful<B>) => IStatefulInstance<A, B, C>
 ): TFu<A, C> {
-  return extend((self) => {
-    const initialValue = isSelfFn(initial) ? initial(self) : initial;
+  return extend((self, collect) => {
+    const initialValue = isFn(initial) ? initial(self, collect) : initial;
     const subject = new BehaviorSubject<B>(initialValue);
 
     const stateful = {

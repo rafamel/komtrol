@@ -1,14 +1,16 @@
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { map as _map } from 'rxjs/operators';
+import { IParentInstance, IFuInstance } from '~/types';
 
-export default function combine<A extends object, B, C extends A>(
-  initials: [A, B],
-  subscribers: [Observable<A>, Observable<B>],
+export default function combine<A, B, C extends A>(
+  parent: IParentInstance<A>,
+  instance: IFuInstance<B>,
   map: (a: A, b: B) => C
-): { initial: C; subscriber: Observable<C> } {
+): IFuInstance<C> {
   return {
-    initial: map(initials[0], initials[1]),
-    subscriber: combineLatest(subscribers[0], subscribers[1]).pipe(
+    ...instance,
+    initial: map(parent.collect(), instance.initial),
+    subscriber: combineLatest(parent.subscriber, instance.subscriber).pipe(
       _map(([a, b]) => map(a, b))
     )
   };

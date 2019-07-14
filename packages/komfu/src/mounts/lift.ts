@@ -1,10 +1,15 @@
 import { fu } from '~/abstracts';
-import { TFu } from '~/types';
+import { TFu, TFn } from '~/types';
 
 export default function lift<A extends object, B extends A>(
-  fn: (self: A) => TFu<A, B>
+  provider: TFn<A, TFu<A, B>>
 ): TFu<A, B> {
-  return fu((instance) => {
-    return fn(instance.initial)(instance);
+  return fu(({ subscriber, collect }) => {
+    const initial = collect();
+    return provider(initial, collect)({
+      initial,
+      subscriber,
+      teardown: () => {}
+    });
   });
 }

@@ -1,6 +1,5 @@
 import { stateful } from '~/abstracts';
-import { TFu } from '~/types';
-import { isSelfFn } from '~/utils';
+import { TFu, TFn } from '~/types';
 
 export type TWithState<
   A extends object,
@@ -16,16 +15,9 @@ export default function withState<
   T,
   K extends string,
   SK extends string
->(
-  key: K,
-  setKey: SK,
-  initial: T | ((self: A) => T)
-): TFu<A, TWithState<A, T, K, SK>> {
-  return stateful(
-    isSelfFn(initial) ? (self) => initial(self) : initial,
-    (state) => ({
-      map: (a: A, b: T) =>
-        ({ ...a, [key]: b, [setKey]: state.set } as TWithState<A, T, K, SK>)
-    })
-  );
+>(key: K, setKey: SK, initial: T | TFn<A, T>): TFu<A, TWithState<A, T, K, SK>> {
+  return stateful(initial, (state) => ({
+    map: (a: A, b: T) =>
+      ({ ...a, [key]: b, [setKey]: state.set } as TWithState<A, T, K, SK>)
+  }));
 }

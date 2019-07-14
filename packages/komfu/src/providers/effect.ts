@@ -1,9 +1,9 @@
 import { fu } from '~/abstracts';
-import { TFu, TUpdatePolicy } from '~/types';
-import { map } from 'rxjs/operators';
-import { initializePolicy } from '~/utils';
+import { TFu, TUpdatePolicy, TFn } from '~/types';
+import { tap } from 'rxjs/operators';
+import { createMemo } from '~/utils';
 
-export type TEffect<A> = (self: A) => void | (() => void);
+export type TEffect<A> = TFn<A, void | (() => void)>;
 
 export default withEffect;
 
@@ -21,21 +21,17 @@ function withEffect<A extends object>(
   const effect = (hasPolicy ? b : a) as TEffect<A>;
   const policy = (hasPolicy ? a : false) as TUpdatePolicy<A>;
 
-  return fu((instance) => {
+  return fu(({ subscriber, collect }) => {
     let teardown: void | (() => void);
-    const enactPolicy = initializePolicy(policy, (self) => {
+    const memo = createMemo(policy, (self) => {
       if (teardown) teardown();
-      teardown = effect(self);
+      teardown = effect(self, collect);
     });
 
-    enactPolicy(instance.initial);
+    memo(collect());
     return {
-      subscriber: instance.subscriber.pipe(
-        map((a) => {
-          enactPolicy(a);
-          return a;
-        })
-      ),
+      initial: collect(),
+      subscriber: subscriber.pipe(tap(memo)),
       teardown() {
         if (teardown) {
           teardown();

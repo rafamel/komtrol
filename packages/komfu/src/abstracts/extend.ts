@@ -1,21 +1,14 @@
 import fu from './fu';
-import { TFu, IFuInstanceExtend } from '~/types';
+import { TFu, TFn, IExtendInstance } from '~/types';
 import { combine } from '~/utils';
 
 export default function extend<A extends object, B, C extends A = A & B>(
-  initialize: (self: A) => IFuInstanceExtend<A, B, C>
+  initialize: TFn<A, IExtendInstance<A, B, C>>
 ): TFu<A, C> {
-  return fu(({ initial, subscriber }) => {
-    const { map, ...instance } = initialize(initial);
+  return fu((parent) => {
+    const { map, ...instance } = initialize(parent.collect(), parent.collect);
 
     const mapper = map || ((a: A, b: B): C => ({ ...a, ...b } as any));
-    return {
-      ...instance,
-      ...combine(
-        [initial, instance.initial],
-        [subscriber, instance.subscriber],
-        mapper
-      )
-    };
+    return combine(parent, instance, mapper);
   });
 }

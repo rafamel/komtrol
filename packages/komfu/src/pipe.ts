@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { typedPipe } from 'ts-functional-pipe';
-import { TEmptyFuInstance, IFuInstance } from './types';
+import { IPureInstance } from './types';
 
-const _pipe = typedPipe<TEmptyFuInstance>();
+const _pipe = typedPipe<IPureInstance<{}>>();
 
 function pipeT<T>() {
-  return typedPipe<Required<IFuInstance<T>>>();
+  return typedPipe<IPureInstance<T>>();
 }
 
 function pipeP<T = any>() {

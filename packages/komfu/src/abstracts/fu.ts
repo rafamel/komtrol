@@ -1,28 +1,27 @@
-import { TFuInitialize, TFu, IFuInstance } from '~/types';
+import { TFu, IFuInstance, IParentInstance } from '~/types';
+import { tap } from 'rxjs/operators';
+import { createCache } from '~/utils';
 
 export default function fu<A extends object, B extends object>(
-  initialize: TFuInitialize<A, B>
+  initialize: (instance: IParentInstance<A>) => IFuInstance<B>
 ): TFu<A, B> {
-  return (instance) => {
-    const current = initialize(instance);
+  return (parent) => {
+    const cache = createCache(parent.initial);
+    const subscriber = parent.subscriber.pipe(tap(cache.set));
+    const instance = initialize({
+      subscriber,
+      collect: cache.collect
+    });
 
-    if (!current.initial) {
-      current.initial = instance.initial as any;
-    }
-    if (!current.subscriber) {
-      current.subscriber = instance.subscriber as any;
-    }
-
-    if (!current.teardown) {
-      current.teardown = instance.teardown.bind(instance);
-    } else {
-      const teardown = current.teardown.bind(current);
-      current.teardown = () => {
-        instance.teardown();
-        teardown();
-      };
-    }
-
-    return current as Required<IFuInstance<B>>;
+    const teardown = instance.teardown;
+    return {
+      ...instance,
+      teardown: teardown
+        ? () => {
+            parent.teardown();
+            teardown();
+          }
+        : parent.teardown
+    };
   };
 }

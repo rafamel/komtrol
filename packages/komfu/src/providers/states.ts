@@ -1,6 +1,5 @@
 import { stateful } from '~/abstracts';
-import { TFu } from '~/types';
-import { isSelfFn } from '~/utils';
+import { TFu, TFn } from '~/types';
 
 export interface IStates<T extends object> {
   state: T;
@@ -8,25 +7,22 @@ export interface IStates<T extends object> {
 }
 
 export default function withStates<A extends object, T extends object>(
-  initial: T | ((self: A) => T)
+  initial: T | TFn<A, T>
 ): TFu<A, A & IStates<Readonly<T>>> {
-  return stateful(
-    isSelfFn(initial) ? (self) => initial(self) : initial,
-    (state) => {
-      function setState(update: T | ((value: T) => T)): void {
-        const current = state.current;
-        const value = updateIsFn(update) ? update(current) : update;
-        state.set({ ...current, ...value });
-      }
-
-      return {
-        map: (a: A, b: T) => ({ ...a, state: b, setState })
-      };
+  return stateful(initial, (state) => {
+    function setState(update: T | ((value: T) => T)): void {
+      const current = state.current;
+      const value = isUpdateFn(update) ? update(current) : update;
+      state.set({ ...current, ...value });
     }
-  );
+
+    return {
+      map: (a: A, b: T) => ({ ...a, state: b, setState })
+    };
+  });
 }
 
-export function updateIsFn<T>(
+export function isUpdateFn<T>(
   update: Partial<T> | ((value: T) => Partial<T>)
 ): update is (value: T) => Partial<T> {
   return typeof update === 'function';

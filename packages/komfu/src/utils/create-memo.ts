@@ -1,6 +1,6 @@
 import { TUpdatePolicy } from '~/types';
 
-export default function initializePolicy<A, B>(
+export default function createMemo<A, B>(
   policy: TUpdatePolicy<A>,
   fn: (self: A) => B
 ): (next: A) => B {
@@ -16,7 +16,7 @@ export default function initializePolicy<A, B>(
         return value;
       };
     } else {
-      return fn;
+      return (next) => fn(next);
     }
   }
 
