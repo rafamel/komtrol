@@ -1,67 +1,73 @@
-import { TFu, TUpdatePolicy, fu, createMap, createMemo, TFn } from 'komfu';
+import {
+  key,
+  memo,
+  pipe,
+  TFu,
+  TFn,
+  TUpdatePolicy,
+  stateful,
+  createCache
+} from 'komfu';
 import { toStream } from 'mobx-utils';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 export default withMobx;
 
-function withMobx<A extends object, B extends object>(
-  compute: TFn<A, B>
-): TFu<A, A & B>;
-function withMobx<A extends object, B extends object>(
-  policy: TUpdatePolicy<A>,
-  compute: TFn<A, B>
-): TFu<A, A & B>;
-function withMobx<A extends object, B, K extends string>(
+/* Declarations */
+function withMobx<A extends object, B extends object | void, T extends object>(
+  compute: TFn<A, B, T>
+): TFu<A, B, T>;
+function withMobx<A extends object, B extends object | void, T extends object>(
+  policy: TUpdatePolicy<A, B>,
+  compute: TFn<A, B, T>
+): TFu<A, B, T>;
+function withMobx<
+  A extends object,
+  B extends object | void,
+  T,
+  K extends string
+>(key: K, compute: TFn<A, B, T>): TFu<A, B, { [P in K]: T }>;
+function withMobx<
+  A extends object,
+  B extends object | void,
+  T,
+  K extends string
+>(
   key: K,
-  compute: TFn<A, B>
-): TFu<A, A & { [P in K]: B }>;
-function withMobx<A extends object, B, K extends string>(
-  key: K,
-  policy: TUpdatePolicy<A>,
-  compute: TFn<A, B>
-): TFu<A, A & { [P in K]: B }>;
+  policy: TUpdatePolicy<A, B>,
+  compute: TFn<A, B, T>
+): TFu<A, B, { [P in K]: T }>;
 
-function withMobx<A extends object, B, K extends string>(
-  a: TFn<A, B> | TUpdatePolicy<A> | K,
-  b?: TFn<A, B> | TUpdatePolicy<A>,
-  c?: TFn<A, B>
-): TFu<A, A & (B | { [P in K]: B })> {
-  const hasKey = typeof a === 'string';
-  const hasPolicy = hasKey ? c !== undefined : b !== undefined;
-  const key = hasKey ? (a as K) : null;
-  const policy = (hasPolicy ? (hasKey ? b : a) : false) as TUpdatePolicy<A>;
-  const compute = (hasKey ? (hasPolicy ? c : b) : hasPolicy ? b : a) as TFn<
-    A,
-    B
-  >;
-  const mapper = createMap(key);
+/* Implementation */
+function withMobx(a: any, b?: any, c?: any): any {
+  if (typeof a === 'string') {
+    return c === undefined
+      ? pipe.f(trunk(b), key(a), memo(false))
+      : pipe.f(trunk(c), key(a), memo(b));
+  } else {
+    return b === undefined
+      ? pipe.f(trunk(a), memo(false))
+      : pipe.f(trunk(b), memo(a));
+  }
+}
 
-  return fu(({ subscriber, collect }) => {
-    const stream = toStream<[number, B]>(() => {
-      return [Date.now(), compute(collect(), collect)];
-    });
-    const memo = createMemo<A, [number, B]>(policy, (self) => {
-      return [Date.now(), compute(self, collect)];
+export function trunk<A extends object, B extends object | void, T>(
+  compute: TFn<A, B, T>
+): TFu<A, B, T> {
+  return stateful((collect, emit) => {
+    const cache = createCache(compute(collect(), collect));
+    const stream = toStream(() => compute(collect(), collect));
+
+    const subscription = stream.subscribe((value) => {
+      cache.set(value);
+      emit();
     });
 
-    const subject = new BehaviorSubject(memo(collect()));
-    const subscription = stream.subscribe((value) => subject.next(value));
     return {
-      initial: mapper(collect(), subject.value[1]),
-      subscriber: policy
-        ? combineLatest(
-            subscriber.pipe(map((a): [A, [number, B]] => [a, memo(a)])),
-            subject
-          ).pipe(
-            map(([[a, bSync], bMobx]) =>
-              mapper(a, bMobx[0] > bSync[0] ? bMobx[1] : bSync[1])
-            )
-          )
-        : combineLatest(subscriber, subject).pipe(
-            map(([a, b]) => mapper(a, b[1]))
-          ),
-      teardown: subscription.unsubscribe
+      execute: (self, signal) => {
+        if (signal === 'next') cache.set(compute(self, collect));
+        return cache.collect();
+      },
+      teardown: () => subscription.unsubscribe()
     };
   });
 }
