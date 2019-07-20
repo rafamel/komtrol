@@ -15,16 +15,12 @@ export interface IResponse<T> {
 
 /* Query */
 export type TQueryOptions<T, V> = IRequestOptions<T> &
-  Pick<UseQueryArgs<V>, 'variables' | 'requestPolicy'>;
+  Pick<UseQueryArgs<V>, 'variables' | 'requestPolicy' | 'pause'>;
 export interface IQueryResponse<T> extends IResponse<T> {
   execute: TQueryExecute;
 }
 export type TQueryExecute = (options?: TQueryExecuteOptions) => void;
 export type TQueryExecuteOptions = Pick<UseQueryArgs<any>, 'requestPolicy'>;
-export type TQueryOnResponse<A, B> = (
-  update: IQueryResponse<B>,
-  context: { self: A; current: IQueryResponse<B> }
-) => boolean | Promise<boolean>;
 
 /* Mutation */
 export type TMutationOptions<T> = IRequestOptions<T>;
@@ -37,7 +33,3 @@ export type TMutationExecute = <V = object>(
 export interface IMutationExecuteOptions<V> {
   variables?: V;
 }
-export type TMutationOnResponse<A, B> = (
-  update: IMutationResponse<B>,
-  context: { self: A; current: IMutationResponse<B> }
-) => boolean | Promise<boolean>;

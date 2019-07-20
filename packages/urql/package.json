@@ -8,16 +8,18 @@
     "component",
     "functional",
     "composition",
+    "compose",
+    "recompose",
     "pipe",
     "pipeline",
     "rxjs",
     "reactive",
     "react",
-    "recompose",
     "compose",
     "state",
     "lifecycle",
-    "urql"
+    "urql",
+    "graphql"
   ],
   "publishConfig": {
     "access": "public"

@@ -1,88 +1,77 @@
-import { fu, createMap, combine, TFu } from 'komfu';
 import {
-  IMutationResponse,
+  pipe,
+  key,
+  TFu,
+  TFn,
+  TPolicy,
+  block,
+  stateful,
+  createCache,
+  TUnion
+} from 'komfu';
+import {
   TMutationOptions,
-  TMutationOnResponse,
+  IMutationResponse,
   IMutationExecuteOptions
 } from './types';
+import noOp from './utils/no-op';
 import { createRequest } from 'urql';
 import { pipe as wonkaPipe, toPromise as wonkaToPromise } from 'wonka';
-import noOp from './utils/no-op';
 import getClient from './utils/get-client';
-import { BehaviorSubject } from 'rxjs';
 
 export default withMutation;
 
-function withMutation<A extends object, T = any>(
-  options: TMutationOptions<T> | ((self: A) => TMutationOptions<T>),
-  onResponse?: TMutationOnResponse<A, T>
-): TFu<A, A & IMutationResponse<T>>;
-function withMutation<A extends object>(
-  options: TMutationOptions<any> | ((self: A) => TMutationOptions<any>),
-  onResponse?: TMutationOnResponse<A, any>
-): TFu<A, A & IMutationResponse<any>>;
-function withMutation<A extends object, K extends string, T = any>(
+/* Declarations */
+function withMutation<A extends object, B extends object | void, T = any>(
+  options: TMutationOptions<T> | TFn<A, B, TMutationOptions<T>>,
+  after?: TPolicy<TUnion<A, B>, IMutationResponse<T>>
+): TFu<A, B, IMutationResponse<T>>;
+function withMutation<
+  A extends object,
+  B extends object | void,
+  K extends string,
+  T = any
+>(
   key: K,
-  options: TMutationOptions<T> | ((self: A) => TMutationOptions<T>),
-  onResponse?: TMutationOnResponse<A, T>
-): TFu<A, A & { [P in K]: IMutationResponse<T> }>;
-function withMutation<A extends object, K extends string>(
-  key: K,
-  options: TMutationOptions<any> | ((self: A) => TMutationOptions<any>),
-  onResponse?: TMutationOnResponse<A, any>
-): TFu<A, A & { [P in K]: IMutationResponse<any> }>;
+  options: TMutationOptions<T> | TFn<A, B, TMutationOptions<T>>,
+  after?: TPolicy<TUnion<A, B>, IMutationResponse<T>>
+): TFu<A, B, { [P in K]: IMutationResponse<T> }>;
 
-function withMutation<A extends object, K extends string, T = any>(
-  a: TMutationOptions<T> | ((self: A) => TMutationOptions<T>) | K,
-  b?:
-    | TMutationOnResponse<A, T>
-    | TMutationOptions<T>
-    | ((self: A) => TMutationOptions<T>),
-  c?: TMutationOnResponse<A, T>
-): TFu<A, A & (IMutationResponse<T> | { [P in K]: IMutationResponse<T> })> {
-  const hasKey = typeof a === 'string';
-  const key = hasKey ? (a as K) : null;
-  const options = (hasKey ? b : a) as
-    | TMutationOptions<T>
-    | ((self: A) => TMutationOptions<T>);
-  const onResponse = hasKey ? c : (b as TMutationOnResponse<A, T>);
-  const mapper = createMap<A, IMutationResponse<T>, K>(key);
+/* Implementation */
+function withMutation(a: any, b?: any, c?: any): any {
+  if (typeof a === 'string') {
+    return c === undefined
+      ? pipe.f(trunk(b), key(a))
+      : pipe.f(trunk(b), block(c), key(a));
+  } else {
+    return b === undefined ? trunk(a) : pipe.f(trunk(a), block(b));
+  }
+}
 
-  return fu((parent) => {
-    const subject = new BehaviorSubject({ ...noOp(), execute });
+export function trunk<A extends object, B extends object | void, T = any>(
+  options: TMutationOptions<T> | TFn<A, B, TMutationOptions<T>>
+): TFu<A, B, IMutationResponse<T>> {
+  return stateful((collect, emit) => {
+    const cache = createCache({ ...noOp(), execute });
 
     function execute<V = object>(
       execOpts: IMutationExecuteOptions<V> = {}
     ): void {
-      const self = parent.collect();
-      const opts = typeof options === 'function' ? options(self) : options;
+      const self = collect();
+      const opts =
+        typeof options === 'function' ? options(self, collect) : options;
       const request = createRequest(opts.query, execOpts.variables as any);
       const client = getClient(opts, self);
       wonkaPipe(client.executeMutation(request), wonkaToPromise).then(
-        async ({ data, error }) => {
-          const update: IMutationResponse<T> = {
-            fetching: false,
-            execute,
-            data,
-            error
-          };
-          if (
-            !onResponse ||
-            (await onResponse(update, {
-              self,
-              current: subject.value
-            }))
-          ) {
-            subject.next(update);
-          }
+        ({ data, error }) => {
+          cache.set({ fetching: false, execute, data, error });
+          emit();
         }
       );
     }
 
-    return combine(
-      parent,
-      { initial: subject.value, subscriber: subject },
-      mapper
-    );
+    return {
+      execute: () => cache.collect()
+    };
   });
 }

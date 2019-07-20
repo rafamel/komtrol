@@ -1,138 +1,154 @@
-import { fu, createMap, combine, TFu } from 'komfu';
 import {
-  IQueryResponse,
-  TQueryOptions,
-  TQueryOnResponse,
-  TQueryExecuteOptions
-} from './types';
+  pipe,
+  key,
+  TFu,
+  TFn,
+  TPolicy,
+  block,
+  stateful,
+  createCache,
+  TCollect,
+  TUnion
+} from 'komfu';
+import { TQueryOptions, IQueryResponse, TQueryExecuteOptions } from './types';
+import noOp from './utils/no-op';
 import { createRequest, GraphQLRequest } from 'urql';
 import { pipe as wonkaPipe, subscribe as wonkaSubscribe } from 'wonka';
-import noOp from './utils/no-op';
 import getClient from './utils/get-client';
-import { tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
 
 export default withQuery;
 
-function withQuery<A extends object, T = any, V extends object = object>(
-  options: TQueryOptions<T, V> | ((self: A) => TQueryOptions<T, V>),
-  onResponse?: TQueryOnResponse<A, T>
-): TFu<A, A & IQueryResponse<T>>;
-function withQuery<A extends object, V extends object = object>(
-  options: TQueryOptions<any, V> | ((self: A) => TQueryOptions<any, V>),
-  onResponse?: TQueryOnResponse<A, any>
-): TFu<A, A & IQueryResponse<any>>;
+/* Declarations */
 function withQuery<
   A extends object,
+  B extends object | void,
+  V extends object = object,
+  T = any
+>(
+  options: TQueryOptions<T, V> | TFn<A, B, TQueryOptions<T, V>>,
+  after?: TPolicy<TUnion<A, B>, IQueryResponse<T>>
+): TFu<A, B, IQueryResponse<T>>;
+function withQuery<
+  A extends object,
+  B extends object | void,
   K extends string,
-  T = any,
-  V extends object = object
+  V extends object = object,
+  T = any
 >(
   key: K,
-  options: TQueryOptions<T, V> | ((self: A) => TQueryOptions<T, V>),
-  onResponse?: TQueryOnResponse<A, T>
-): TFu<A, A & { [P in K]: IQueryResponse<T> }>;
-function withQuery<
+  options: TQueryOptions<T, V> | TFn<A, B, TQueryOptions<T, V>>,
+  after?: TPolicy<TUnion<A, B>, IQueryResponse<T>>
+): TFu<A, B, { [P in K]: IQueryResponse<T> }>;
+
+/* Implementation */
+function withQuery(a: any, b: any, c?: any): any {
+  if (typeof a === 'string') {
+    return c === undefined
+      ? pipe.f(trunk(b), key(a))
+      : pipe.f(trunk(b), block(c), key(a));
+  } else {
+    return b === undefined ? trunk(a) : pipe.f(trunk(a), block(b));
+  }
+}
+
+export function trunk<
   A extends object,
-  K extends string,
-  V extends object = object
+  B extends object | void,
+  V extends object = object,
+  T = any
 >(
-  key: any,
-  options: TQueryOptions<any, V> | ((self: A) => TQueryOptions<any, V>),
-  onResponse?: TQueryOnResponse<A, any>
-): TFu<A, A & { [P in K]: IQueryResponse<any> }>;
+  options: TQueryOptions<T, V> | TFn<A, B, TQueryOptions<T, V>>
+): TFu<A, B, IQueryResponse<T>> {
+  return stateful((collect, emit) => {
+    let paused = false;
+    let lastKey: null | number = null;
+    let unsubscribe: void | (() => void);
+    const cache = createCache({ ...noOp(), execute: globalExecute });
 
-function withQuery<
-  A extends object,
-  K extends string,
-  T = any,
-  V extends object = object
->(
-  a: TQueryOptions<T, V> | ((self: A) => TQueryOptions<T, V>) | K,
-  b?:
-    | TQueryOnResponse<A, T>
-    | TQueryOptions<T, V>
-    | ((self: A) => TQueryOptions<T, V>),
-  c?: TQueryOnResponse<A, T>
-): TFu<A, A & (IQueryResponse<T> | { [P in K]: IQueryResponse<T> })> {
-  const hasKey = typeof a === 'string';
-  const key = hasKey ? (a as K) : null;
-  const options = (hasKey ? b : a) as (
-    | TQueryOptions<T, V>
-    | ((self: A) => TQueryOptions<T, V>));
-  const onResponse = hasKey ? c : (b as TQueryOnResponse<A, T>);
-  const mapper = createMap<A, IQueryResponse<T>, K>(key);
+    function globalExecute(execOpts?: TQueryExecuteOptions): void {
+      const opts = getOptions(options, collect(), collect);
+      execute(execOpts ? { ...opts, ...execOpts } : opts, true, collect());
+    }
 
-  return fu(({ subscriber, collect }) => {
-    const globalExecute = (execOpts?: TQueryExecuteOptions): void => {
-      const self = collect();
-      const [request, opts] = getRequestOptions<A, T, V>(options, self);
-      execute(request, execOpts ? { ...opts, ...execOpts } : opts, self);
-    };
-
-    const subject = new BehaviorSubject({ ...noOp(), execute: globalExecute });
-
-    let unsubscribe = (): void => {};
     function execute(
-      request: GraphQLRequest,
       options: TQueryOptions<any, any>,
-      self: A
+      force: boolean,
+      self: TUnion<A, B>
     ): void {
-      unsubscribe();
+      const current = cache.collect();
+
+      if (options.pause) {
+        if (paused) return;
+
+        paused = true;
+        if (unsubscribe) {
+          unsubscribe();
+          unsubscribe = undefined;
+        }
+        if (current.fetching) {
+          cache.set({ ...current, fetching: false });
+          emit();
+        }
+        return;
+      }
+
+      paused = false;
+      const request = getRequest(options);
+      if (!force && !paused && request.key === lastKey) return;
+
+      lastKey = request.key;
+      if (unsubscribe) unsubscribe();
+      if (!current.fetching) {
+        cache.set({ ...current, fetching: true });
+        emit();
+      }
+
       const client = getClient(options, self);
       const subscription = wonkaPipe(
-        client.executeQuery(request, { requestPolicy: options.requestPolicy }),
+        client.executeQuery(request, {
+          requestPolicy: options.requestPolicy
+        }),
         wonkaSubscribe(async ({ data, error }) => {
-          const update: IQueryResponse<T> = {
+          cache.set({
             execute: globalExecute,
             fetching: false,
             data,
             error
-          };
-          if (
-            !onResponse ||
-            (await onResponse(update, {
-              self,
-              current: subject.value
-            }))
-          ) {
-            subject.next(update);
-          }
+          });
+          emit();
         })
       );
       unsubscribe = subscription[0];
     }
 
-    let lastKey: null | number = null;
-    return combine(
-      {
-        collect,
-        subscriber: subscriber.pipe(
-          tap((a) => {
-            const [request, opts] = getRequestOptions(options, a);
-            if (request.key !== lastKey) {
-              lastKey = request.key;
-              execute(request, opts, a);
-            }
-          })
-        )
-      },
-      {
-        initial: subject.value,
-        subscriber: subject,
-        teardown() {
-          unsubscribe();
+    return {
+      execute: (self, signal) => {
+        if (signal === 'initial' || signal === 'next') {
+          const opts = getOptions(options, self, collect);
+          execute(opts, false, self);
         }
+        return cache.collect();
       },
-      mapper
-    );
+      teardown() {
+        if (unsubscribe) unsubscribe();
+      }
+    };
   });
 }
 
-function getRequestOptions<A, T, V extends object>(
-  options: TQueryOptions<T, V> | ((self: A) => TQueryOptions<T, V>),
-  self: A
-): [GraphQLRequest, TQueryOptions<any, any>] {
-  const opts = typeof options === 'function' ? options(self) : options;
-  return [createRequest(opts.query, opts.variables), opts];
+function getOptions<
+  A extends object,
+  B extends object | void,
+  T,
+  V extends object
+>(
+  options: TQueryOptions<T, V> | TFn<A, B, TQueryOptions<T, V>>,
+  self: TUnion<A, B>,
+  collect: TCollect<TUnion<A, B>>
+): TQueryOptions<T, V> {
+  return typeof options === 'function' ? options(self, collect) : options;
+}
+
+function getRequest(options: TQueryOptions<any, any>): GraphQLRequest {
+  return createRequest(options.query, options.variables);
 }
