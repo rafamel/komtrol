@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { TIntermediate, TUnion } from '~/types';
 import create from '~/create';
 import pipe from '~/pipe';
@@ -6,6 +6,7 @@ import { shallowEqual as equal } from 'shallow-equal-object';
 import { useContext } from './context';
 import { BehaviorSubject } from 'rxjs';
 import { stateful } from '~/abstracts';
+import useForceUpdate from 'use-force-update';
 
 // TODO: make props/context subscription optional;
 // we'll need a boolean "context" argument to determine
@@ -36,11 +37,16 @@ function useKomfu<
   pipeline: (intermediate: TIntermediate<{}, T>) => TIntermediate<A, B>,
   props: P
 ): TUnion<A, B> {
+  const lock = useRef(true);
+  lock.current = true;
+
+  const forceUpdate = useForceUpdate();
   const context = useContext();
   const subject = useMemo(
     () => new BehaviorSubject(props ? { context, props } : { context }),
     []
   );
+
   const instance = useMemo(() => {
     return create(
       pipe(
@@ -55,12 +61,13 @@ function useKomfu<
       )
     );
   }, [pipeline, subject]);
-  const [state, setState] = useState(instance.initial);
 
+  const self = useRef(instance.initial);
   useEffect(() => {
     let mounted = true;
     const subscription = instance.subscriber.subscribe((value) => {
-      if (mounted) setState(value);
+      self.current = value;
+      if (!lock.current && mounted) forceUpdate();
     });
     return () => {
       mounted = false;
@@ -69,13 +76,12 @@ function useKomfu<
     };
   }, [instance]);
 
-  useEffect(() => {
-    if (props && !equal(subject.value.props, props)) {
-      subject.next({ context, props });
-    } else if (context !== subject.value.context) {
-      subject.next(props ? { context, props } : { context });
-    }
-  }, [context, props, subject]);
+  if (props && !equal(subject.value.props, props)) {
+    subject.next({ context, props });
+  } else if (context !== subject.value.context) {
+    subject.next(props ? { context, props } : { context });
+  }
 
-  return state;
+  lock.current = false;
+  return self.current;
 }
