@@ -1,19 +1,40 @@
+import { TFu, TFn, TUpdatePolicy } from '~/types';
 import { fu } from '~/abstracts';
-import { TFu, TFn } from '~/types';
+import pipe from '~/pipe';
+import { memo } from '~/transforms';
 
-/**
- * Takes a callback to be run on initialization, optionally returning a teardown function. It's a specialized version of `withEffect`, which might be used to make it explicit its callback is only intended to be run once.
- */
-export default function withAction<A extends object>(
-  action: TFn<A, void | (() => void)>
-): TFu<A, A> {
-  return fu(({ subscriber, collect }) => {
-    const teardown = action(collect(), collect);
+export default withAction;
 
+/* Declarations */
+function withAction<A extends object, B extends object | void>(
+  effect: TFn<A, B, void | (() => void)>
+): TFu<A, B, void>;
+function withAction<A extends object, B extends object | void>(
+  policy: TUpdatePolicy<A, B>,
+  effect: TFn<A, B, void | (() => void)>
+): TFu<A, B, void>;
+
+/* Implementation */
+function withAction(a: any, b?: any): any {
+  return b === undefined
+    ? pipe.f(trunk(a), memo(false))
+    : pipe.f(trunk(b), memo(a));
+}
+
+export function trunk<A extends object, B extends object | void>(
+  effect: TFn<A, B, void | (() => void)>
+): TFu<A, B, void> {
+  return fu((collect) => {
+    let teardown: void | (() => void);
     return {
-      initial: collect(),
-      subscriber: subscriber,
-      teardown: teardown || (() => {})
+      execute: () => {
+        if (teardown) teardown();
+        teardown = effect(collect(), collect);
+      },
+      teardown() {
+        if (teardown) teardown();
+        teardown = undefined;
+      }
     };
   });
 }

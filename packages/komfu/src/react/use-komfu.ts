@@ -1,38 +1,60 @@
 import { useState, useEffect, useMemo } from 'react';
-import { extend } from '~/abstracts';
-import { TFu } from '~/types';
+import { TIntermediate, TUnion } from '~/types';
 import create from '~/create';
 import pipe from '~/pipe';
-import { shallowEqualProps as equal } from 'shallow-equal-props';
+import { shallowEqual as equal } from 'shallow-equal-object';
 import { useContext } from './context';
 import { BehaviorSubject } from 'rxjs';
+import { stateful } from '~/abstracts';
 
+// TODO: make props/context subscription optional;
+// we'll need a boolean "context" argument to determine
+// whether props or context need to be updated, otherwise initialize
+// (create) w/ empty object
 export default useKomfu;
 
-function useKomfu<B extends object>(provider: TFu<any, B>): B;
-function useKomfu<A extends object, B extends A, P>(
-  provider: TFu<A, B>,
+function useKomfu<A extends object, B extends object | void>(
+  pipeline: (intermediate: TIntermediate<{}, void>) => TIntermediate<A, B>,
+  props?: void
+): TUnion<A, B>;
+function useKomfu<
+  P,
+  T extends { props: P },
+  A extends object,
+  B extends object | void
+>(
+  pipeline: (intermediate: TIntermediate<{}, T>) => TIntermediate<A, B>,
   props: P
-): B;
+): TUnion<A, B>;
 
-function useKomfu(provider: TFu<any, any>, props?: any): any {
+function useKomfu<
+  P,
+  T extends { props: P },
+  A extends object,
+  B extends object | void
+>(
+  pipeline: (intermediate: TIntermediate<{}, T>) => TIntermediate<A, B>,
+  props: P
+): TUnion<A, B> {
   const context = useContext();
   const subject = useMemo(
     () => new BehaviorSubject(props ? { context, props } : { context }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
   const instance = useMemo(() => {
     return create(
       pipe(
-        extend(() => ({
-          initial: subject.value,
-          subscriber: subject
-        })),
-        provider
+        stateful((collect, emit) => {
+          const subscription = subject.subscribe(emit);
+          return {
+            execute: () => subject.value as any,
+            teardown: () => subscription.unsubscribe()
+          };
+        }),
+        pipeline
       )
     );
-  }, [provider, subject]);
+  }, [pipeline, subject]);
   const [state, setState] = useState(instance.initial);
 
   useEffect(() => {
@@ -43,16 +65,17 @@ function useKomfu(provider: TFu<any, any>, props?: any): any {
     return () => {
       mounted = false;
       subscription.unsubscribe();
+      instance.teardown();
     };
   }, [instance]);
 
   useEffect(() => {
-    if (props && !equal(state.props, props)) {
+    if (props && !equal(subject.value.props, props)) {
       subject.next({ context, props });
-    } else if (context !== state.context) {
+    } else if (context !== subject.value.context) {
       subject.next(props ? { context, props } : { context });
     }
-  }, [context, props, subject]); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context, props, subject]);
 
   return state;
 }

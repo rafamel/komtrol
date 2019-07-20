@@ -1,36 +1,54 @@
-import { TFu, TFn } from '~/types';
+import { TFu, TFn, TUpdatePolicy } from '~/types';
 import { fu } from '~/abstracts';
-import { map } from 'rxjs/operators';
-import { createMap } from '~/utils';
+import pipe from '~/pipe';
+import { key, memo } from '~/transforms';
 
 export default withField;
 
-function withField<A extends object, B extends object>(
-  initial: TFn<A, B>
-): TFu<A, A & B>;
-function withField<A extends object, B, K extends string>(
+/* Declarations */
+function withField<A extends object, B extends object | void, T extends object>(
+  compute: TFn<A, B, T>
+): TFu<A, B, T>;
+function withField<A extends object, B extends object | void, T extends object>(
+  policy: TUpdatePolicy<A, B>,
+  compute: TFn<A, B, T>
+): TFu<A, B, T>;
+function withField<
+  A extends object,
+  B extends object | void,
+  T,
+  K extends string
+>(key: K, compute: TFn<A, B, T>): TFu<A, B, { [P in K]: T }>;
+function withField<
+  A extends object,
+  B extends object | void,
+  T,
+  K extends string
+>(
   key: K,
-  initial: TFn<A, B>
-): TFu<A, A & { [P in K]: B }>;
+  policy: TUpdatePolicy<A, B>,
+  compute: TFn<A, B, T>
+): TFu<A, B, { [P in K]: T }>;
 
-/**
- * Takes a value returning `initial` callback to be run on initialization. It's a specialized version of `withComputed`, which might be used to make it explicit values won't update on changes as they'll be set only on initialization.
- */
-function withField<A extends object, B extends object, K extends string>(
-  a: K | TFn<A, B>,
-  b?: TFn<A, B>
-): TFu<A, A & (B | ({ [P in K]: B }))> {
-  const hasKey = typeof a === 'string';
-  const key = hasKey ? (a as K) : null;
-  const initial = (hasKey ? b : a) as TFn<A, B>;
-  const mapper = createMap(key);
+/* Implementation */
+function withField(a: any, b?: any, c?: any): any {
+  if (typeof a === 'string') {
+    return c === undefined
+      ? pipe.f(trunk(b), key(a), memo(false))
+      : pipe.f(trunk(c), key(a), memo(b));
+  } else {
+    return b === undefined
+      ? pipe.f(trunk(a), memo(false))
+      : pipe.f(trunk(b), memo(a));
+  }
+}
 
-  return fu(({ subscriber, collect }) => {
-    const fields = initial(collect(), collect);
-
+export function trunk<A extends object, B extends object | void, T>(
+  compute: TFn<A, B, T>
+): TFu<A, B, T> {
+  return fu((collect) => {
     return {
-      initial: mapper(collect(), fields),
-      subscriber: subscriber.pipe(map((a) => mapper(a, fields)))
+      execute: () => compute(collect(), collect)
     };
   });
 }

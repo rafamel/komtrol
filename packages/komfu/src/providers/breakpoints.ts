@@ -1,6 +1,8 @@
-import { stateful } from '~/abstracts';
 import { TFu } from '~/types';
-import { createMap } from '~/utils';
+import { stateful } from '~/abstracts';
+import pipe from '~/pipe';
+import { key, map } from '~/transforms';
+import { createCache } from '~/utils';
 import { shallowEqual as equal } from 'shallow-equal-object';
 
 export interface IBreakpoints {
@@ -13,56 +15,48 @@ export type TActiveBreakpoints<T extends IBreakpoints> = {
 
 export default withBreakpoints;
 
-function withBreakpoints<A extends object, T extends IBreakpoints>(
-  breakpoints: T
-): TFu<A, A & TActiveBreakpoints<T>>;
+/* Declarations */
 function withBreakpoints<
   A extends object,
+  B extends object | void,
   T extends IBreakpoints,
-  U extends object
->(breakpoints: T, map: (active: TActiveBreakpoints<T>) => U): TFu<A, A & U>;
+  U extends object = TActiveBreakpoints<T>
+>(breakpoints: T, map?: (active: TActiveBreakpoints<T>) => U): TFu<A, B, U>;
 function withBreakpoints<
   A extends object,
+  B extends object | void,
   T extends IBreakpoints,
-  K extends string
->(key: K, breakpoints: T): TFu<A, A & { [P in K]: TActiveBreakpoints<T> }>;
-function withBreakpoints<
-  A extends object,
-  T extends IBreakpoints,
-  U,
-  K extends string
+  K extends string,
+  U = TActiveBreakpoints<T>
 >(
   key: K,
   breakpoints: T,
-  map: (active: TActiveBreakpoints<T>) => U
-): TFu<A, A & { [P in K]: U }>;
+  map?: (active: TActiveBreakpoints<T>) => U
+): TFu<A, B, { [P in K]: U }>;
 
-function withBreakpoints<
+/* Implementation */
+function withBreakpoints(a: any, b?: any, c?: any): any {
+  if (typeof a === 'string') {
+    return c === undefined
+      ? pipe.f(trunk(b), key(a))
+      : pipe.f(trunk(b), map(c), key(a));
+  } else {
+    return b === undefined ? trunk(a) : pipe.f(trunk(a), map(b));
+  }
+}
+
+export function trunk<
   A extends object,
-  T extends IBreakpoints,
-  U,
-  K extends string
->(
-  a: K | T,
-  b?: T | ((active: TActiveBreakpoints<T>) => U),
-  c?: (active: TActiveBreakpoints<T>) => U
-): TFu<
-  A,
-  A & (TActiveBreakpoints<T> | U | { [P in K]: TActiveBreakpoints<T> | U })
-> {
-  const hasKey = typeof a === 'string';
-  const key = hasKey ? (a as K) : null;
-  const breakpoints = (hasKey ? b : a) as T;
-  const map = hasKey ? c : (b as (active: TActiveBreakpoints<T>) => U);
-  const mapper = createMap<A, TActiveBreakpoints<T> | U, K>(key);
-
+  B extends object | void,
+  T extends IBreakpoints
+>(breakpoints: T): TFu<A, B, TActiveBreakpoints<T>> {
   const arr = Object.entries(breakpoints)
     .map(([name, value]): [keyof T, number] => [name, parseInt(String(value))])
     .sort((a, b) => a[1] - b[1]);
 
   // @ts-ignore
   const w: any = typeof window !== 'undefined' && window;
-  if (!w) throw Error(`withBreakpoint must be run in the browser`);
+  if (!w) throw Error(`withBreakpoints must be run in the browser`);
 
   function calculate(): TActiveBreakpoints<T> {
     const width = w.innerWidth;
@@ -73,30 +67,25 @@ function withBreakpoints<
     return active as TActiveBreakpoints<T>;
   }
 
-  const get: () => TActiveBreakpoints<T> | U = map
-    ? () => map(calculate())
-    : calculate;
-
-  return stateful(get(), (state) => {
+  return stateful((collect, emit) => {
+    const cache = createCache(calculate());
     let timeout: NodeJS.Timer | null = null;
+
     const listener = (): void => {
       if (timeout) clearTimeout(timeout);
       timeout = setTimeout(() => {
-        const value = get();
-        if (typeof value === 'object' && value !== null) {
-          if (!equal(value, state.current)) state.set(value);
-        } else {
-          if (value !== state.current) state.set(value);
+        const value = calculate();
+        if (!equal(value, cache.collect())) {
+          cache.set(value);
+          emit();
         }
       }, 150);
     };
 
     w.addEventListener('resize', listener);
     return {
-      map: mapper,
-      teardown() {
-        return w.removeEventListener('resize', calculate);
-      }
+      execute: () => cache.collect(),
+      teardown: () => w.removeEventListener('resize', listener)
     };
   });
 }

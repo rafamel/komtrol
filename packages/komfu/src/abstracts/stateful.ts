@@ -1,33 +1,24 @@
-import { TFu, TFn, IStatefulInstance } from '~/types';
-import { BehaviorSubject } from 'rxjs';
-import extend from './extend';
-import createSetter, { TSetter } from '~/utils/create-setter';
-import { isFn } from '~/utils';
+import { consolidate } from '~/utils';
+import { Subject } from 'rxjs';
+import {
+  TIntermediate,
+  TFu,
+  TUnion,
+  TCollect,
+  IProviderInstance
+} from '~/types';
 
-export interface IStateful<T> {
-  current: T;
-  set: TSetter<T>;
-}
+export default function stateful<A extends object, B extends object | void, T>(
+  initialize: (
+    collect: TCollect<TUnion<A, B>>,
+    emit: () => void
+  ) => IProviderInstance<TUnion<A, B>, T>
+): TFu<A, B, T> {
+  return (intermediate: TIntermediate<A, B>) => {
+    const subject = new Subject<void>();
+    const emit = (): void => subject.next();
+    const { instance, collect } = consolidate(intermediate);
 
-export default function stateful<A extends object, B, C extends A>(
-  initial: B | TFn<A, B>,
-  initialize: (state: IStateful<B>) => IStatefulInstance<A, B, C>
-): TFu<A, C> {
-  return extend((self, collect) => {
-    const initialValue = isFn(initial) ? initial(self, collect) : initial;
-    const subject = new BehaviorSubject<B>(initialValue);
-
-    const stateful = {
-      set: createSetter(subject),
-      get current() {
-        return subject.value;
-      }
-    };
-
-    return {
-      ...initialize(stateful),
-      initial: initialValue,
-      subscriber: subject
-    };
-  });
+    return [instance, { ...initialize(collect, emit), subscriber: subject }];
+  };
 }

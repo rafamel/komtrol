@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { typedPipe } from 'ts-functional-pipe';
-import { IPureInstance } from './types';
+import { typedPipe, pipe as _pipe } from 'ts-functional-pipe';
+import { TIntermediate } from './types';
 
-const _pipe = typedPipe<IPureInstance<{}>>();
+const _tpipe = typedPipe<TIntermediate<{}, void>>();
 
-function pipeT<T>() {
-  return typedPipe<IPureInstance<T>>();
+function pipeT<T extends object | void>() {
+  return typedPipe<TIntermediate<{}, Readonly<T>>>();
 }
 
 function pipeP<T = any>() {
@@ -20,14 +20,16 @@ function pipePC<P = any, C = any>() {
   return pipeT<{ props: Readonly<P>; context: C }>();
 }
 
-export type Pipe = typeof _pipe & {
+export type Pipe = typeof _tpipe & {
+  f: typeof _pipe;
   t: typeof pipeT;
   p: typeof pipeP;
   c: typeof pipeC;
   pc: typeof pipePC;
 };
 
-const pipe: Pipe = _pipe as Pipe;
+const pipe: Pipe = _tpipe as Pipe;
+pipe.f = _pipe;
 pipe.t = pipeT;
 pipe.p = pipeP;
 pipe.c = pipeC;

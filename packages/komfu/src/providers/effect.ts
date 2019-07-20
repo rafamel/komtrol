@@ -1,31 +1,64 @@
+import { TFu, TFn, TUpdatePolicy } from '~/types';
 import { fu } from '~/abstracts';
-import { TFu, TUpdatePolicy, TFn } from '~/types';
-import { tap } from 'rxjs/operators';
-import { createMemo } from '~/utils';
+import pipe from '~/pipe';
+import { memo } from '~/transforms';
 
-/**
- * Takes a `effect` callback to be run on initialization and on each update for which `policy` is or returns `true`. See also `withAction` and `withCompute`.
- */
-export default function withEffect<A extends object>(
-  policy: TUpdatePolicy<A>,
-  effect: TFn<A, void | (() => void)>
-): TFu<A, A> {
-  return fu(({ subscriber, collect }) => {
+export default withEffect;
+
+/* Declarations */
+function withEffect<A extends object, B extends object | void>(
+  effect: TFn<A, B, void | (() => void)>
+): TFu<A, B, void>;
+function withEffect<A extends object, B extends object | void>(
+  policy: TUpdatePolicy<A, B>,
+  effect: TFn<A, B, void | (() => void)>
+): TFu<A, B, void>;
+
+/* Implementation */
+function withEffect(a: any, b?: any): any {
+  return b === undefined
+    ? pipe.f(trunk(a), memo(false))
+    : pipe.f(trunk(b), memo(a));
+}
+
+export function trunk<A extends object, B extends object | void>(
+  effect: TFn<A, B, void | (() => void)>
+): TFu<A, B, void> {
+  return fu((collect) => {
+    let queue: Array<() => void> = [];
+    let immediate: void | NodeJS.Immediate;
     let teardown: void | (() => void);
-    const memo = createMemo(policy, (self) => {
-      if (teardown) teardown();
-      teardown = effect(self, collect);
-    });
 
-    memo(collect());
+    function next(): void {
+      const fn = queue.shift();
+      if (!fn) return;
+
+      immediate = setImmediate(() => {
+        fn();
+        immediate = setImmediate(() => {
+          next();
+          immediate = undefined;
+        });
+      });
+    }
+
     return {
-      initial: collect(),
-      subscriber: subscriber.pipe(tap(memo)),
+      execute: () => {
+        queue.push(() => {
+          if (teardown) teardown();
+          teardown = effect(collect(), collect);
+        });
+
+        if (!immediate) next();
+      },
       teardown() {
-        if (teardown) {
-          teardown();
+        if (immediate) clearImmediate(immediate);
+        immediate = setImmediate(() => {
+          if (teardown) teardown();
+          queue = [];
           teardown = undefined;
-        }
+          immediate = undefined;
+        });
       }
     };
   });

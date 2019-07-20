@@ -1,27 +1,19 @@
-import { TFu, IFuInstance, IParentInstance } from '~/types';
-import { tap } from 'rxjs/operators';
-import { createCache } from '~/utils';
+import { consolidate } from '~/utils';
+import {
+  TIntermediate,
+  TFu,
+  TUnion,
+  TCollect,
+  IProviderInstance
+} from '~/types';
 
-export default function fu<A extends object, B extends object>(
-  initialize: (instance: IParentInstance<A>) => IFuInstance<B>
-): TFu<A, B> {
-  return (parent) => {
-    const cache = createCache(parent.initial);
-    const subscriber = parent.subscriber.pipe(tap(cache.set));
-    const instance = initialize({
-      subscriber,
-      collect: cache.collect
-    });
-
-    const teardown = instance.teardown;
-    return {
-      ...instance,
-      teardown: teardown
-        ? () => {
-            parent.teardown();
-            teardown();
-          }
-        : parent.teardown
-    };
+export default function fu<A extends object, B extends object | void, T>(
+  initialize: (
+    collect: TCollect<TUnion<A, B>>
+  ) => IProviderInstance<TUnion<A, B>, T>
+): TFu<A, B, T> {
+  return (intermediate: TIntermediate<A, B>) => {
+    const { instance, collect } = consolidate(intermediate);
+    return [instance, initialize(collect)];
   };
 }

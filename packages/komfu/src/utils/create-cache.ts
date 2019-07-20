@@ -7,7 +7,6 @@ export interface ICache<T> {
 
 export default function createCache<T>(initial: T): ICache<T> {
   let current = initial;
-
   return {
     collect() {
       return current;
