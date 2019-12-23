@@ -1,5 +1,5 @@
 describe(`- Main`, () => {
   test(`Doesn't throw`, () => {
-    expect(() => {}).not.toThrow();
+    expect(() => null).not.toThrow();
   });
 });
