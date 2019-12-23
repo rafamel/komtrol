@@ -1,7 +1,8 @@
 import { Client, CombinedError, UseQueryArgs } from 'urql';
+import { ASTNode } from 'graphql';
 
 // eslint-disable-next-line @typescript-eslint/prefer-interface
-export type TGql<T> = { [key: string]: any };
+export type TGql<T> = ASTNode;
 
 export interface IRequestOptions<T> {
   client?: Client;

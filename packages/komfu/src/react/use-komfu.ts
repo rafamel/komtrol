@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useContext } from 'react';
 import { TIntermediate, TUnion } from '~/types';
 import create from '~/create';
 import pipe from '~/pipe';
 import { shallowEqual as equal } from 'shallow-equal-object';
-import { useContext } from './context';
 import { BehaviorSubject } from 'rxjs';
 import { stateful } from '~/abstracts';
 import useForceUpdate from 'use-force-update';
+import _context from './context';
 
 // TODO: make props/context subscription optional;
 // we'll need a boolean "context" argument to determine
@@ -14,8 +14,12 @@ import useForceUpdate from 'use-force-update';
 // (create) w/ empty object
 export default useKomfu;
 
-function useKomfu<A extends object, B extends object | void>(
-  pipeline: (intermediate: TIntermediate<{}, void>) => TIntermediate<A, B>,
+function useKomfu<
+  T extends void | object,
+  A extends object,
+  B extends object | void
+>(
+  pipeline: (intermediate: TIntermediate<{}, T>) => TIntermediate<A, B>,
   props?: void
 ): TUnion<A, B>;
 function useKomfu<
@@ -41,7 +45,7 @@ function useKomfu<
   lock.current = true;
 
   const forceUpdate = useForceUpdate();
-  const context = useContext();
+  const context = useContext(_context);
   const subject = useMemo(
     () => new BehaviorSubject(props ? { context, props } : { context }),
     []
