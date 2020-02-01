@@ -69,7 +69,7 @@
     "@types/react": "^16.9.17",
     "@zerollup/ts-transform-paths": "^1.7.3",
     "coveralls": "^3.0.7",
-    "husky": "^3.0.9",
+    "husky": "^4.0.0",
     "kpo": "^0.11.1",
     "onchange": "^6.0.0",
     "react": "^16.12.0",
