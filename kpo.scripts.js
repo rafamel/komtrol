@@ -1,12 +1,10 @@
-const kpo = require('kpo');
 const { scripts } = require('./project.config');
 
 module.exports.scripts = {
   ...scripts,
-  build: [scripts.build, kpo.series('npm pack', { cwd: './pkg' })],
-  watch: 'onchange ./src --initial --kill -- kpo watch:task',
-  'watch:test': 'kpo test -- --watch',
+  bootstrap: 'lerna bootstrap',
+  link: 'lerna link',
 
-  /* Private */
-  ['$watch:task']: [kpo.log`\x1Bc⚡`, 'kpo lint build']
+  /* Hooks */
+  postinstall: 'kpo bootstrap'
 };
