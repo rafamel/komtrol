@@ -75,7 +75,9 @@
     "rxjs": "^6.5.4",
     "typescript": "^3.7.5"
   },
-  "dependencies": {},
+  "dependencies": {
+    "shallow-equal-object": "^1.1.1"
+  },
   "peerDependencies": {
     "rxjs": "6.x"
   },
