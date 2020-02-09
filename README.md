@@ -1,7 +1,15 @@
-# komtrol
+# supersour
 
-[![Build Status](https://img.shields.io/travis/rafamel/komtrol/master.svg)](https://travis-ci.org/rafamel/komtrol)
-[![Coverage](https://img.shields.io/coveralls/rafamel/komtrol/master.svg)](https://coveralls.io/github/rafamel/komtrol)
-[![License](https://img.shields.io/github/license/rafamel/komtrol.svg)](https://github.com/rafamel/komtrol/blob/master/LICENSE)
+[![Version](https://img.shields.io/npm/v/supersour.svg)](https://www.npmjs.com/package/supersour)
+[![Build Status](https://img.shields.io/travis/rafamel/supersour/master.svg)](https://travis-ci.org/rafamel/supersour)
+[![Coverage](https://img.shields.io/coveralls/rafamel/supersour/master.svg)](https://coveralls.io/github/rafamel/supersour)
+[![Dependencies](https://img.shields.io/david/rafamel/supersour.svg)](https://david-dm.org/rafamel/supersour)
+[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/supersour.svg)](https://snyk.io/test/npm/supersour)
+[![License](https://img.shields.io/github/license/rafamel/supersour.svg)](https://github.com/rafamel/supersour/blob/master/LICENSE)
+[![Types](https://img.shields.io/npm/types/supersour.svg)](https://www.npmjs.com/package/supersour)
 
-> A reactive state suite.
+> Reactive state super classes and utilities.
+
+## Install
+
+[`npm install supersour`](https://www.npmjs.com/package/supersour)

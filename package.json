@@ -1,13 +1,26 @@
 {
-  "name": "@komtrol/root",
+  "name": "supersour",
   "version": "0.0.0",
-  "author": "Rafa Mel",
-  "description": "A reactive state suite",
-  "keywords": [],
   "private": true,
+  "author": "Rafa Mel",
+  "description": "Reactive state super classes and utilities",
+  "keywords": [
+    "component",
+    "controller",
+    "reactive",
+    "react",
+    "state",
+    "source",
+    "lifecycle",
+    "dependency",
+    "injection",
+    "store"
+  ],
   "engines": {
     "node": ">=12"
   },
+  "main": "pkg/dist/index.js",
+  "types": "pkg/dist/index.d.ts",
   "scripts": {
     "commit": "kpo commit --",
     "semantic": "kpo semantic --",
@@ -22,32 +35,62 @@
     "prepublishOnly": "kpo prepublishOnly --",
     "preversion": "kpo preversion --",
     "version": "kpo version --",
-    "release": "kpo release --",
+    "build": "kpo build --",
+    "build:transpile": "kpo build:transpile --",
+    "build:types": "kpo build:types --",
+    "fix:code": "kpo fix:code --",
+    "lint:code": "kpo lint:code --",
+    "lint:types": "kpo lint:types --",
     "test": "kpo test --",
-    "test:coverage": "kpo test:coverage --",
     "verify": "kpo verify --",
     "validate": "kpo validate --",
-    "bootstrap": "kpo bootstrap --",
-    "link": "kpo link --",
-    "postinstall": "kpo postinstall --"
+    "docs": "kpo docs --",
+    "build:pack": "kpo build:pack --",
+    "build:static": "kpo build:static --",
+    "release": "kpo release --",
+    "watch": "kpo watch --",
+    "watch:test": "kpo watch:test --"
   },
   "license": "MIT",
-  "homepage": "https://github.com/rafamel/komtrol",
+  "homepage": "https://github.com/rafamel/supersour",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rafamel/komtrol"
+    "url": "https://github.com/rafamel/supersour"
   },
   "bugs": {
-    "url": "https://github.com/rafamel/komtrol/issues"
+    "url": "https://github.com/rafamel/supersour/issues"
   },
   "devDependencies": {
-    "@riseup/monorepo": "^0.5.0",
+    "@pika/pack": "^0.4.0",
+    "@pika/plugin-build-web": "^0.8.1",
+    "@pika/plugin-standard-pkg": "^0.8.1",
+    "@riseup/library": "^0.5.0",
+    "@riseup/tooling": "^0.5.0",
+    "@types/jest": "^25.1.2",
+    "@zerollup/ts-transform-paths": "^1.7.11",
     "coveralls": "^3.0.7",
     "husky": "^4.2.1",
     "kpo": "^0.11.1",
-    "lerna": "^3.20.2"
+    "onchange": "^6.0.0",
+    "typescript": "^3.7.5"
   },
   "dependencies": {},
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-standard-pkg",
+        {
+          "exclude": [
+            "__mocks__/**/*",
+            "__tests__/**/*"
+          ]
+        }
+      ],
+      [
+        "@pika/plugin-build-web"
+      ]
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "kpo verify"
