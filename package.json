@@ -72,9 +72,13 @@
     "husky": "^4.2.1",
     "kpo": "^0.11.1",
     "onchange": "^6.0.0",
+    "rxjs": "^6.5.4",
     "typescript": "^3.7.5"
   },
   "dependencies": {},
+  "peerDependencies": {
+    "rxjs": "6.x"
+  },
   "@pika/pack": {
     "pipeline": [
       [
