@@ -1,3 +1,3 @@
-export default function main(): null {
-  return null;
-}
+export * from './sources';
+
+// Names: supersour, sourceror, upsour, stateor, klassic, klasour, klassour, klasseur, sourtastic
