@@ -82,7 +82,6 @@
     "shallow-equal-object": "^1.1.1"
   },
   "peerDependencies": {
-    "react": ">= 16.8.0",
     "rxjs": "6.x"
   },
   "@pika/pack": {
