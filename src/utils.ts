@@ -1,6 +1,7 @@
 import { shallowEqual as shallow } from 'shallow-equal-object';
 import { Source } from './sources';
 import { Observable, merge, of } from 'rxjs';
+import { take, filter } from 'rxjs/operators';
 
 export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
   let lastDependencies: null | I = null;
@@ -27,7 +28,7 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
 export function match<T>(
   source: Source<T>,
   state: Partial<T>,
-  debounce?: number
+  debounce?: number | null
 ): Observable<boolean> {
   const keys: null | Array<keyof T> =
     typeof state === 'object' && state !== null
@@ -83,4 +84,23 @@ export function match<T>(
       if (timeout) clearTimeout(timeout);
     };
   });
+}
+
+export function until<T>(
+  source: Source<T>,
+  state: Partial<T>,
+  debounce?: number | null,
+  unequal?: boolean
+): Promise<void> {
+  return match(source, state, debounce)
+    .pipe(
+      filter((value) => (unequal ? !value : value)),
+      take(1)
+    )
+    .toPromise()
+    .then((value) => {
+      return typeof value === 'boolean'
+        ? undefined
+        : Promise.reject(Error(`Observable completed prior to a match`));
+    });
 }
