@@ -58,7 +58,12 @@ export function match<T>(
           return obs.next(value);
         } else {
           if (value === next) return;
-          if (timeout) clearTimeout(timeout);
+
+          if (timeout) {
+            clearTimeout(timeout);
+            timeout = null;
+          }
+
           if (value === last) return;
 
           next = value;
