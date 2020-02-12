@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/rafamel/supersour/compare/v0.1.0...v0.2.0) (2020-02-12)
+
+
+### Features
+
+* **utils:** adds until util ([661449e](https://github.com/rafamel/supersour/commit/661449e99470fbe6119a1c1f3ea0604adc75129a))
+
+
+
 # [0.1.0](https://github.com/rafamel/supersour/compare/v0.0.1...v0.1.0) (2020-02-12)
 
 
