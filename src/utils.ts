@@ -1,6 +1,9 @@
 import { shallowEqual as shallow } from 'shallow-equal-object';
-import { Source } from './sources';
+import { Source, Operation } from './sources';
 import { Observable, merge, of } from 'rxjs';
+
+export type Operations = { [P in OperationStatic]: typeof Operation[P] };
+export type OperationStatic = Exclude<keyof typeof Operation, 'prototype'>;
 
 export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
   let lastDependencies: null | I = null;
@@ -22,6 +25,35 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
 
     return lastResult;
   };
+}
+
+export function operation<T>(
+  fn: (operations: Operations) => Operation<T>
+): Observable<T> {
+  const operations: Operations = {
+    combine: Operation.combine.bind(Operation),
+    select: Operation.select.bind(Operation)
+  };
+  return new Observable<T>((obs) => {
+    const operation = fn(operations);
+    const subscription = merge(of(operation.state), operation.state$).subscribe(
+      {
+        next: (value) => obs.next(value),
+        error(err) {
+          obs.error(err);
+          operation.teardown();
+        },
+        complete() {
+          obs.complete();
+          operation.teardown();
+        }
+      }
+    );
+    return () => {
+      subscription.unsubscribe();
+      operation.teardown();
+    };
+  });
 }
 
 export function match<T>(
