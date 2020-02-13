@@ -36,7 +36,9 @@ export function match<T>(
       : null;
 
   const isMatch = (value: T): boolean => {
-    if (!keys) return value === state;
+    const equal = value === state;
+    if (!keys) return equal;
+    if (equal) return true;
 
     for (const key of keys) {
       if (state[key] !== value[key]) return false;
@@ -72,11 +74,17 @@ export function match<T>(
             next = null;
             last = value;
             obs.next(value);
-          }, debounce);
+          }, Math.max(0, debounce));
         }
       },
-      error: (err) => obs.error(err),
-      complete: () => obs.complete()
+      error(err) {
+        if (timeout) clearTimeout(timeout);
+        obs.error(err);
+      },
+      complete() {
+        if (timeout) clearTimeout(timeout);
+        obs.complete();
+      }
     });
 
     return () => {
@@ -86,7 +94,7 @@ export function match<T>(
   });
 }
 
-export function until<T>(
+export async function until<T>(
   source: Source<T>,
   state: Partial<T>,
   debounce?: number | null,
