@@ -5,6 +5,12 @@ import { Observable, merge, of } from 'rxjs';
 export type Operations = { [P in OperationStatic]: typeof Operation[P] };
 export type OperationStatic = Exclude<keyof typeof Operation, 'prototype'>;
 
+/**
+ * Simple last value memoization for `fn`.
+ * If the values of a given object of dependencies provided by `deps`,
+ * if they're shallow equal to the previously provided,
+ * it will return `fn`'s last value without evaluating `fn` yet again.
+ */
 export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
   let lastDependencies: null | I = null;
   let lastResult: any = null;
@@ -27,6 +33,18 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
   };
 }
 
+/**
+ * Allows to create cold, self stopping, observables from `Operation`s.
+ * As `fn` will be called on each subscription,
+ * a new `Operation` instance will be created and, hence,
+ * teared down on unsubscribe.
+ * That implies the operation will be run independently
+ * for each observable subscription, but also that it will be
+ * terminated once the observable is no longer being consumed.
+ * As an additional difference with `Operation.state$`,
+ * the returned `Observable` will also emit its initial value
+ * upon subscription.
+ */
 export function operation<T>(
   fn: (operations: Operations) => Operation<T>
 ): Observable<T> {
@@ -56,6 +74,15 @@ export function operation<T>(
   });
 }
 
+/**
+ * Given a `source` and a partial `state` object for it,
+ * it will evaluate whether the values of `state`
+ * match -are shallow equal- to those of the `source`'s state,
+ * without taking into account non existing keys in the partial `state`.
+ * It will return an `Observable` that emits match changes.
+ * If `debounce` is set, it will wait until the `source`'s state matches
+ * `state` without interruption for the given amount of milliseconds.
+ */
 export function match<T>(
   source: Source<T>,
   state: Partial<T>,

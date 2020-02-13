@@ -18,7 +18,24 @@ export type OperationCombineState<T extends OperationCombineInput> = {
   [P in keyof T]: T[P]['state'];
 };
 
+/**
+ * Creates a `Source` resulting from operating on another
+ * `Source` or set of `Source`s.
+ * `Operation` instances are *hot* and *multicast,*
+ * which means they will continue to execute even if
+ * it's `state$` is not subscribed to.
+ * The `alive` property and `teardown` method exist for this purpose.
+ * Once an `Operation` is teared down, it will stop executing,
+ * hence its `state$` `Observable` will complete
+ * and its `state` will no longer update.
+ * To create cold, self stopping, `Observable`s from `Operation`s,
+ * see the `operation` util.
+ */
 export class Operation<T> implements Source<T> {
+  /**
+   * Returns an `Operation` instance as a combination of `Source`s.
+   * Takes a `sources` object with values of `Source`s.
+   */
   public static combine<T extends OperationCombineInput>(
     sources: T
   ): Operation<OperationCombineState<T>> {
@@ -45,6 +62,13 @@ export class Operation<T> implements Source<T> {
       combineLatest(observables).pipe(skip(1), _map(map))
     );
   }
+  /**
+   * Returns an `Operation` instance with `state`
+   * equal to the return value of `map`.
+   * The returned instance will only emit when at least
+   * one of the values of its mapped state is different
+   * from its previous.
+   */
   public static select<T, U>(
     source: Source<T>,
     map: (value: T) => U
@@ -66,6 +90,10 @@ export class Operation<T> implements Source<T> {
     this[subject] = new BehaviorSubject(initial);
     this[subscription] = observable.subscribe(this[subject]);
   }
+  /**
+   * Whether the operation is currently executing -it hasn't
+   * been teared down. See `Operation.teardown`.
+   */
   public get alive(): boolean {
     return !this[subject].isStopped;
   }
@@ -75,6 +103,12 @@ export class Operation<T> implements Source<T> {
   public get state$(): Observable<T> {
     return this[subject].pipe(skip(1));
   }
+  /**
+   * Tears down and `Operation` instance.
+   * The operation will stop executing,
+   * its `state$` `Observable` will complete,
+   * and its `state` will no longer update.
+   */
   public teardown(): void {
     this[subscription].unsubscribe();
     this[subject].complete();
