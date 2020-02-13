@@ -1,3 +1,22 @@
+# [0.3.0](https://github.com/rafamel/supersour/compare/v0.2.0...v0.3.0) (2020-02-13)
+
+
+### Features
+
+* **utils:** adds operation util ([10234ff](https://github.com/rafamel/supersour/commit/10234ff5dc0d23f8b6f9c41d40fbcdf832ff9920))
+
+
+### Reverts
+
+* **utils:** removes until util ([bffd8b9](https://github.com/rafamel/supersour/commit/bffd8b9269b55d7b17aa2334dda0fba019a3c66b))
+
+
+### BREAKING CHANGES
+
+* **utils:** `until` util has been removed
+
+
+
 # [0.2.0](https://github.com/rafamel/supersour/compare/v0.1.0...v0.2.0) (2020-02-12)
 
 
