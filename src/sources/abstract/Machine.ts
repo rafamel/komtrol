@@ -1,17 +1,18 @@
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { Store } from './Store';
-import { EmptyUnion, StateMap, Source } from '../types';
+import { EmptyUnion, StateMap, Resource } from '../types';
 
 const busy = Symbol('busy');
 const queue = Symbol('queue');
 const error = Symbol('error');
 
 /**
- * A `Store` with an execution queue and a global `Error` stream.
+ * A `Store` with an execution queue and an `Error` stream.
+ * See `Resource`.
  */
 export abstract class Machine<S, T = S, D = EmptyUnion> extends Store<S, T, D>
-  implements Source<T> {
+  implements Resource<T> {
   private [error]: Subject<Error>;
   private [busy]: BehaviorSubject<boolean>;
   private [queue]: Array<() => Promise<void>>;
