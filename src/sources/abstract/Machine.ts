@@ -1,31 +1,28 @@
-import { Subject, Observable } from 'rxjs';
-import { Promist } from 'promist';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { skip } from 'rxjs/operators';
 import { Store } from './Store';
 import { EmptyUnion, StateMap, Source } from '../types';
 
 const busy = Symbol('busy');
+const queue = Symbol('queue');
 const error = Symbol('error');
-const promise = Symbol('promise');
 
 export abstract class Machine<S, T = S, D = EmptyUnion> extends Store<S, T, D>
   implements Source<T> {
-  private [busy]: boolean | null;
   private [error]: Subject<Error>;
-  private [promise]: Promise<void>;
-  protected constructor(
-    state: S,
-    deps: D,
-    map: StateMap<S, T>,
-    lock?: boolean
-  ) {
+  private [busy]: BehaviorSubject<boolean>;
+  private [queue]: Array<() => Promise<void>>;
+  protected constructor(state: S, deps: D, map: StateMap<S, T>) {
     super(state, deps, map);
-    this[busy] = lock ? false : null;
     this[error] = new Subject();
-    this[promise] = Promise.resolve();
+    this[busy] = new BehaviorSubject<boolean>(false);
+    this[queue] = [];
   }
   public get busy(): boolean {
-    const value = this[busy];
-    return value === null ? false : value;
+    return this[busy].value;
+  }
+  public get busy$(): Observable<boolean> {
+    return this[busy].pipe(skip(1));
   }
   public get error$(): Observable<Error> {
     return this[error].asObservable();
@@ -33,25 +30,34 @@ export abstract class Machine<S, T = S, D = EmptyUnion> extends Store<S, T, D>
   protected raise(err: Error): void {
     this[error].next(err);
   }
-  protected async enqueue<T>(fn: () => Promise<T>): Promise<T> {
-    if (this[busy] === true) throw Error(`Machine is busy`);
-    if (this[busy] === false) this[busy] = true;
+  protected async enqueue<T>(fn: () => Promise<T> | T): Promise<T> {
+    const start = async (): Promise<void> => {
+      while (this[queue].length) {
+        try {
+          const cb = this[queue].shift();
+          if (cb) await cb();
+        } catch (err) {
+          this.raise(err);
+        }
+      }
+      this[busy].next(false);
+    };
 
-    const source = this[promise];
-    const promist = new Promist<void>();
-    this[promise] = source.then(() => promist);
-
-    return source
-      .then(async () => {
-        return fn();
-      })
-      .catch(async (err) => {
-        this.raise(err);
-        throw err;
-      })
-      .finally(() => {
-        if (this[busy] === true) this[busy] = false;
-        promist.resolve();
+    return new Promise<T>((resolve, reject) => {
+      this[queue].push(async () => {
+        try {
+          const value = await fn();
+          resolve(value);
+        } catch (err) {
+          reject(err);
+          throw err;
+        }
       });
+
+      if (!this.busy) {
+        this[busy].next(true);
+        start();
+      }
+    });
   }
 }
