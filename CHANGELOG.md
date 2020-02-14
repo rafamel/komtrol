@@ -1,3 +1,7 @@
+## [0.3.1](https://github.com/rafamel/supersour/compare/v0.3.0...v0.3.1) (2020-02-14)
+
+
+
 # [0.3.0](https://github.com/rafamel/supersour/compare/v0.2.0...v0.3.0) (2020-02-13)
 
 
