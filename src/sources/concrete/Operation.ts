@@ -31,14 +31,14 @@ export type OperationCombineState<T extends OperationCombineInput> = {
  * To create cold, self stopping, `Observable`s from `Operation`s,
  * see the `operation` util.
  */
-export class Operation<T> implements Source<T> {
+export class Operation<T, R = void> implements Source<T> {
   /**
    * Returns an `Operation` instance as a combination of `Source`s.
    * Takes a `sources` object with values of `Source`s.
    */
   public static combine<T extends OperationCombineInput>(
     sources: T
-  ): Operation<OperationCombineState<T>> {
+  ): Operation<OperationCombineState<T>, T> {
     const entries = Object.entries(sources);
 
     const initials: any[] = [];
@@ -59,7 +59,8 @@ export class Operation<T> implements Source<T> {
 
     return new this(
       map(initials),
-      combineLatest(observables).pipe(skip(1), _map(map))
+      combineLatest(observables).pipe(skip(1), _map(map)),
+      sources
     );
   }
   /**
@@ -69,10 +70,10 @@ export class Operation<T> implements Source<T> {
    * one of the values of its mapped state is different
    * from its previous.
    */
-  public static select<T, U>(
-    source: Source<T>,
+  public static select<T, U, R = Source<T>>(
+    source: R & Source<T>,
     map: (value: T) => U
-  ): Operation<U> {
+  ): Operation<U, R> {
     const state = map(source.state);
 
     return new this(
@@ -81,12 +82,15 @@ export class Operation<T> implements Source<T> {
         pairwise(),
         filter(([previous, current]) => !shallow(previous, current)),
         _map((arr) => arr[1])
-      )
+      ),
+      source
     );
   }
+  public source: R;
   private [subject]: BehaviorSubject<T>;
   private [subscription]: Subscription;
-  private constructor(initial: T, observable: Observable<T>) {
+  private constructor(initial: T, observable: Observable<T>, source: R) {
+    this.source = source;
     this[subject] = new BehaviorSubject(initial);
     this[subscription] = observable.subscribe(this[subject]);
   }
