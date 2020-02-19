@@ -12,8 +12,8 @@ export class Subject<S, T = S> extends Store<S, T> implements Source<T> {
    * Updates the instance `state`.
    * See `Enclosure.next`.
    */
-  public next(state: Partial<S>): void {
-    return super.next(state);
+  public next(state: Partial<S>, compare?: boolean): void {
+    return super.next(state, compare);
   }
 }
 

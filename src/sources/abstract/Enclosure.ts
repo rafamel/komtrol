@@ -1,5 +1,6 @@
 import { Observable, BehaviorSubject } from 'rxjs';
 import { skip } from 'rxjs/operators';
+import { shallowEqual as shallow } from 'shallow-equal-object';
 import { EmptyUnion, StateMapFn, StateMap } from '../types';
 
 const fn = Symbol('fn');
@@ -40,12 +41,16 @@ export abstract class Enclosure<S, T = S, D = EmptyUnion> {
    * Updates the instance `state`.
    * If it is an *object,* it will create a new state *object*
    * by merging `state` with the current instance state.
+   * If `compare` is `true` and the current `state` is shallow
+   * equal to its update, it won't emit.
    */
-  protected next(state: Partial<S>): void {
+  protected next(state: Partial<S>, compare?: boolean): void {
     const update =
       typeof state === 'object' && state !== null
         ? { ...this[value], ...state }
         : state;
+
+    if (compare && shallow(update, this[value])) return;
 
     let next = this[fn](update);
     if (
