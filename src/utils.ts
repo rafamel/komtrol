@@ -46,7 +46,7 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
  * upon subscription.
  */
 export function operation<T>(
-  fn: (operations: Operations) => Operation<T>
+  fn: (operations: Operations) => Operation<T, any>
 ): Observable<T> {
   const operations: Operations = {
     combine: Operation.combine.bind(Operation),

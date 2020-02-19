@@ -31,7 +31,7 @@ export type OperationCombineState<T extends OperationCombineInput> = {
  * To create cold, self stopping, `Observable`s from `Operation`s,
  * see the `operation` util.
  */
-export class Operation<T, R = void> implements Source<T> {
+export class Operation<T, R = unknown> implements Source<T> {
   /**
    * Returns an `Operation` instance as a combination of `Source`s.
    * Takes a `sources` object with values of `Source`s.
