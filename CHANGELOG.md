@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/rafamel/supersour/compare/v0.3.2...v0.4.0) (2020-02-19)
+
+
+### Features
+
+* **sources:** adds compare argument to next method ([dd94f9d](https://github.com/rafamel/supersour/commit/dd94f9dd8018ea415df5a719df229a87ae069f1c))
+
+
+
 ## [0.3.2](https://github.com/rafamel/supersour/compare/v0.3.1...v0.3.2) (2020-02-18)
 
 
