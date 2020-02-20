@@ -1,9 +1,15 @@
 import { shallowEqual as shallow } from 'shallow-equal-object';
 import { Source, Operation } from './sources';
 import { Observable, merge, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 export type Operations = { [P in OperationStatic]: typeof Operation[P] };
 export type OperationStatic = Exclude<keyof typeof Operation, 'prototype'>;
+
+export interface MatchOptions {
+  debounce?: number | null;
+  only?: boolean | null;
+}
 
 /**
  * Simple last value memoization for `fn`.
@@ -86,8 +92,9 @@ export function operation<T>(
 export function match<T>(
   source: Source<T>,
   state: Partial<T>,
-  debounce?: number | null
+  options?: MatchOptions
 ): Observable<boolean> {
+  const debounce = options && options.debounce;
   const keys: null | Array<keyof T> =
     typeof state === 'object' && state !== null
       ? (Object.keys(state) as Array<keyof T>)
@@ -104,7 +111,7 @@ export function match<T>(
     return true;
   };
 
-  return new Observable<boolean>((obs) => {
+  const observable = new Observable<boolean>((obs) => {
     let last: null | boolean = null;
     let next: null | boolean = null;
     let timeout: null | NodeJS.Timeout = null;
@@ -150,4 +157,8 @@ export function match<T>(
       if (timeout) clearTimeout(timeout);
     };
   });
+
+  return options && typeof options.only === 'boolean'
+    ? observable.pipe(filter((value) => value === options.only))
+    : observable;
 }
