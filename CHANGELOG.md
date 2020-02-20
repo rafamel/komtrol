@@ -1,3 +1,17 @@
+# [0.5.0](https://github.com/rafamel/supersour/compare/v0.4.0...v0.5.0) (2020-02-20)
+
+
+### Features
+
+* **utils:** adds only filter to match ([34b333c](https://github.com/rafamel/supersour/commit/34b333c9fb2f1fffc35c548dfc359114af1d2504))
+
+
+### BREAKING CHANGES
+
+* **utils:** Third match function argument has changed to an options object
+
+
+
 # [0.4.0](https://github.com/rafamel/supersour/compare/v0.3.2...v0.4.0) (2020-02-19)
 
 
