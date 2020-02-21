@@ -48,7 +48,8 @@
     "build:static": "kpo build:static --",
     "release": "kpo release --",
     "watch": "kpo watch --",
-    "watch:test": "kpo watch:test --"
+    "watch:test": "kpo watch:test --",
+    "docs:uml": "kpo docs:uml --"
   },
   "license": "MIT",
   "homepage": "https://github.com/rafamel/supersour",
@@ -71,6 +72,7 @@
     "coveralls": "^3.0.7",
     "husky": "^4.2.1",
     "kpo": "^0.11.1",
+    "node-plantuml": "^0.9.0",
     "onchange": "^6.0.0",
     "react": "^16.12.0",
     "rxjs": "^6.5.4",

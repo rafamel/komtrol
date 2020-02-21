@@ -13,3 +13,5 @@
 ## Install
 
 [`npm install supersour`](https://www.npmjs.com/package/supersour)
+
+![UML Diagram](https://raw.githubusercontent.com/rafamel/supersour/master/assets/diagram.png)

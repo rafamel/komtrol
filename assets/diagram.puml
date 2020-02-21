@@ -1,0 +1,82 @@
+@startuml Sources
+
+interface Source<T> {
+  state: T
+  state$: Observable<T>
+}
+
+Source <|-- Reporter
+interface Reporter<T> {
+  state: T
+  state$: Observable<T>
+  error$: Observable<Error>
+}
+
+Reporter <|-- Machine
+interface Machine<T> {
+  state: T
+  state$: Observable<T>
+  error$: Observable<Error>
+  busy: boolean;
+  busy$: Observable<boolean>
+}
+
+Resource <|.. Source
+abstract class Resource<T> {
+  +state: T
+  +state$: Observable<T>
+  #next()
+}
+
+Subject <|-- Resource
+class Subject<T> {
+  +state: T
+  +state$: Observable<T>
+  +next()
+}
+
+ReporterResource <|.. Reporter
+ReporterResource <|-- Resource
+abstract class ReporterResource<T> {
+  +state: T
+  +state$: Observable<T>
+  +error$: Observable<Error>
+  #next()
+  #raise()
+}
+
+ReporterSubject <|-- ReporterResource
+class ReporterSubject<T> {
+  +state: T
+  +state$: Observable<T>
+  +error$: Observable<Error>
+  +next()
+  +raise()
+}
+
+MachineResource <|.. Machine
+MachineResource <|-- ReporterResource
+abstract class MachineResource<T> {
+  +state: T
+  +state$: Observable<T>
+  +error$: Observable<Error>
+  +busy: boolean
+  +busy$: Observable<boolean>
+  #next()
+  #raise()
+  #enqueue()
+}
+
+MachineSubject <|-- MachineResource
+class MachineSubject<T> {
+  +state: T
+  +state$: Observable<T>
+  +error$: Observable<Error>
+  +busy: boolean
+  +busy$: Observable<boolean>
+  +next()
+  +raise()
+  +enqueue()
+}
+
+@enduml
