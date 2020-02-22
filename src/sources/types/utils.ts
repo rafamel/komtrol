@@ -8,6 +8,12 @@ export type StateMap<S, T> =
 
 export type StateMapFn<S, T> = (state: S) => T;
 
+export type SourcesRecord<T = any> = Record<string, Source<T>>;
+
+export type SourcesRecordCombineState<T extends SourcesRecord> = {
+  [P in keyof T]: T[P]['state'];
+};
+
 export type ReporterValue<R, K extends keyof Reporter<any>> = R extends Source<
   any
 >

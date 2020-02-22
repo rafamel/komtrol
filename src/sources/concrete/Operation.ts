@@ -8,16 +8,17 @@ import {
 } from 'rxjs';
 import { map as _map, pairwise, filter, skip } from 'rxjs/operators';
 import { shallowEqual as shallow } from 'shallow-equal-object';
-import { Source, ReporterValue, MachineValue } from '../types';
+import {
+  Source,
+  ReporterValue,
+  MachineValue,
+  SourcesRecord,
+  SourcesRecordCombineState
+} from '../types';
 
 const single = Symbol('single');
 const subject = Symbol('subject');
 const subscription = Symbol('subscription');
-
-type OperationCombineInput = Record<string, Source<any>>;
-type OperationCombineState<T extends OperationCombineInput> = {
-  [P in keyof T]: T[P]['state'];
-};
 
 /**
  * Creates a `Source` resulting from operating on another
@@ -37,9 +38,9 @@ export class Operation<T, R = unknown> implements Source<T> {
    * Returns an `Operation` instance as a combination of `Source`s.
    * Takes a `sources` object with values of `Source`s.
    */
-  public static combine<T extends OperationCombineInput>(
+  public static combine<T extends SourcesRecord>(
     sources: T
-  ): Operation<OperationCombineState<T>, T> {
+  ): Operation<SourcesRecordCombineState<T>, T> {
     const entries = Object.entries(sources);
 
     const initials: any[] = [];
@@ -50,12 +51,12 @@ export class Operation<T, R = unknown> implements Source<T> {
       observables.push(merge(of(state), state$));
     }
 
-    const map = (values: any[]): OperationCombineState<T> => {
+    const map = (values: any[]): SourcesRecordCombineState<T> => {
       const state: Record<string, any> = {};
       for (let i = 0; i < values.length; i++) {
         state[entries[i][0]] = values[i];
       }
-      return state as OperationCombineState<T>;
+      return state as SourcesRecordCombineState<T>;
     };
 
     return new this(
