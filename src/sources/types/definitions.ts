@@ -9,12 +9,18 @@ export interface Source<T> {
 }
 
 /**
- * A `Source` with an independent execution state
- * and an `Error` stream.
- * See `Machine`.
+ * A `Source` with an `Error` stream.
+ * See `Reporter`.
  */
-export interface Resource<T> extends Source<T> {
+export interface Reporter<T> extends Source<T> {
+  error$: Observable<Error>;
+}
+
+/**
+ * A `Reporter` with an independent execution state.
+ * See `Reporter`.
+ */
+export interface Machine<T> extends Reporter<T> {
   busy: boolean;
   busy$: Observable<boolean>;
-  error$: Observable<Error>;
 }

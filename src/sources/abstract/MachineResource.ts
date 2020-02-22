@@ -1,24 +1,21 @@
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import { Store } from './Store';
-import { EmptyUnion, StateMap, Resource } from '../types';
+import { EmptyUnion, StateMap, Machine } from '../types';
+import { ReporterResource } from './ReporterResource';
 
 const busy = Symbol('busy');
 const queue = Symbol('queue');
-const error = Symbol('error');
 
 /**
- * A `Store` with an execution queue and an `Error` stream.
- * See `Resource`.
+ * A `Machine` implementation as an abstract class.
  */
-export abstract class Machine<S, T = S, D = EmptyUnion> extends Store<S, T, D>
-  implements Resource<T> {
-  private [error]: Subject<Error>;
+export abstract class MachineResource<S, T = S, D = EmptyUnion>
+  extends ReporterResource<S, T, D>
+  implements Machine<T> {
   private [busy]: BehaviorSubject<boolean>;
   private [queue]: Array<() => Promise<void>>;
   protected constructor(state: S, deps: D, map: StateMap<S, T>) {
     super(state, deps, map);
-    this[error] = new Subject();
     this[busy] = new BehaviorSubject<boolean>(false);
     this[queue] = [];
   }
@@ -33,18 +30,6 @@ export abstract class Machine<S, T = S, D = EmptyUnion> extends Store<S, T, D>
    */
   public get busy$(): Observable<boolean> {
     return this[busy].pipe(skip(1));
-  }
-  /**
-   * `Error` stream.
-   */
-  public get error$(): Observable<Error> {
-    return this[error].asObservable();
-  }
-  /**
-   * Adds an `Error` to the instance `error$` stream.
-   */
-  protected raise(err: Error): void {
-    this[error].next(err);
   }
   /**
    * Adds a task -`fn`- to be executed.

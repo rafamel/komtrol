@@ -1,3 +1,4 @@
 export * from './Enclosure';
-export * from './Store';
-export * from './Machine';
+export * from './Resource';
+export * from './ReporterResource';
+export * from './MachineResource';
