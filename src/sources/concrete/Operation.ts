@@ -14,8 +14,8 @@ const single = Symbol('single');
 const subject = Symbol('subject');
 const subscription = Symbol('subscription');
 
-export type OperationCombineInput = Record<string, Source<any>>;
-export type OperationCombineState<T extends OperationCombineInput> = {
+type OperationCombineInput = Record<string, Source<any>>;
+type OperationCombineState<T extends OperationCombineInput> = {
   [P in keyof T]: T[P]['state'];
 };
 

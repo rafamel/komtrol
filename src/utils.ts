@@ -3,13 +3,13 @@ import { Source, Operation } from './sources';
 import { Observable, merge, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-export type Operations = { [P in OperationStatic]: typeof Operation[P] };
-export type OperationStatic = Exclude<keyof typeof Operation, 'prototype'>;
-
 export interface MatchOptions {
   debounce?: number | null;
   only?: boolean | null;
 }
+
+type Operations = { [P in OperationStatic]: typeof Operation[P] };
+type OperationStatic = Exclude<keyof typeof Operation, 'prototype'>;
 
 /**
  * Simple last value memoization for `fn`.

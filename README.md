@@ -1,4 +1,4 @@
-# supersour
+# Supersour
 
 [![Version](https://img.shields.io/npm/v/supersour.svg)](https://www.npmjs.com/package/supersour)
 [![Build Status](https://img.shields.io/travis/rafamel/supersour/master.svg)](https://travis-ci.org/rafamel/supersour)
@@ -13,5 +13,9 @@
 ## Install
 
 [`npm install supersour`](https://www.npmjs.com/package/supersour)
+
+## Documentation
+
+[See *Supersour* docs.](https://rafamel.github.io/supersour/globals.html)
 
 ![UML Diagram](https://raw.githubusercontent.com/rafamel/supersour/master/assets/diagram.png)
