@@ -8,8 +8,9 @@ import {
 } from 'rxjs';
 import { map as _map, pairwise, filter, skip } from 'rxjs/operators';
 import { shallowEqual as shallow } from 'shallow-equal-object';
-import { Source } from '../types';
+import { Source, ReporterValue, MachineValue } from '../types';
 
+const single = Symbol('single');
 const subject = Symbol('subject');
 const subscription = Symbol('subscription');
 
@@ -60,7 +61,8 @@ export class Operation<T, R = unknown> implements Source<T> {
     return new this(
       map(initials),
       combineLatest(observables).pipe(skip(1), _map(map)),
-      sources
+      sources,
+      true
     );
   }
   /**
@@ -83,14 +85,22 @@ export class Operation<T, R = unknown> implements Source<T> {
         filter(([previous, current]) => !shallow(previous, current)),
         _map((arr) => arr[1])
       ),
-      source
+      source as R,
+      false
     );
   }
   public source: R;
+  private [single]: boolean;
   private [subject]: BehaviorSubject<T>;
   private [subscription]: Subscription;
-  private constructor(initial: T, observable: Observable<T>, source: R) {
+  private constructor(
+    initial: T,
+    observable: Observable<T>,
+    source: R,
+    record: boolean
+  ) {
     this.source = source;
+    this[single] = !record;
     this[subject] = new BehaviorSubject(initial);
     this[subscription] = observable.subscribe(this[subject]);
   }
@@ -106,6 +116,49 @@ export class Operation<T, R = unknown> implements Source<T> {
   }
   public get state$(): Observable<T> {
     return this[subject].pipe(skip(1));
+  }
+  public get error$(): ReporterValue<R, 'error$'> {
+    const source: any = this.source;
+    if (this[single]) return source.error$;
+
+    const arr = Object.values(source)
+      .map((source: any) => source.error$)
+      .filter((error$) => Boolean(error$));
+
+    if (!arr.length) return undefined as any;
+    return merge(...arr) as any;
+  }
+  public get busy(): MachineValue<R, 'busy'> {
+    const source: any = this.source;
+    if (this[single]) return source.busy;
+
+    const arr = Object.values(source)
+      .map((source: any) => source.busy)
+      .filter((busy) => typeof busy === 'boolean');
+
+    if (!arr.length) return undefined as any;
+    return arr.reduce((acc, busy) => acc || busy, false);
+  }
+  public get busy$(): MachineValue<R, 'busy$'> {
+    const source: any = this.source;
+    if (this[single]) return source.busy$;
+
+    const arr = Object.values(source)
+      .map(
+        (source: any) =>
+          [source.busy, source.busy$] as [boolean, Observable<boolean>]
+      )
+      .filter(([busy, busy$]) => typeof busy === 'boolean' && Boolean(busy$));
+
+    if (!arr.length) return undefined as any;
+    return combineLatest(
+      arr.map(([busy, busy$]) => merge(of(busy), busy$))
+    ).pipe(
+      _map((values) => values.reduce((acc, busy) => acc || busy, false)),
+      pairwise(),
+      filter(([a, b]) => a !== b),
+      _map((values) => values[1])
+    ) as any;
   }
   /**
    * Tears down and `Operation` instance.
