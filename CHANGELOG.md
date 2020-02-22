@@ -1,3 +1,23 @@
+# [0.6.0](https://github.com/rafamel/supersour/compare/v0.5.0...v0.6.0) (2020-02-22)
+
+
+### Bug Fixes
+
+* **deps:** updates dependencies ([fbf3759](https://github.com/rafamel/supersour/commit/fbf3759b907a718e252df3cb9eff74d916b94ef7))
+
+
+### Features
+
+* **sources:** adds Reporter and Machine fields to Operation ([d931db8](https://github.com/rafamel/supersour/commit/d931db863f4b258dcdcb46db03dafc4e5763e289))
+* **sources:** implements new design (see diagram) ([c293b14](https://github.com/rafamel/supersour/commit/c293b14a933a75ab47f953efbd8412035e43d9cd))
+
+
+### BREAKING CHANGES
+
+* **sources:** Classes names have changed.
+
+
+
 # [0.5.0](https://github.com/rafamel/supersour/compare/v0.4.0...v0.5.0) (2020-02-20)
 
 
