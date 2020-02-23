@@ -5,6 +5,7 @@ import { ReporterResource } from './ReporterResource';
 
 const busy = Symbol('busy');
 const queue = Symbol('queue');
+const manual = Symbol('manual');
 
 /**
  * A `Machine` implementation as an abstract class.
@@ -13,11 +14,9 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
   extends ReporterResource<S, T, D>
   implements Machine<T> {
   private [busy]: BehaviorSubject<boolean>;
-  private [queue]: Array<() => Promise<void>>;
   protected constructor(state: S, deps: D, map: StateMap<S, T>) {
     super(state, deps, map);
     this[busy] = new BehaviorSubject<boolean>(false);
-    this[queue] = [];
   }
   /**
    * Whether there are tasks in the queue currently executing.
@@ -30,6 +29,35 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
    */
   public get busy$(): Observable<boolean> {
     return this[busy].pipe(skip(1));
+  }
+  /**
+   * Controls the `busy` property and `busy$` stream.
+   */
+  protected block(value: boolean): void {
+    if (this.busy && !value) this[busy].next(false);
+    else if (!this.busy && value) this[busy].next(true);
+  }
+}
+
+export abstract class MachineQueueResource<S, T = S, D = EmptyUnion>
+  extends MachineResource<S, T, D>
+  implements Machine<T> {
+  private [queue]: Array<() => Promise<void>>;
+  private [manual]: boolean;
+  protected constructor(state: S, deps: D, map: StateMap<S, T>) {
+    super(state, deps, map);
+    this[queue] = [];
+    this[manual] = false;
+  }
+  /**
+   * Controls the `busy` property and `busy$` stream.
+   * If the queue is executing and it's set to `true`,
+   * it will continue executing but won't automatically unblock
+   * on its finalization.
+   */
+  protected block(value: boolean): void {
+    super.block(value);
+    this[manual] = this.busy;
   }
   /**
    * Adds a task -`fn`- to be executed.
@@ -47,7 +75,7 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
           this.raise(err);
         }
       }
-      this[busy].next(false);
+      if (!this[manual]) super.block(false);
     };
 
     return new Promise<T>((resolve, reject) => {
@@ -62,7 +90,7 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
       });
 
       if (!this.busy) {
-        this[busy].next(true);
+        super.block(true);
         start();
       }
     });

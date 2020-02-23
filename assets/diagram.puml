@@ -64,7 +64,7 @@ abstract class MachineResource<T> {
   +busy$: Observable<boolean>
   #next()
   #raise()
-  #enqueue()
+  #block()
 }
 
 MachineSubject <|-- MachineResource
@@ -76,6 +76,32 @@ class MachineSubject<T> {
   +busy$: Observable<boolean>
   +next()
   +raise()
+  +block()
+}
+
+MachineQueueResource <|-- MachineResource
+abstract class MachineQueueResource<T> {
+  +state: T
+  +state$: Observable<T>
+  +error$: Observable<Error>
+  +busy: boolean
+  +busy$: Observable<boolean>
+  #next()
+  #raise()
+  #block()
+  #enqueue()
+}
+
+MachineQueueSubject <|-- MachineQueueResource
+class MachineQueueSubject<T> {
+  +state: T
+  +state$: Observable<T>
+  +error$: Observable<Error>
+  +busy: boolean
+  +busy$: Observable<boolean>
+  +next()
+  +raise()
+  +block()
   +enqueue()
 }
 
