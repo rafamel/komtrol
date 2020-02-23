@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MachineSubject | supersour 0.7.0</title>
+	<title>MachineQueueResource | supersour 0.7.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="machinesubject.html">MachineSubject</a>
+					<a href="machinequeueresource.html">MachineQueueResource</a>
 				</li>
 			</ul>
-			<h1>Class MachineSubject&lt;S, T, D&gt;</h1>
+			<h1>Class MachineQueueResource&lt;S, T, D&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -80,10 +80,15 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="machineresource.html" class="tsd-signature-type">MachineResource</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="machineresource.html" class="tsd-signature-type">MachineResource</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">MachineSubject</span>
+								<span class="target">MachineQueueResource</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="machinequeuesubject.html" class="tsd-signature-type">MachineQueueSubject</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -102,53 +107,54 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="machinesubject.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="machinequeueresource.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="machinesubject.html#deps" class="tsd-kind-icon">deps</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="machinequeueresource.html#deps" class="tsd-kind-icon">deps</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinesubject.html#busy" class="tsd-kind-icon">busy</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinesubject.html#busy_" class="tsd-kind-icon">busy$</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinesubject.html#error_" class="tsd-kind-icon">error$</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="machinesubject.html#state" class="tsd-kind-icon">state</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="machinesubject.html#state_" class="tsd-kind-icon">state$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinequeueresource.html#busy" class="tsd-kind-icon">busy</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinequeueresource.html#busy_" class="tsd-kind-icon">busy$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinequeueresource.html#error_" class="tsd-kind-icon">error$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="machinequeueresource.html#state" class="tsd-kind-icon">state</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="machinequeueresource.html#state_" class="tsd-kind-icon">state$</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="machinesubject.html#block" class="tsd-kind-icon">block</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="machinesubject.html#next" class="tsd-kind-icon">next</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="machinesubject.html#raise" class="tsd-kind-icon">raise</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="machinequeueresource.html#block" class="tsd-kind-icon">block</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected"><a href="machinequeueresource.html#enqueue" class="tsd-kind-icon">enqueue</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="machinequeueresource.html#next" class="tsd-kind-icon">next</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="machinequeueresource.html#raise" class="tsd-kind-icon">raise</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Machine<wbr>Subject<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">StateMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="machinesubject.html" class="tsd-signature-type">MachineSubject</a></li>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Machine<wbr>Queue<wbr>Resource<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, deps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">D</span>, map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">StateMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="machinequeueresource.html" class="tsd-signature-type">MachineQueueResource</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="machineresource.html">MachineResource</a>.<a href="machineresource.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/concrete/Subject.ts#L35">sources/concrete/Subject.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/abstract/MachineResource.ts#L46">sources/abstract/MachineResource.ts:46</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -157,10 +163,13 @@
 									<h5>state: <span class="tsd-signature-type">S</span></h5>
 								</li>
 								<li>
+									<h5>deps: <span class="tsd-signature-type">D</span></h5>
+								</li>
+								<li>
 									<h5>map: <span class="tsd-signature-type">StateMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="machinesubject.html" class="tsd-signature-type">MachineSubject</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="machinequeueresource.html" class="tsd-signature-type">MachineQueueResource</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -299,12 +308,12 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="block" class="tsd-anchor"></a>
-					<h3>block</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> block</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">block<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
@@ -312,9 +321,17 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="machineresource.html">MachineResource</a>.<a href="machineresource.html#block">block</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/concrete/Subject.ts#L45">sources/concrete/Subject.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/abstract/MachineResource.ts#L58">sources/abstract/MachineResource.ts:58</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Controls the <code>busy</code> property and <code>busy$</code> stream.
+										If the queue is executing and it&#39;s set to <code>true</code>,
+										it will continue executing but won&#39;t automatically unblock
+									on its finalization.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -325,20 +342,81 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
+					<a name="enqueue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> enqueue</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">enqueue&lt;T&gt;<span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/abstract/MachineResource.ts#L68">sources/abstract/MachineResource.ts:68</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds a task -<code>fn</code>- to be executed.
+										It will start once the last task in the queue -if any- has completed.
+										All <code>Error</code>s thrown will be automatically added to the <code>error$</code> stream.
+									Returns a <code>Promise</code> that resolves with the value returned by <code>fn</code>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>fn: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+														<span class="tsd-signature-symbol"> | </span>
+														<span class="tsd-signature-type">T</span>
+													</h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="next" class="tsd-anchor"></a>
-					<h3>next</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> next</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">next<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span>, compare<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#next">next</a></p>
+								<p>Inherited from <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#next">next</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/concrete/Subject.ts#L39">sources/concrete/Subject.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/abstract/Enclosure.ts#L47">sources/abstract/Enclosure.ts:47</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Updates the instance <code>state</code>.
+										If it is an <em>object,</em> it will create a new state <em>object</em>
+										by merging <code>state</code> with the current instance state.
+										If <code>compare</code> is <code>true</code> and the current <code>state</code> is shallow
+									equal to its update, it won&#39;t emit.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -352,20 +430,25 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="raise" class="tsd-anchor"></a>
-					<h3>raise</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> raise</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">raise<span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="reporterresource.html">ReporterResource</a>.<a href="reporterresource.html#raise">raise</a></p>
+								<p>Inherited from <a href="reporterresource.html">ReporterResource</a>.<a href="reporterresource.html#raise">raise</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/concrete/Subject.ts#L42">sources/concrete/Subject.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/143a40c/src/sources/abstract/ReporterResource.ts#L27">sources/abstract/ReporterResource.ts:27</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds an <code>Error</code> to the instance <code>error$</code> stream.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -391,54 +474,57 @@
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="enclosure.html" class="tsd-kind-icon">Enclosure</a>
 					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-has-type-parameter">
 						<a href="machinequeueresource.html" class="tsd-kind-icon">Machine<wbr>Queue<wbr>Resource</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="machinequeueresource.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="machinequeueresource.html#deps" class="tsd-kind-icon">deps</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="machinequeueresource.html#busy" class="tsd-kind-icon">busy</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="machinequeueresource.html#busy_" class="tsd-kind-icon">busy$</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="machinequeueresource.html#error_" class="tsd-kind-icon">error$</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="machinequeueresource.html#state" class="tsd-kind-icon">state</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="machinequeueresource.html#state_" class="tsd-kind-icon">state$</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="machinequeueresource.html#block" class="tsd-kind-icon">block</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
+								<a href="machinequeueresource.html#enqueue" class="tsd-kind-icon">enqueue</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="machinequeueresource.html#next" class="tsd-kind-icon">next</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="machinequeueresource.html#raise" class="tsd-kind-icon">raise</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="machinequeuesubject.html" class="tsd-kind-icon">Machine<wbr>Queue<wbr>Subject</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="machineresource.html" class="tsd-kind-icon">Machine<wbr>Resource</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-class tsd-has-type-parameter">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="machinesubject.html" class="tsd-kind-icon">Machine<wbr>Subject</a>
-						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="machinesubject.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="machinesubject.html#deps" class="tsd-kind-icon">deps</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="machinesubject.html#busy" class="tsd-kind-icon">busy</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="machinesubject.html#busy_" class="tsd-kind-icon">busy$</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="machinesubject.html#error_" class="tsd-kind-icon">error$</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="machinesubject.html#state" class="tsd-kind-icon">state</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="machinesubject.html#state_" class="tsd-kind-icon">state$</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="machinesubject.html#block" class="tsd-kind-icon">block</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="machinesubject.html#next" class="tsd-kind-icon">next</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="machinesubject.html#raise" class="tsd-kind-icon">raise</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="operation.html" class="tsd-kind-icon">Operation</a>
 					</li>

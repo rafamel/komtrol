@@ -1,3 +1,17 @@
+# [0.7.0](https://github.com/rafamel/supersour/compare/v0.6.1...v0.7.0) (2020-02-23)
+
+
+### Features
+
+* **sources:** adds MachineQueueResource and modifies MachineResource api ([143a40c](https://github.com/rafamel/supersour/commit/143a40c2a675b946ac856d769d14920b1e30f8c6))
+
+
+### BREAKING CHANGES
+
+* **sources:** MachineResource no longer has an enqueue method. See MachineQueueResource.
+
+
+
 ## [0.6.1](https://github.com/rafamel/supersour/compare/v0.6.0...v0.6.1) (2020-02-22)
 
 
