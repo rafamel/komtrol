@@ -2,6 +2,7 @@ import { EmptyUnion, Source } from '../sources';
 import { LifecycleFn } from './types';
 import { useRef, useMemo, useState, useEffect } from 'react';
 import { Handler } from 'proxy-handler';
+import { skip } from 'rxjs/operators';
 
 export function useSourceTrunk<
   S = EmptyUnion,
@@ -30,7 +31,7 @@ export function useSourceTrunk<
     if (events && events.mount) events.mount(context);
 
     let i = 1;
-    const subscription = controller.state$.subscribe((): void => {
+    const subscription = controller.state$.pipe(skip(1)).subscribe((): void => {
       if (!running.current) update(i++);
     });
     return () => {

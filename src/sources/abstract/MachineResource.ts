@@ -1,5 +1,4 @@
 import { Observable, BehaviorSubject } from 'rxjs';
-import { skip } from 'rxjs/operators';
 import { EmptyUnion, StateMap, Machine } from '../types';
 import { ReporterResource } from './ReporterResource';
 
@@ -28,7 +27,7 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
    * Observable streaming changes in `instance.busy`.
    */
   public get busy$(): Observable<boolean> {
-    return this[busy].pipe(skip(1));
+    return this[busy].asObservable();
   }
   /**
    * Controls the `busy` property and `busy$` stream.

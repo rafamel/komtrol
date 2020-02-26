@@ -1,5 +1,4 @@
 import { Observable, BehaviorSubject } from 'rxjs';
-import { skip } from 'rxjs/operators';
 import { shallowEqual as shallow } from 'shallow-equal-object';
 import { EmptyUnion, StateMapFn, StateMap } from '../types';
 
@@ -35,7 +34,7 @@ export abstract class Enclosure<S, T = S, D = EmptyUnion> {
    * when updated through the `next` method.
    */
   protected get state$(): Observable<T> {
-    return this[subject].pipe(skip(1));
+    return this[subject].asObservable();
   }
   /**
    * Updates the instance `state`.

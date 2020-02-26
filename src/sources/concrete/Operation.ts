@@ -48,7 +48,7 @@ export class Operation<T, R = unknown> implements Source<T> {
     for (const entry of entries) {
       const { state, state$ } = entry[1];
       initials.push(state);
-      observables.push(merge(of(state), state$));
+      observables.push(state$);
     }
 
     const map = (values: any[]): SourcesRecordCombineState<T> => {
@@ -59,9 +59,10 @@ export class Operation<T, R = unknown> implements Source<T> {
       return state as SourcesRecordCombineState<T>;
     };
 
+    const values = map(initials);
     return new this(
-      map(initials),
-      combineLatest(observables).pipe(skip(1), _map(map)),
+      values,
+      merge(of(values), combineLatest(observables).pipe(skip(1), _map(map))),
       sources,
       true
     );
@@ -81,10 +82,13 @@ export class Operation<T, R = unknown> implements Source<T> {
 
     return new this(
       state,
-      merge(of(state), source.state$.pipe(_map(map))).pipe(
-        pairwise(),
-        filter(([previous, current]) => !shallow(previous, current)),
-        _map((arr) => arr[1])
+      merge(
+        of(state),
+        merge(of(state), source.state$.pipe(skip(1), _map(map))).pipe(
+          pairwise(),
+          filter(([previous, current]) => !shallow(previous, current)),
+          _map((arr) => arr[1])
+        )
       ),
       source as R,
       false
@@ -116,7 +120,7 @@ export class Operation<T, R = unknown> implements Source<T> {
     return this[subject].value;
   }
   public get state$(): Observable<T> {
-    return this[subject].pipe(skip(1));
+    return this[subject].asObservable();
   }
   public get error$(): ReporterValue<R, 'error$'> {
     const source: any = this.source;
@@ -152,13 +156,21 @@ export class Operation<T, R = unknown> implements Source<T> {
       .filter(([busy, busy$]) => typeof busy === 'boolean' && Boolean(busy$));
 
     if (!arr.length) return undefined as any;
-    return combineLatest(
-      arr.map(([busy, busy$]) => merge(of(busy), busy$))
-    ).pipe(
-      _map((values) => values.reduce((acc, busy) => acc || busy, false)),
-      pairwise(),
-      filter(([a, b]) => a !== b),
-      _map((values) => values[1])
+
+    const map = (values: boolean[]): boolean => {
+      return values.reduce((acc, busy) => acc || busy);
+    };
+    const initial = map(arr.map(([busy]) => busy));
+    return merge(
+      of(initial),
+      merge(
+        of(initial),
+        combineLatest(arr.map((item) => item[1])).pipe(skip(1), _map(map))
+      ).pipe(
+        pairwise(),
+        filter(([a, b]) => a !== b),
+        _map((values) => values[1])
+      )
     ) as any;
   }
   /**

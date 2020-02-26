@@ -1,6 +1,6 @@
 import { shallowEqual as shallow } from 'shallow-equal-object';
 import { Source, Operation } from './sources';
-import { Observable, merge, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 export interface MatchOptions {
@@ -47,9 +47,6 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
  * That implies the operation will be run independently
  * for each observable subscription, but also that it will be
  * terminated once the observable is no longer being consumed.
- * As an additional difference with `Operation.state$`,
- * the returned `Observable` will also emit its initial value
- * upon subscription.
  */
 export function operation<T>(
   fn: (operations: Operations) => Operation<T, any>
@@ -60,19 +57,17 @@ export function operation<T>(
   };
   return new Observable<T>((obs) => {
     const operation = fn(operations);
-    const subscription = merge(of(operation.state), operation.state$).subscribe(
-      {
-        next: (value) => obs.next(value),
-        error(err) {
-          obs.error(err);
-          operation.teardown();
-        },
-        complete() {
-          obs.complete();
-          operation.teardown();
-        }
+    const subscription = operation.state$.subscribe({
+      next: (value) => obs.next(value),
+      error(err) {
+        obs.error(err);
+        operation.teardown();
+      },
+      complete() {
+        obs.complete();
+        operation.teardown();
       }
-    );
+    });
     return () => {
       subscription.unsubscribe();
       operation.teardown();
@@ -84,7 +79,7 @@ export function operation<T>(
  * Given a `source` and a partial `state` object for it,
  * it will evaluate whether the values of `state`
  * match -are shallow equal- to those of the `source`'s state,
- * without taking into account non existing keys in the partial `state`.
+ * without taking into account non-existing keys in the partial `state`.
  * It will return an `Observable` that emits match changes.
  * If `debounce` is set, it will wait until the `source`'s state matches
  * `state` without interruption for the given amount of milliseconds.
@@ -116,7 +111,7 @@ export function match<T>(
     let next: null | boolean = null;
     let timeout: null | NodeJS.Timeout = null;
 
-    const subscription = merge(of(source.state), source.state$).subscribe({
+    const subscription = source.state$.subscribe({
       next(state) {
         const value = isMatch(state);
 
