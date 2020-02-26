@@ -1,3 +1,18 @@
+# [0.8.0](https://github.com/rafamel/supersour/compare/v0.7.0...v0.8.0) (2020-02-26)
+
+
+### Features
+
+* Observables emit their current value upon subscription, if there is one ([d25e79e](https://github.com/rafamel/supersour/commit/d25e79e094296f9e59b605096f87ed80156120f3))
+
+
+### BREAKING CHANGES
+
+* Observables don't wait for a event to emit their first value; they will emit upon
+subscription with the current value for the field
+
+
+
 # [0.7.0](https://github.com/rafamel/supersour/compare/v0.6.1...v0.7.0) (2020-02-23)
 
 
