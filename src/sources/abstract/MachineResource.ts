@@ -50,9 +50,8 @@ export abstract class MachineQueueResource<S, T = S, D = EmptyUnion>
   }
   /**
    * Controls the `busy` property and `busy$` stream.
-   * If the queue is executing and it's set to `true`,
-   * it will continue executing but won't automatically
-   * set it as `false` on its finalization.
+   * If set to `true`, `busy` but won't automatically
+   * be set to false on queue finalization.
    */
   protected engage(value: boolean): void {
     super.engage(value);
@@ -88,7 +87,7 @@ export abstract class MachineQueueResource<S, T = S, D = EmptyUnion>
         }
       });
 
-      if (!this.busy) {
+      if (!this.busy || this[manual]) {
         super.engage(true);
         start();
       }
