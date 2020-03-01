@@ -26,8 +26,8 @@ export class ReporterSubject<S, T = S> extends ReporterResource<S, T>
   public next(state: Partial<S>, compare?: boolean): void {
     return super.next(state, compare);
   }
-  public raise(err: Error): void {
-    return super.raise(err);
+  public report(err: Error): void {
+    return super.report(err);
   }
 }
 
@@ -39,11 +39,11 @@ export class MachineSubject<S, T = S> extends MachineResource<S, T>
   public next(state: Partial<S>, compare?: boolean): void {
     return super.next(state, compare);
   }
-  public raise(err: Error): void {
-    return super.raise(err);
+  public report(err: Error): void {
+    return super.report(err);
   }
-  public block(value: boolean): void {
-    return super.block(value);
+  public engage(value: boolean): void {
+    return super.engage(value);
   }
 }
 
@@ -55,11 +55,11 @@ export class MachineQueueSubject<S, T = S> extends MachineQueueResource<S, T>
   public next(state: Partial<S>, compare?: boolean): void {
     return super.next(state, compare);
   }
-  public raise(err: Error): void {
-    return super.raise(err);
+  public report(err: Error): void {
+    return super.report(err);
   }
-  public block(value: boolean): void {
-    return super.block(value);
+  public engage(value: boolean): void {
+    return super.engage(value);
   }
   public async enqueue<T>(fn: () => Promise<T> | T): Promise<T> {
     return super.enqueue(fn);

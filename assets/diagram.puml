@@ -42,7 +42,7 @@ abstract class ReporterResource<T> {
   +state$: Observable<T>
   +error$: Observable<Error>
   #next()
-  #raise()
+  #report()
 }
 
 ReporterSubject <|-- ReporterResource
@@ -51,7 +51,7 @@ class ReporterSubject<T> {
   +state$: Observable<T>
   +error$: Observable<Error>
   +next()
-  +raise()
+  +report()
 }
 
 MachineResource <|.. Machine
@@ -63,8 +63,8 @@ abstract class MachineResource<T> {
   +busy: boolean
   +busy$: Observable<boolean>
   #next()
-  #raise()
-  #block()
+  #report()
+  #engage()
 }
 
 MachineSubject <|-- MachineResource
@@ -75,8 +75,8 @@ class MachineSubject<T> {
   +busy: boolean
   +busy$: Observable<boolean>
   +next()
-  +raise()
-  +block()
+  +report()
+  +engage()
 }
 
 MachineQueueResource <|-- MachineResource
@@ -87,8 +87,8 @@ abstract class MachineQueueResource<T> {
   +busy: boolean
   +busy$: Observable<boolean>
   #next()
-  #raise()
-  #block()
+  #report()
+  #engage()
   #enqueue()
 }
 
@@ -100,8 +100,8 @@ class MachineQueueSubject<T> {
   +busy: boolean
   +busy$: Observable<boolean>
   +next()
-  +raise()
-  +block()
+  +report()
+  +engage()
   +enqueue()
 }
 

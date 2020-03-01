@@ -24,7 +24,7 @@ export abstract class ReporterResource<S, T = S, D = EmptyUnion>
   /**
    * Adds an `Error` to the instance `error$` stream.
    */
-  protected raise(err: Error): void {
+  protected report(err: Error): void {
     this[error].next(err);
   }
 }

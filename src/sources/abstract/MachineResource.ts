@@ -32,7 +32,7 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
   /**
    * Controls the `busy` property and `busy$` stream.
    */
-  protected block(value: boolean): void {
+  protected engage(value: boolean): void {
     if (this.busy && !value) this[busy].next(false);
     else if (!this.busy && value) this[busy].next(true);
   }
@@ -51,11 +51,11 @@ export abstract class MachineQueueResource<S, T = S, D = EmptyUnion>
   /**
    * Controls the `busy` property and `busy$` stream.
    * If the queue is executing and it's set to `true`,
-   * it will continue executing but won't automatically unblock
-   * on its finalization.
+   * it will continue executing but won't automatically
+   * set it as `false` on its finalization.
    */
-  protected block(value: boolean): void {
-    super.block(value);
+  protected engage(value: boolean): void {
+    super.engage(value);
     this[manual] = this.busy;
   }
   /**
@@ -71,10 +71,10 @@ export abstract class MachineQueueResource<S, T = S, D = EmptyUnion>
           const cb = this[queue].shift();
           if (cb) await cb();
         } catch (err) {
-          this.raise(err);
+          this.report(err);
         }
       }
-      if (!this[manual]) super.block(false);
+      if (!this[manual]) super.engage(false);
     };
 
     return new Promise<T>((resolve, reject) => {
@@ -89,7 +89,7 @@ export abstract class MachineQueueResource<S, T = S, D = EmptyUnion>
       });
 
       if (!this.busy) {
-        super.block(true);
+        super.engage(true);
         start();
       }
     });
