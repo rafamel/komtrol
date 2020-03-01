@@ -71,6 +71,7 @@ export abstract class MachineQueueResource<S, T = S, D = EmptyUnion>
       while (this[queue].length) {
         try {
           const cb = this[queue].shift();
+          /* istanbul ignore next */
           if (cb) await cb();
         } catch (err) {
           this.report(err);
