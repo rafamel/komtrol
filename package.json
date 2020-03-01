@@ -79,7 +79,7 @@
     "typescript": "^3.8.2"
   },
   "dependencies": {
-    "proxy-handler": "^0.1.1",
+    "proxy-handler": "^0.2.0",
     "shallow-equal-object": "^1.1.1"
   },
   "peerDependencies": {
