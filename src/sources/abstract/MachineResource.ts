@@ -33,6 +33,9 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
    * Controls the `busy` property and `busy$` stream.
    */
   protected engage(value: boolean): void {
+    if (typeof value !== 'boolean') {
+      throw Error(`Value must be a boolean`);
+    }
     if (this.busy && !value) this[busy].next(false);
     else if (!this.busy && value) this[busy].next(true);
   }

@@ -74,6 +74,7 @@
     "kpo": "^0.11.1",
     "node-plantuml": "^0.9.0",
     "onchange": "^6.0.0",
+    "promist": "^2.0.2",
     "react": "^16.12.0",
     "rxjs": "^6.5.4",
     "typescript": "^3.8.2"
