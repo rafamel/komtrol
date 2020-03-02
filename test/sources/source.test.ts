@@ -60,7 +60,7 @@ describe(`state, state$`, () => {
     const a = new Subject(state, null);
     const b = new Subject(state, () => state);
 
-    let values: any[] = [];
+    const values: any[] = [];
     a.state$.subscribe((value) => values.push(value)).unsubscribe();
     b.state$.subscribe((value) => values.push(value)).unsubscribe();
 

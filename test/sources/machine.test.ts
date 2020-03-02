@@ -100,7 +100,7 @@ describe(`MachineQueue`, () => {
     subject.engage(true);
     expect(mocks.engage).toHaveBeenLastCalledWith(true);
 
-    const fn = () => null;
+    const fn = (): null => null;
     subject.enqueue(fn);
     expect(mocks.enqueue).toHaveBeenLastCalledWith(fn);
   });
