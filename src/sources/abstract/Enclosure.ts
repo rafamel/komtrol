@@ -19,8 +19,11 @@ export abstract class Enclosure<S, T = S, D = EmptyUnion> {
   protected deps: D;
   protected constructor(state: S, deps: D, map: StateMap<S, T>) {
     this[fn] = (map || ((state: S) => state)) as StateMapFn<S, T>;
-    this[value] = state;
-    this[subject] = new BehaviorSubject(this[fn](state));
+    this[value] =
+      typeof state === 'object' && state !== null && !Array.isArray(state)
+        ? { ...state }
+        : state;
+    this[subject] = new BehaviorSubject(this[fn](this[value]));
     this.deps = deps as D;
   }
   /**
@@ -44,23 +47,14 @@ export abstract class Enclosure<S, T = S, D = EmptyUnion> {
    * equal to its update, it won't emit.
    */
   protected next(state: Partial<S>, compare?: boolean): void {
-    const update =
-      typeof state === 'object' && state !== null
+    const update: S =
+      typeof state === 'object' && state !== null && !Array.isArray(state)
         ? { ...this[value], ...state }
-        : state;
+        : (state as any);
 
     if (compare && shallow(update, this[value])) return;
 
-    let next = this[fn](update);
-    if (
-      next === this[subject].value &&
-      typeof next === 'object' &&
-      next !== null
-    ) {
-      next = { ...next };
-    }
-
     this[value] = update;
-    this[subject].next(next);
+    this[subject].next(this[fn](update));
   }
 }
