@@ -91,7 +91,7 @@ export function match<T>(
 ): Observable<boolean> {
   const debounce = options && options.debounce;
   const keys: null | Array<keyof T> =
-    typeof state === 'object' && state !== null
+    typeof state === 'object' && state !== null && !Array.isArray(state)
       ? (Object.keys(state) as Array<keyof T>)
       : null;
 
