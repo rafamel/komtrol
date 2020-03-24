@@ -1,3 +1,38 @@
+# [0.9.0](https://github.com/rafamel/supersour/compare/v0.8.0...v0.9.0) (2020-03-24)
+
+
+### Bug Fixes
+
+* **deps:** updates dependencies ([d93113c](https://github.com/rafamel/supersour/commit/d93113cd3a6574ff47c75723bf3cbce388aedce9))
+* **sources:** fixes Enclosure's state merging ([eeb82bb](https://github.com/rafamel/supersour/commit/eeb82bb0e3d33b69646ffb3a29e4b1ad3f63e6b5))
+* **sources:** fixes MachineQueueResource's queue when busy is manually set ([fbefbe9](https://github.com/rafamel/supersour/commit/fbefbe960f54c7396de650b5a9b905b821a13898))
+* **utils:** fixes match when state is an array ([c503e52](https://github.com/rafamel/supersour/commit/c503e5224fc4a37c32217b1bd27d63fe1691cb10))
+
+
+### Code Refactoring
+
+* **sources:** renames methods: raise to report, block to engage ([5e07351](https://github.com/rafamel/supersour/commit/5e073511334b6e94caa994f8ed033fd31e9fe688))
+
+
+### Features
+
+* **utils:** changes match api ([207e421](https://github.com/rafamel/supersour/commit/207e4218a31d45c04586483ab60da6098c223f90))
+
+
+### Reverts
+
+* **sources:** removes MachineQueueResource and MachineQueueSubject ([1a62887](https://github.com/rafamel/supersour/commit/1a62887d923e631717f1943264fc0650a6c74f91))
+
+
+### BREAKING CHANGES
+
+* **sources:** MachineQueueResoource and MachineQueueSubject are no longer part of this module
+* **utils:** match, previously taking an "only" option, takes an "omit" option for the same
+purpose, with reverse logic
+* **sources:** Reporter's raise method is now report; Machine's block method is now engage
+
+
+
 # [0.8.0](https://github.com/rafamel/supersour/compare/v0.7.0...v0.8.0) (2020-02-26)
 
 
