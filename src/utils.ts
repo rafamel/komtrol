@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 export interface MatchOptions {
+  omit?: boolean | null;
   debounce?: number | null;
-  only?: boolean | null;
 }
 
 type Operations = { [P in OperationStatic]: typeof Operation[P] };
@@ -153,7 +153,7 @@ export function match<T>(
     };
   });
 
-  return options && typeof options.only === 'boolean'
-    ? observable.pipe(filter((value) => value === options.only))
+  return options && typeof options.omit === 'boolean'
+    ? observable.pipe(filter((value) => value !== options.omit))
     : observable;
 }
