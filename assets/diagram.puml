@@ -79,30 +79,4 @@ class MachineSubject<T> {
   +engage()
 }
 
-MachineQueueResource <|-- MachineResource
-abstract class MachineQueueResource<T> {
-  +state: T
-  +state$: Observable<T>
-  +error$: Observable<Error>
-  +busy: boolean
-  +busy$: Observable<boolean>
-  #next()
-  #report()
-  #engage()
-  #enqueue()
-}
-
-MachineQueueSubject <|-- MachineQueueResource
-class MachineQueueSubject<T> {
-  +state: T
-  +state$: Observable<T>
-  +error$: Observable<Error>
-  +busy: boolean
-  +busy$: Observable<boolean>
-  +next()
-  +report()
-  +engage()
-  +enqueue()
-}
-
 @enduml
