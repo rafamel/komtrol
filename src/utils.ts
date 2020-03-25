@@ -1,5 +1,5 @@
 import { shallowEqual as shallow } from 'shallow-equal-object';
-import { Source, Operation } from './sources';
+import { Operation } from './sources';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -76,16 +76,16 @@ export function operation<T>(
 }
 
 /**
- * Given a `source` and a partial `state` object for it,
- * it will evaluate whether the values of `state`
- * match -are shallow equal- to those of the `source`'s state,
- * without taking into account non-existing keys in the partial `state`.
+ * Given an `observable` and a partial `state` object for it,
+ * it will evaluate whether the emitted values match
+ * -are shallow equal to- the provided partial state,
+ * without taking into account non-existing keys in the partial.
  * It will return an `Observable` that emits match changes.
- * If `debounce` is set, it will wait until the `source`'s state matches
- * `state` without interruption for the given amount of milliseconds.
+ * If `debounce` is set, it will wait until the match occurs
+ * without interruption for the given amount of milliseconds.
  */
 export function match<T>(
-  source: Source<T>,
+  observable: Observable<T>,
   state: Partial<T>,
   options?: MatchOptions
 ): Observable<boolean> {
@@ -106,12 +106,12 @@ export function match<T>(
     return true;
   };
 
-  const observable = new Observable<boolean>((obs) => {
+  const outerObs = new Observable<boolean>((obs) => {
     let last: null | boolean = null;
     let next: null | boolean = null;
     let timeout: null | NodeJS.Timeout = null;
 
-    const subscription = source.state$.subscribe({
+    const subscription = observable.subscribe({
       next(state) {
         const value = isMatch(state);
 
@@ -154,6 +154,6 @@ export function match<T>(
   });
 
   return options && typeof options.omit === 'boolean'
-    ? observable.pipe(filter((value) => value !== options.omit))
-    : observable;
+    ? outerObs.pipe(filter((value) => value !== options.omit))
+    : outerObs;
 }
