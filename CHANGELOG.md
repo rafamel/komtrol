@@ -1,3 +1,17 @@
+# [0.10.0](https://github.com/rafamel/supersour/compare/v0.9.0...v0.10.0) (2020-03-25)
+
+
+### improvement
+
+* **utils:** match takes an observable instead of a source ([96db3dd](https://github.com/rafamel/supersour/commit/96db3ddcd53e47bf0ea6644f0346baa349a75f15))
+
+
+### BREAKING CHANGES
+
+* **utils:** match takes an Observable as its first argument instead of a Source
+
+
+
 # [0.9.0](https://github.com/rafamel/supersour/compare/v0.8.0...v0.9.0) (2020-03-24)
 
 
