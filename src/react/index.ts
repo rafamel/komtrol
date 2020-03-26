@@ -1,2 +1,2 @@
-export * from './use-source';
+export * from './hook';
 export * from './types';

@@ -8,12 +8,12 @@ export function useSource<S = EmptyUnion, T extends Source<S> = Source<S>>(
 ): T;
 export function useSource<
   S = EmptyUnion,
-  C extends object = object,
+  D extends object = object,
   T extends Source<S> = Source<S>
 >(
-  context: C,
-  source: (context: C) => T & Source<S>,
-  lifecycle?: LifecycleFn<T, C>
+  deps: D,
+  source: (deps: D) => T & Source<S>,
+  lifecycle?: LifecycleFn<T, D>
 ): T;
 export function useSource(a: any, b?: any, c?: any): Source<any> {
   return typeof a === 'function'

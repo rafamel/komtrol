@@ -1,23 +1,23 @@
+import { useRef, useMemo, useState, useEffect } from 'react';
+import { skip } from 'rxjs/operators';
+import { Handler } from 'proxy-handler';
 import { EmptyUnion, Source } from '../sources';
 import { LifecycleFn } from './types';
-import { useRef, useMemo, useState, useEffect } from 'react';
-import { Handler } from 'proxy-handler';
-import { skip } from 'rxjs/operators';
 
 export function useSourceTrunk<
   S = EmptyUnion,
-  C extends object = object,
+  D extends object = object,
   T extends Source<S> = Source<S>
 >(
-  context: C,
-  source: (context: C) => T & Source<S>,
-  lifecycle?: LifecycleFn<T, C>
+  deps: D,
+  source: (deps: D) => T & Source<S>,
+  lifecycle?: LifecycleFn<T, D>
 ): T {
   const running = useRef(true);
   running.current = true;
 
-  const cxt = useRef(context);
-  cxt.current = context;
+  const cxt = useRef(deps);
+  cxt.current = deps;
   const wrap = useMemo(() => Handler.proxy(() => cxt.current), []);
 
   const controller = useMemo(() => source(wrap), []);
@@ -28,7 +28,7 @@ export function useSourceTrunk<
 
   const update = useState(0)[1];
   useEffect(() => {
-    if (events && events.mount) events.mount(context);
+    if (events && events.mount) events.mount(deps);
 
     let i = 1;
     const subscription = controller.state$.pipe(skip(1)).subscribe((): void => {
@@ -41,18 +41,18 @@ export function useSourceTrunk<
   }, []);
 
   const initialized = useRef(false);
-  const previous = useRef<C | null>(null);
+  const previous = useRef<D | null>(null);
   useEffect(() => {
-    if (events && events.every) events.every(context, previous.current);
+    if (events && events.every) events.every(deps, previous.current);
     if (initialized.current) {
-      if (events && events.update && context !== previous.current) {
-        events.update(context, previous.current as C);
+      if (events && events.update && deps !== previous.current) {
+        events.update(deps, previous.current as D);
       }
     } else {
       initialized.current = true;
     }
 
-    previous.current = context;
+    previous.current = deps;
   });
 
   running.current = false;

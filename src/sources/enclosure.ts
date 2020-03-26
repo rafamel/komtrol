@@ -1,5 +1,5 @@
 import { Observable, BehaviorSubject } from 'rxjs';
-import { shallowEqual as shallow } from 'shallow-equal-object';
+import { shallow } from 'equal-strategies';
 import { EmptyUnion, StateMapFn, StateMap } from './types';
 
 const fn = Symbol('fn');

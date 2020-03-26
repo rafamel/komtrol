@@ -1,4 +1,4 @@
-import { shallowEqual as shallow } from 'shallow-equal-object';
+import { shallow } from 'equal-strategies';
 
 /**
  * Simple last value memoization for `fn`.
@@ -18,7 +18,7 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
     }
 
     const dependencies = deps();
-    const isSame = shallow(dependencies, lastDependencies);
+    const isSame = shallow(lastDependencies, dependencies);
     if (isSame) return lastResult;
 
     lastDependencies = dependencies;
