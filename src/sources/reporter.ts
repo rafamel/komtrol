@@ -1,6 +1,6 @@
-import { EmptyUnion, StateMap, Reporter } from '../types';
 import { Subject, Observable } from 'rxjs';
-import { Resource } from './Resource';
+import { Resource } from './source';
+import { EmptyUnion, StateMap, Reporter } from './types';
 
 const error = Symbol('error');
 
@@ -26,5 +26,18 @@ export abstract class ReporterResource<S, T = S, D = EmptyUnion>
    */
   protected report(err: Error): void {
     this[error].next(err);
+  }
+}
+
+export class ReporterSubject<S, T = S> extends ReporterResource<S, T>
+  implements Reporter<T> {
+  public constructor(state: S, map: StateMap<S, T>) {
+    super(state, null, map);
+  }
+  public next(state: Partial<S>, compare?: boolean): void {
+    return super.next(state, compare);
+  }
+  public report(err: Error): void {
+    return super.report(err);
   }
 }

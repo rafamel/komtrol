@@ -1,6 +1,6 @@
 import { Observable, BehaviorSubject } from 'rxjs';
-import { EmptyUnion, StateMap, Machine } from '../types';
-import { ReporterResource } from './ReporterResource';
+import { ReporterResource } from './reporter';
+import { EmptyUnion, StateMap, Machine } from './types';
 
 const busy = Symbol('busy');
 
@@ -36,5 +36,21 @@ export abstract class MachineResource<S, T = S, D = EmptyUnion>
     }
     if (this.busy && !value) this[busy].next(false);
     else if (!this.busy && value) this[busy].next(true);
+  }
+}
+
+export class MachineSubject<S, T = S> extends MachineResource<S, T>
+  implements Machine<T> {
+  public constructor(state: S, map: StateMap<S, T>) {
+    super(state, null, map);
+  }
+  public next(state: Partial<S>, compare?: boolean): void {
+    return super.next(state, compare);
+  }
+  public report(err: Error): void {
+    return super.report(err);
+  }
+  public engage(value: boolean): void {
+    return super.engage(value);
   }
 }
