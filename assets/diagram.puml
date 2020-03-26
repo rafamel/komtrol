@@ -28,8 +28,8 @@ abstract class Resource<T> {
   #next()
 }
 
-Subject <|-- Resource
-class Subject<T> {
+SourceSubject <|-- Resource
+class SourceSubject<T> {
   +state: T
   +state$: Observable<T>
   +next()

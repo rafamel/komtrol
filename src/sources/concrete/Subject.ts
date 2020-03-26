@@ -4,7 +4,8 @@ import { Resource, ReporterResource, MachineResource } from '../abstract';
 /**
  * A `Source` whose `state` can be externally updated.
  */
-export class Subject<S, T = S> extends Resource<S, T> implements Source<T> {
+export class SourceSubject<S, T = S> extends Resource<S, T>
+  implements Source<T> {
   public constructor(state: S, map: StateMap<S, T>) {
     super(state, null, map);
   }

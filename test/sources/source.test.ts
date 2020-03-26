@@ -1,5 +1,5 @@
 import { subscribe } from 'promist';
-import { Enclosure, Subject } from '~/sources';
+import { Enclosure, SourceSubject } from '~/sources';
 
 const state = { foo: 'foo', bar: 'bar' };
 
@@ -10,7 +10,7 @@ const mocks = {
 describe(`preconditions`, () => {
   test(`methods call super`, () => {
     Object.values(mocks).map((mock) => mock.mockClear());
-    const subject = new Subject(null, null);
+    const subject = new SourceSubject(null, null);
 
     expect(mocks.next).toHaveBeenCalledTimes(0);
 
@@ -20,8 +20,8 @@ describe(`preconditions`, () => {
 });
 describe(`state, state$`, () => {
   test(`are set by constructor`, async () => {
-    const a = new Subject(null, null);
-    const b = new Subject(state, null);
+    const a = new SourceSubject(null, null);
+    const b = new SourceSubject(state, null);
 
     expect(a.state).toBe(null);
     expect(b.state).toEqual(state);
@@ -29,7 +29,7 @@ describe(`state, state$`, () => {
     await expect(subscribe(b.state$)).resolves.toEqual(state);
   });
   test(`are successfully mapped`, () => {
-    const subject = new Subject(state, (state) => ({
+    const subject = new SourceSubject(state, (state) => ({
       foo: state.foo,
       baz: 'baz'
     }));
@@ -43,22 +43,22 @@ describe(`state, state$`, () => {
   });
   test(`comply with shallow and deep equality rules`, async () => {
     const arr = ['foo', 'bar'];
-    const a = new Subject(arr, null);
+    const a = new SourceSubject(arr, null);
     expect(a.state).toBe(arr);
     await expect(subscribe(a.state$)).resolves.toBe(a.state);
 
-    const b = new Subject(state, null);
+    const b = new SourceSubject(state, null);
     expect(b.state).toEqual(state);
     expect(b.state).not.toBe(state);
     await expect(subscribe(b.state$)).resolves.toBe(b.state);
 
-    const c = new Subject({ ...state }, () => state);
+    const c = new SourceSubject({ ...state }, () => state);
     expect(c.state).toBe(state);
     await expect(subscribe(c.state$)).resolves.toBe(c.state);
   });
   test(`state$ emits first value synchronously`, () => {
-    const a = new Subject(state, null);
-    const b = new Subject(state, () => state);
+    const a = new SourceSubject(state, null);
+    const b = new SourceSubject(state, () => state);
 
     const values: any[] = [];
     a.state$.subscribe((value) => values.push(value)).unsubscribe();
@@ -69,7 +69,7 @@ describe(`state, state$`, () => {
   });
   test(`access doesn't cause additional map executions`, async () => {
     const fn = jest.fn().mockImplementation((x) => ({ ...x }));
-    const subject = new Subject(state, fn);
+    const subject = new SourceSubject(state, fn);
 
     expect(fn).toHaveBeenCalledTimes(1);
     expect(subject.state).toEqual(state);
@@ -81,7 +81,7 @@ describe(`state, state$`, () => {
 });
 describe(`next`, () => {
   test(`sets state`, async () => {
-    const subject = new Subject(true, null);
+    const subject = new SourceSubject(true, null);
 
     subject.next(false);
     expect(subject.state).toBe(false);
@@ -89,24 +89,24 @@ describe(`next`, () => {
   });
   test(`complies with shallow and deep equality rules`, async () => {
     const arr = ['foo', 'bar'];
-    const a = new Subject(['baz'], null);
+    const a = new SourceSubject(['baz'], null);
     a.next(arr);
     expect(a.state).toBe(arr);
     await expect(subscribe(a.state$)).resolves.toBe(a.state);
 
-    const b = new Subject({ ...state, foo: 'none' }, null);
+    const b = new SourceSubject({ ...state, foo: 'none' }, null);
     b.next(state);
     expect(b.state).toEqual(state);
     expect(b.state).not.toBe(state);
     await expect(subscribe(b.state$)).resolves.toBe(b.state);
 
-    const c = new Subject({ ...state }, () => state);
+    const c = new SourceSubject({ ...state }, () => state);
     c.next({});
     expect(c.state).toBe(state);
     await expect(subscribe(c.state$)).resolves.toBe(c.state);
   });
   test(`sets and merges state for objects`, async () => {
-    const subject = new Subject(state, null);
+    const subject = new SourceSubject(state, null);
 
     subject.next({ bar: 'merge' });
     expect(subject.state).toEqual({ ...state, bar: 'merge' });
@@ -120,7 +120,7 @@ describe(`next`, () => {
       ...state,
       foo: state.foo + '-map'
     }));
-    const subject = new Subject(state, fn);
+    const subject = new SourceSubject(state, fn);
     expect(fn).toHaveBeenCalledTimes(1);
 
     subject.next({ foo: 'update' });
@@ -136,7 +136,7 @@ describe(`next`, () => {
     expect(fn).toHaveBeenCalledTimes(2);
   });
   test(`emits for equal values wo/ compare`, () => {
-    const subject = new Subject(true, null);
+    const subject = new SourceSubject(true, null);
 
     let count = 0;
     const subscription = subject.state$.subscribe(() => count++);
@@ -148,8 +148,8 @@ describe(`next`, () => {
     expect(count).toBe(3);
   });
   test(`emits for equal object inner values wo/ compare`, () => {
-    const a = new Subject({ ...state }, null);
-    const b = new Subject({ ...state }, () => ({ ...state }));
+    const a = new SourceSubject({ ...state }, null);
+    const b = new SourceSubject({ ...state }, () => ({ ...state }));
 
     const counts = [0, 0];
     const subscriptions = [
@@ -167,8 +167,8 @@ describe(`next`, () => {
   });
   test(`emits for equal array inner values wo/ compare`, () => {
     const value = ['foo', 'bar'];
-    const a = new Subject([...value], null);
-    const b = new Subject(['baz'], () => [...value]);
+    const a = new SourceSubject([...value], null);
+    const b = new SourceSubject(['baz'], () => [...value]);
 
     const counts = [0, 0];
     const subscriptions = [
@@ -185,7 +185,7 @@ describe(`next`, () => {
     expect(counts).toEqual([3, 3]);
   });
   test(`doesn't emit for equal values w/ compare`, () => {
-    const subject = new Subject(true, null);
+    const subject = new SourceSubject(true, null);
 
     let count = 0;
     const subscription = subject.state$.subscribe(() => count++);
@@ -197,8 +197,8 @@ describe(`next`, () => {
     expect(count).toBe(1);
   });
   test(`doesn't emit for equal object inner values w/ compare`, () => {
-    const a = new Subject({ ...state }, null);
-    const b = new Subject({ ...state }, () => ({ ...state }));
+    const a = new SourceSubject({ ...state }, null);
+    const b = new SourceSubject({ ...state }, () => ({ ...state }));
 
     const counts = [0, 0];
     const subscriptions = [
@@ -216,8 +216,8 @@ describe(`next`, () => {
   });
   test(`doesn't emit for equal array inner values w/ compare`, () => {
     const value = ['foo', 'bar'];
-    const a = new Subject([...value], null);
-    const b = new Subject(['baz'], () => [...value]);
+    const a = new SourceSubject([...value], null);
+    const b = new SourceSubject(['baz'], () => [...value]);
 
     const counts = [0, 0];
     const subscriptions = [
