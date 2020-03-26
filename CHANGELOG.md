@@ -1,3 +1,24 @@
+# [0.11.0](https://github.com/rafamel/supersour/compare/v0.10.0...v0.11.0) (2020-03-26)
+
+
+### Bug Fixes
+
+* **deps:** updates dependencies ([b763398](https://github.com/rafamel/supersour/commit/b763398e6051b8f7c8e6cd458ca1413d9c73f5da))
+
+
+### Code Refactoring
+
+* **sources:** renames Subject to SourceSubject to prevent conflicts with RxJS ([b5f0906](https://github.com/rafamel/supersour/commit/b5f09060b89c08a80181b83fad471eaaddb4aca0))
+* **sources, utils:** removes Operation source; removes operation and match utils; refactors ([c9fbf55](https://github.com/rafamel/supersour/commit/c9fbf556732f5de117bfa1788d013afdd9fe0b3e))
+
+
+### BREAKING CHANGES
+
+* **sources, utils:** Operation class, as well as the operation and match utils are no longer available
+* **sources:** Subject has been renamed to SourceSubject
+
+
+
 # [0.10.0](https://github.com/rafamel/supersour/compare/v0.9.0...v0.10.0) (2020-03-25)
 
 
