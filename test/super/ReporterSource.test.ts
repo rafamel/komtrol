@@ -1,14 +1,14 @@
 import { subscribe } from 'promist';
-import { Enclosure, ReporterResource, ReporterSubject } from '~/sources';
+import { Enclosure, SuperReporterSource, ReporterSourceSubject } from '~/super';
 
 const mocks = {
   next: jest.spyOn(Enclosure.prototype as any, 'next'),
-  report: jest.spyOn(ReporterResource.prototype as any, 'report')
+  report: jest.spyOn(SuperReporterSource.prototype as any, 'report')
 };
 
 test(`methods call super`, () => {
   Object.values(mocks).map((mock) => mock.mockClear());
-  const subject = new ReporterSubject(null, null);
+  const subject = new ReporterSourceSubject(null, null);
 
   expect(mocks.next).toHaveBeenCalledTimes(0);
   expect(mocks.report).toHaveBeenCalledTimes(0);
@@ -21,7 +21,7 @@ test(`methods call super`, () => {
   expect(mocks.report).toHaveBeenLastCalledWith(err);
 });
 test(`error$ emits on report`, async () => {
-  const subject = new ReporterSubject(null, null);
+  const subject = new ReporterSourceSubject(null, null);
   const err = Error(`foo`);
   const errors: Error[] = [];
   const promise = subscribe(subject.error$);

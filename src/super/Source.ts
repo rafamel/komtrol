@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs';
-import { Enclosure } from './enclosure';
-import { Source, EmptyUnion, StateMap } from './types';
+import { Enclosure } from './Enclosure';
+import { Source, StateMap } from './types';
+import { EmptyUnion } from '../types';
 
 /**
  * A `Source` implementation as an abstract class.
  */
-export abstract class Resource<S, T = S, D = EmptyUnion>
+export abstract class SuperSource<S, T = S, D = EmptyUnion>
   extends Enclosure<S, T, D>
   implements Source<T> {
   /**
@@ -25,10 +26,10 @@ export abstract class Resource<S, T = S, D = EmptyUnion>
 /**
  * A `Source` whose `state` can be externally updated.
  */
-export class SourceSubject<S, T = S> extends Resource<S, T>
+export class SourceSubject<S, T = S> extends SuperSource<S, T>
   implements Source<T> {
-  public constructor(state: S, map: StateMap<S, T>) {
-    super(state, null, map);
+  public constructor(state: S, map?: StateMap<S, T>) {
+    super(state, null, map as StateMap<S, T>);
   }
   public next(state: Partial<S>, compare?: boolean): void {
     return super.next(state, compare);

@@ -1,2 +1,2 @@
-export * from './super';
 export * from './utils';
+export * from './types';

@@ -55,11 +55,7 @@ module.exports = create({
       configure: {
         excludeProtected: false,
         excludeNotExported: true,
-        exclude: [
-          '**/__mocks__/**/*',
-          '**/react/trunk.ts',
-          '**/sources/types/utils.ts'
-        ]
+        exclude: ['**/__mocks__/**/*']
       }
     }
   }

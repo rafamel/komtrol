@@ -1,82 +1,201 @@
 @startuml Sources
 
+' Source
 interface Source<T> {
   state: T
   state$: Observable<T>
 }
 
-Source <|-- Reporter
-interface Reporter<T> {
-  state: T
-  state$: Observable<T>
-  error$: Observable<Error>
-}
-
-Reporter <|-- Machine
-interface Machine<T> {
-  state: T
-  state$: Observable<T>
-  error$: Observable<Error>
-  busy: boolean;
-  busy$: Observable<boolean>
-}
-
-Resource <|.. Source
-abstract class Resource<T> {
+SuperSource <|.. Source
+abstract class SuperSource<T> {
   +state: T
   +state$: Observable<T>
+  #constructor()
   #next()
 }
 
-SourceSubject <|-- Resource
+SourceSubject <|-- SuperSource
 class SourceSubject<T> {
   +state: T
   +state$: Observable<T>
+  +constructor()
   +next()
 }
 
-ReporterResource <|.. Reporter
-ReporterResource <|-- Resource
-abstract class ReporterResource<T> {
+' Reporter
+interface Reporter {
+  error$: Observable<Error>
+}
+
+SuperReporter <|.. Reporter
+abstract class SuperReporter {
+  +error$: Observable<Error>
+  #constructor()
+  #report()
+}
+
+ReporterSubject <|-- SuperReporter
+class ReporterSubject {
+  +error$: Observable<Error>
+  +constructor()
+  +report()
+}
+
+' Machine
+interface Machine {
+  active: boolean
+  active$: Observable<boolean>
+  enable()
+  disable()
+}
+
+SuperMachine <|.. Machine
+abstract class SuperMachine {
+  +active: boolean
+  +active$: Observable<boolean>
+  #constructor()
+  +enable()
+  +disable()
+}
+
+MachineSubject <|-- SuperMachine
+class MachineSubject {
+  +active: boolean
+  +active$: Observable<boolean>
+  +constructor()
+  +enable()
+  +disable()
+}
+
+' ReporterMachine
+interface ReporterMachine {
+  error$: Observable<Error>
+  active: boolean
+  active$: Observable<boolean>
+  enable()
+  disable()
+}
+
+SuperReporterMachine <|.. ReporterMachine
+abstract class SuperReporterMachine {
+  +error$: Observable<Error>
+  +active: boolean
+  +active$: Observable<boolean>
+  #constructor()
+  #report()
+  +enable()
+  +disable()
+}
+
+ReporterMachineSubject <|-- SuperReporterMachine
+class ReporterMachineSubject {
+  +error$: Observable<Error>
+  +active: boolean
+  +active$: Observable<boolean>
+  +constructor()
+  +report()
+  +enable()
+  +disable()
+}
+
+' ReporterSource
+interface ReporterSource<T> {
+  state: T
+  state$: Observable<T>
+  error$: Observable<Error>
+}
+
+SuperReporterSource <|.. ReporterSource
+abstract class SuperReporterSource<T> {
   +state: T
   +state$: Observable<T>
   +error$: Observable<Error>
+  #constructor()
   #next()
   #report()
 }
 
-ReporterSubject <|-- ReporterResource
-class ReporterSubject<T> {
+ReporterSourceSubject <|-- SuperReporterSource
+class ReporterSourceSubject<T> {
   +state: T
   +state$: Observable<T>
   +error$: Observable<Error>
+  +constructor()
   +next()
   +report()
 }
 
-MachineResource <|.. Machine
-MachineResource <|-- ReporterResource
-abstract class MachineResource<T> {
+' MachineSource
+interface MachineSource<T> {
+  state: T
+  state$: Observable<T>
+  active: boolean
+  active$: Observable<boolean>
+  enable()
+  disable()
+}
+
+SuperMachineSource <|.. MachineSource
+abstract class SuperMachineSource<T> {
+  +state: T
+  +state$: Observable<T>
+  +active: boolean
+  +active$: Observable<boolean>
+  #constructor()
+  #next()
+  +enable()
+  +disable()
+}
+
+MachineSourceSubject <|-- SuperMachineSource
+class MachineSourceSubject<T> {
+  +state: T
+  +state$: Observable<T>
+  +active: boolean
+  +active$: Observable<boolean>
+  +constructor()
+  +next()
+  +enable()
+  +disable()
+}
+
+' Resource
+interface Resource<T> {
+  state: T
+  state$: Observable<T>
+  error$: Observable<Error>
+  active: boolean
+  active$: Observable<boolean>
+  enable()
+  disable()
+}
+
+SuperResource <|.. Resource
+abstract class SuperResource<T> {
   +state: T
   +state$: Observable<T>
   +error$: Observable<Error>
-  +busy: boolean
-  +busy$: Observable<boolean>
+  +active: boolean
+  +active$: Observable<boolean>
+  #constructor()
   #next()
   #report()
-  #engage()
+  +enable()
+  +disable()
 }
 
-MachineSubject <|-- MachineResource
-class MachineSubject<T> {
+ResourceSubject <|-- SuperResource
+class ResourceSubject<T> {
   +state: T
   +state$: Observable<T>
   +error$: Observable<Error>
-  +busy: boolean
-  +busy$: Observable<boolean>
+  +active: boolean
+  +active$: Observable<boolean>
+  +constructor()
   +next()
   +report()
-  +engage()
+  +enable()
+  +disable()
 }
 
 @enduml

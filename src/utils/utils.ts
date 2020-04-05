@@ -1,4 +1,7 @@
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { shallow } from 'equal-strategies';
+import { SourceRecord, SourceRecordStates } from './types';
 
 /**
  * Simple last value memoization for `fn`.
@@ -26,4 +29,31 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
 
     return lastResult;
   };
+}
+
+export function states<T extends SourceRecord>(
+  sources: T
+): SourceRecordStates<T> {
+  return Object.entries(sources).reduce(
+    (acc, [key, value]) => Object.assign(acc, { [key]: value.state }),
+    {} as any
+  );
+}
+
+export function states$<T extends SourceRecord>(
+  sources: T
+): Observable<SourceRecordStates<T>> {
+  const entries = Object.entries(sources);
+  const observables = entries.map((items) => items[1].state$);
+
+  return combineLatest(observables).pipe(
+    map((arr) => {
+      const states: any = {};
+      for (let i = 0; i < arr.length; i++) {
+        const [key] = entries[i];
+        states[key] = arr[i];
+      }
+      return states;
+    })
+  );
 }

@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "equal-strategies": "^0.1.0",
-    "proxy-handler": "^1.0.0"
+    "ts-functional-pipe": "^2.1.1"
   },
   "peerDependencies": {
     "rxjs": "6.x"

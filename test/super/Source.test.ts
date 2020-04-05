@@ -1,5 +1,5 @@
 import { subscribe } from 'promist';
-import { Enclosure, SourceSubject } from '~/sources';
+import { Enclosure, SourceSubject } from '~/super';
 
 const state = { foo: 'foo', bar: 'bar' };
 
