@@ -11,7 +11,7 @@ export type MachineFn<T extends Machine, D = undefined> = (
 export function useMachine<T extends Machine>(machine: MachineFn<T>): T;
 export function useMachine<T extends Machine, D = undefined>(
   deps: D,
-  machine: MachineFn<T>
+  machine: MachineFn<T, D>
 ): T;
 
 /**
