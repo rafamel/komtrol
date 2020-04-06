@@ -1,3 +1,17 @@
+# [0.12.0](https://github.com/rafamel/supersour/compare/v0.11.0...v0.12.0) (2020-04-06)
+
+
+### Features
+
+* api redesign ([0726a83](https://github.com/rafamel/supersour/commit/0726a83160c4fe9480ec264c561f776bc299ec78))
+
+
+### BREAKING CHANGES
+
+* The library api has been almost entirely redesigned; please check the latest docs.
+
+
+
 # [0.11.0](https://github.com/rafamel/supersour/compare/v0.10.0...v0.11.0) (2020-03-26)
 
 

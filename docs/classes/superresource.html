@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ReporterResource | supersour 0.11.0</title>
+	<title>SuperResource | supersour 0.12.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">supersour 0.11.0</a>
+					<a href="../index.html" class="title">supersour 0.12.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="reporterresource.html">ReporterResource</a>
+					<a href="superresource.html">SuperResource</a>
 				</li>
 			</ul>
-			<h1>Class ReporterResource&lt;S, T, D&gt;</h1>
+			<h1>Class SuperResource&lt;S, T, D&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -65,7 +65,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A <code>Reporter</code> implementation as an abstract class.</p>
+						<p>A <code>MachineSource</code> implementation as an abstract class.</p>
 					</div>
 				</div>
 			</section>
@@ -87,16 +87,13 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="resource.html" class="tsd-signature-type">Resource</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="supersource.html" class="tsd-signature-type">SuperSource</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">ReporterResource</span>
+								<span class="target">SuperResource</span>
 								<ul class="tsd-hierarchy">
 									<li>
-										<a href="reportersubject.html" class="tsd-signature-type">ReporterSubject</a>
-									</li>
-									<li>
-										<a href="machineresource.html" class="tsd-signature-type">MachineResource</a>
+										<a href="resourcesubject.html" class="tsd-signature-type">ResourceSubject</a>
 									</li>
 								</ul>
 							</li>
@@ -108,7 +105,12 @@
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
 					<li><a href="../interfaces/source.html" class="tsd-signature-type">Source</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
-					<li><a href="../interfaces/reporter.html" class="tsd-signature-type">Reporter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/source.html" class="tsd-signature-type">Source</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">&gt;</span>
+						<span class="tsd-signature-symbol"> &amp; </span>
+						<a href="../interfaces/reporter.html" class="tsd-signature-type">Reporter</a>
+						<span class="tsd-signature-symbol"> &amp; </span>
+						<a href="../interfaces/machine.html" class="tsd-signature-type">Machine</a>
+					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -118,28 +120,33 @@
 						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="reporterresource.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="superresource.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="reporterresource.html#deps" class="tsd-kind-icon">deps</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="superresource.html#deps" class="tsd-kind-icon">deps</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="reporterresource.html#error_" class="tsd-kind-icon">error$</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="reporterresource.html#state" class="tsd-kind-icon">state</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="reporterresource.html#state_" class="tsd-kind-icon">state$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="superresource.html#active" class="tsd-kind-icon">active</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="superresource.html#active_" class="tsd-kind-icon">active$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="superresource.html#error_" class="tsd-kind-icon">error$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="superresource.html#source" class="tsd-kind-icon">source</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="superresource.html#state" class="tsd-kind-icon">state</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="superresource.html#state_" class="tsd-kind-icon">state$</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-private-protected">
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="reporterresource.html#next" class="tsd-kind-icon">next</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="reporterresource.html#report" class="tsd-kind-icon">report</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="superresource.html#disable" class="tsd-kind-icon">disable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="superresource.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="superresource.html#next" class="tsd-kind-icon">next</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="superresource.html#report" class="tsd-kind-icon">report</a></li>
 							</ul>
 						</section>
 					</div>
@@ -151,14 +158,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Reporter<wbr>Resource<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, deps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">D</span>, map<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">StateMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="reporterresource.html" class="tsd-signature-type">ReporterResource</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Super<wbr>Resource<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, deps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">D</span>, map<span class="tsd-signature-symbol">: </span><a href="../globals.html#statemap" class="tsd-signature-type">StateMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, enable<span class="tsd-signature-symbol">: </span><a href="../globals.html#enable" class="tsd-signature-type">Enable</a>, disable<span class="tsd-signature-symbol">: </span><a href="../globals.html#disable" class="tsd-signature-type">Disable</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="superresource.html" class="tsd-signature-type">SuperResource</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/25cf027/src/sources/reporter.ts#L13">sources/reporter.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Resource.ts#L18">super/Resource.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -170,10 +177,16 @@
 									<h5>deps: <span class="tsd-signature-type">D</span></h5>
 								</li>
 								<li>
-									<h5>map: <span class="tsd-signature-type">StateMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>map: <a href="../globals.html#statemap" class="tsd-signature-type">StateMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>enable: <a href="../globals.html#enable" class="tsd-signature-type">Enable</a></h5>
+								</li>
+								<li>
+									<h5>disable: <a href="../globals.html#disable" class="tsd-signature-type">Disable</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="reporterresource.html" class="tsd-signature-type">ReporterResource</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="superresource.html" class="tsd-signature-type">SuperResource</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -187,13 +200,47 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#deps">deps</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rafamel/supersour/blob/25cf027/src/sources/enclosure.ts#L19">sources/enclosure.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Enclosure.ts#L20">super/Enclosure.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="active" class="tsd-anchor"></a>
+					<h3>active</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> active<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Resource.ts#L33">super/Resource.ts:33</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="active_" class="tsd-anchor"></a>
+					<h3>active$</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> active$<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Resource.ts#L36">super/Resource.ts:36</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="error_" class="tsd-anchor"></a>
 					<h3>error$</h3>
@@ -204,15 +251,33 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/25cf027/src/sources/reporter.ts#L21">sources/reporter.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Resource.ts#L30">super/Resource.ts:30</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="source" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> source</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> source<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/source.html" class="tsd-signature-type">Source</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#source">source</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Enclosure.ts#L54">super/Enclosure.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p><code>Error</code> stream.</p>
+									<p>A <code>Source</code> without the state map applied.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/source.html" class="tsd-signature-type">Source</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -225,10 +290,10 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="resource.html">Resource</a>.<a href="resource.html#state">state</a></p>
+								<p>Inherited from <a href="supersource.html">SuperSource</a>.<a href="supersource.html#state">state</a></p>
 								<p>Overrides <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#state">state</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/25cf027/src/sources/source.ts#L14">sources/source.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Source.ts#L15">super/Source.ts:15</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -249,10 +314,10 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="resource.html">Resource</a>.<a href="resource.html#state_">state$</a></p>
+								<p>Inherited from <a href="supersource.html">SuperSource</a>.<a href="supersource.html#state_">state$</a></p>
 								<p>Overrides <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#state_">state$</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/25cf027/src/sources/source.ts#L20">sources/source.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Source.ts#L21">super/Source.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -265,8 +330,42 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="disable" class="tsd-anchor"></a>
+					<h3>disable</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">disable<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Resource.ts#L42">super/Resource.ts:42</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="enable" class="tsd-anchor"></a>
+					<h3>enable</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">enable<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Resource.ts#L39">super/Resource.ts:39</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="next" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> next</h3>
@@ -278,7 +377,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="enclosure.html">Enclosure</a>.<a href="enclosure.html#next">next</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/25cf027/src/sources/enclosure.ts#L49">sources/enclosure.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Enclosure.ts#L77">super/Enclosure.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,14 +412,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/25cf027/src/sources/reporter.ts#L27">sources/reporter.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Resource.ts#L45">super/Resource.ts:45</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Adds an <code>Error</code> to the instance <code>error$</code> stream.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -343,75 +437,51 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="enclosure.html" class="tsd-kind-icon">Enclosure</a>
-					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="machineresource.html" class="tsd-kind-icon">Machine<wbr>Resource</a>
-					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="machinesubject.html" class="tsd-kind-icon">Machine<wbr>Subject</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-has-type-parameter">
-						<a href="reporterresource.html" class="tsd-kind-icon">Reporter<wbr>Resource</a>
+						<a href="superresource.html" class="tsd-kind-icon">Super<wbr>Resource</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="reporterresource.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="superresource.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="reporterresource.html#deps" class="tsd-kind-icon">deps</a>
+								<a href="superresource.html#deps" class="tsd-kind-icon">deps</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="reporterresource.html#error_" class="tsd-kind-icon">error$</a>
+								<a href="superresource.html#active" class="tsd-kind-icon">active</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="superresource.html#active_" class="tsd-kind-icon">active$</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="superresource.html#error_" class="tsd-kind-icon">error$</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="superresource.html#source" class="tsd-kind-icon">source</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="reporterresource.html#state" class="tsd-kind-icon">state</a>
+								<a href="superresource.html#state" class="tsd-kind-icon">state</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="reporterresource.html#state_" class="tsd-kind-icon">state$</a>
+								<a href="superresource.html#state_" class="tsd-kind-icon">state$</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="superresource.html#disable" class="tsd-kind-icon">disable</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="superresource.html#enable" class="tsd-kind-icon">enable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="reporterresource.html#next" class="tsd-kind-icon">next</a>
+								<a href="superresource.html#next" class="tsd-kind-icon">next</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="reporterresource.html#report" class="tsd-kind-icon">report</a>
+								<a href="superresource.html#report" class="tsd-kind-icon">report</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="reportersubject.html" class="tsd-kind-icon">Reporter<wbr>Subject</a>
-					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="resource.html" class="tsd-kind-icon">Resource</a>
-					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="sourcesubject.html" class="tsd-kind-icon">Source<wbr>Subject</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/lifecycle.html" class="tsd-kind-icon">Lifecycle</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/machine.html" class="tsd-kind-icon">Machine</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/reporter.html" class="tsd-kind-icon">Reporter</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/source.html" class="tsd-kind-icon">Source</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../globals.html#lifecyclefn" class="tsd-kind-icon">Lifecycle<wbr>Fn</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#compute" class="tsd-kind-icon">compute</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#usesource" class="tsd-kind-icon">use<wbr>Source</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

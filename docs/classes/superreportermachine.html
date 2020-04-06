@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MachineSubject | supersour 0.12.0</title>
+	<title>SuperReporterMachine | supersour 0.12.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,16 +52,23 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="machinesubject.html">MachineSubject</a>
+					<a href="superreportermachine.html">SuperReporterMachine</a>
 				</li>
 			</ul>
-			<h1>Class MachineSubject&lt;D&gt;</h1>
+			<h1>Class SuperReporterMachine&lt;D&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A <code>ReporterMachine</code> implementation as an abstract class.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
@@ -74,10 +81,15 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="supermachine.html" class="tsd-signature-type">SuperMachine</a>
+						<a href="supermachine.html" class="tsd-signature-type">SuperMachine</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">MachineSubject</span>
+								<span class="target">SuperReporterMachine</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="reportermachinesubject.html" class="tsd-signature-type">ReporterMachineSubject</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -87,68 +99,76 @@
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
 					<li><a href="../interfaces/machine.html" class="tsd-signature-type">Machine</a></li>
-					<li><a href="../interfaces/machine.html" class="tsd-signature-type">Machine</a></li>
+					<li><a href="../interfaces/machine.html" class="tsd-signature-type">Machine</a>
+						<span class="tsd-signature-symbol"> &amp; </span>
+						<a href="../interfaces/reporter.html" class="tsd-signature-type">Reporter</a>
+					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="machinesubject.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="superreportermachine.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="machinesubject.html#deps" class="tsd-kind-icon">deps</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="superreportermachine.html#deps" class="tsd-kind-icon">deps</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinesubject.html#active" class="tsd-kind-icon">active</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="machinesubject.html#active_" class="tsd-kind-icon">active$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="superreportermachine.html#active" class="tsd-kind-icon">active</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="superreportermachine.html#active_" class="tsd-kind-icon">active$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="superreportermachine.html#error_" class="tsd-kind-icon">error$</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="machinesubject.html#disable" class="tsd-kind-icon">disable</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="machinesubject.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="superreportermachine.html#disable" class="tsd-kind-icon">disable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="superreportermachine.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="superreportermachine.html#report" class="tsd-kind-icon">report</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Machine<wbr>Subject<span class="tsd-signature-symbol">(</span>enable<span class="tsd-signature-symbol">?: </span><a href="../globals.html#enable" class="tsd-signature-type">Enable</a>, disable<span class="tsd-signature-symbol">?: </span><a href="../globals.html#disable" class="tsd-signature-type">Disable</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="machinesubject.html" class="tsd-signature-type">MachineSubject</a></li>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Super<wbr>Reporter<wbr>Machine<span class="tsd-signature-symbol">(</span>deps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">D</span>, enable<span class="tsd-signature-symbol">: </span><a href="../globals.html#enable" class="tsd-signature-type">Enable</a>, disable<span class="tsd-signature-symbol">: </span><a href="../globals.html#disable" class="tsd-signature-type">Disable</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="superreportermachine.html" class="tsd-signature-type">SuperReporterMachine</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="supermachine.html">SuperMachine</a>.<a href="supermachine.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/Machine.ts#L69">super/Machine.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/ReporterMachine.ts#L15">super/ReporterMachine.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> enable: <a href="../globals.html#enable" class="tsd-signature-type">Enable</a></h5>
+									<h5>deps: <span class="tsd-signature-type">D</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> disable: <a href="../globals.html#disable" class="tsd-signature-type">Disable</a></h5>
+									<h5>enable: <a href="../globals.html#enable" class="tsd-signature-type">Enable</a></h5>
+								</li>
+								<li>
+									<h5>disable: <a href="../globals.html#disable" class="tsd-signature-type">Disable</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="machinesubject.html" class="tsd-signature-type">MachineSubject</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="superreportermachine.html" class="tsd-signature-type">SuperReporterMachine</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -167,7 +187,7 @@
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 					<a name="active" class="tsd-anchor"></a>
@@ -215,8 +235,25 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="error_" class="tsd-anchor"></a>
+					<h3>error$</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> error$<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/ReporterMachine.ts#L20">super/ReporterMachine.ts:20</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="disable" class="tsd-anchor"></a>
@@ -269,6 +306,29 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="report" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> report</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">report<span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/ed3fc1c/src/super/ReporterMachine.ts#L23">super/ReporterMachine.ts:23</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>err: <span class="tsd-signature-type">Error</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -284,25 +344,31 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-has-type-parameter">
-						<a href="machinesubject.html" class="tsd-kind-icon">Machine<wbr>Subject</a>
+						<a href="superreportermachine.html" class="tsd-kind-icon">Super<wbr>Reporter<wbr>Machine</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="machinesubject.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="superreportermachine.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="machinesubject.html#deps" class="tsd-kind-icon">deps</a>
+								<a href="superreportermachine.html#deps" class="tsd-kind-icon">deps</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="machinesubject.html#active" class="tsd-kind-icon">active</a>
+								<a href="superreportermachine.html#active" class="tsd-kind-icon">active</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="machinesubject.html#active_" class="tsd-kind-icon">active$</a>
+								<a href="superreportermachine.html#active_" class="tsd-kind-icon">active$</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="superreportermachine.html#error_" class="tsd-kind-icon">error$</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="machinesubject.html#disable" class="tsd-kind-icon">disable</a>
+								<a href="superreportermachine.html#disable" class="tsd-kind-icon">disable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="machinesubject.html#enable" class="tsd-kind-icon">enable</a>
+								<a href="superreportermachine.html#enable" class="tsd-kind-icon">enable</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="superreportermachine.html#report" class="tsd-kind-icon">report</a>
 							</li>
 						</ul>
 					</li>
