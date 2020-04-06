@@ -1,3 +1,12 @@
+## [0.12.1](https://github.com/rafamel/supersour/compare/v0.12.0...v0.12.1) (2020-04-06)
+
+
+### Bug Fixes
+
+* **react:** fixes useMachine typings ([0a1060e](https://github.com/rafamel/supersour/commit/0a1060ebda322471e8661c7d6720a4df5c094e3b))
+
+
+
 # [0.12.0](https://github.com/rafamel/supersour/compare/v0.11.0...v0.12.0) (2020-04-06)
 
 
