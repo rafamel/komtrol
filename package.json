@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "equal-strategies": "^0.1.0",
-    "ts-functional-pipe": "^2.1.1"
+    "pipettes": "^0.1.0"
   },
   "peerDependencies": {
     "rxjs": "6.x"

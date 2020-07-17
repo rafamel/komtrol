@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Machine, Source } from '../super';
-import { pipeInto as into } from 'ts-functional-pipe';
 import { EmptyUnion } from '../types';
 import { useValue } from './use-value';
+import { into } from 'pipettes';
 
 export type MachineFn<T extends Machine, D = undefined> = (
   deps: D extends EmptyUnion ? undefined : Source<D>
@@ -23,11 +23,11 @@ export function useMachine<T extends Machine, D = undefined>(
   b?: MachineFn<T>
 ): T {
   return into(
-    null,
     (): [D, MachineFn<T, D>] => {
       return b ? [a, b] : ([undefined, a] as any);
     },
-    ([deps, machine]) => {
+    (params) => {
+      const [deps, machine] = params();
       const instance = useValue(deps, machine);
 
       useEffect(() => {

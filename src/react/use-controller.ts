@@ -1,5 +1,5 @@
 import { Source, MachineSource } from '../super';
-import { pipeInto as into } from 'ts-functional-pipe';
+import { into } from 'pipettes';
 import { EmptyUnion } from '../types';
 import { useSource } from './use-source';
 import { useMachine } from './use-machine';
@@ -27,11 +27,11 @@ export function useController<T extends MachineSource<any>, D = undefined>(
   b?: ControllerFn<T, D>
 ): T {
   return into(
-    null,
     (): [D, ControllerFn<T, D>] => {
       return b ? [a, b] : ([undefined, a] as any);
     },
-    ([deps, controller]) => {
+    (params) => {
+      const [deps, controller] = params();
       const instance = useSource(deps, controller);
       useMachine(() => instance);
 

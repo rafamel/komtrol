@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
 import { Source } from '../super';
-import { pipeInto as into } from 'ts-functional-pipe';
 import { Observable } from 'rxjs';
 import { EmptyUnion } from '../types';
 import { useValue } from './use-value';
+import { into } from 'pipettes';
 
 export type ObservableFn<T, D = undefined> = (
   deps: D extends EmptyUnion ? undefined : Source<D>
@@ -29,11 +29,11 @@ export function useObservable<F, T, D = undefined>(
   c?: ObservableFn<T, D>
 ): T | F {
   return into(
-    null,
     (): [D, F, ObservableFn<T, D>] => {
       return c ? [a, b, c] : ([undefined, a, b] as any);
     },
-    ([deps, fallback, observable]) => {
+    (params) => {
+      const [deps, fallback, observable] = params();
       const running = useRef<boolean>(true);
       running.current = true;
 

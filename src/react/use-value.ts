@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { SourceSubject, Source } from '../super';
 import { EmptyUnion } from '../types';
-import { pipeInto as into } from 'ts-functional-pipe';
+import { into } from 'pipettes';
 
 export type ValueFn<T, D = undefined> = (
   deps: D extends EmptyUnion ? undefined : Source<D>
@@ -19,11 +19,11 @@ export function useValue<T, D = undefined>(
   b?: ValueFn<T, D>
 ): T {
   return into(
-    null,
     (): [D, ValueFn<T, D>] => {
       return b ? [a, b] : ([undefined, a] as any);
     },
-    ([deps, value]) => {
+    (params) => {
+      const [deps, value] = params();
       const subject = useMemo(
         () =>
           deps === undefined || deps === null

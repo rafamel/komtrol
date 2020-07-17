@@ -1,5 +1,5 @@
 import { Source } from '../super';
-import { pipeInto as into } from 'ts-functional-pipe';
+import { into } from 'pipettes';
 import { useObservable } from './use-observable';
 import { EmptyUnion } from '../types';
 import { useValue } from './use-value';
@@ -23,11 +23,11 @@ export function useSource<T extends Source<any>, D = undefined>(
   b?: SourceFn<T, D>
 ): T {
   return into(
-    null,
     (): [D, SourceFn<T, D>] => {
       return b ? [a, b] : ([undefined, a] as any);
     },
-    ([deps, source]) => {
+    (params) => {
+      const [deps, source] = params();
       const instance = useValue(deps, source);
       useObservable(null, instance.state, () => instance.state$);
 
