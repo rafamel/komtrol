@@ -1,3 +1,17 @@
+# [0.13.0](https://github.com/rafamel/supersour/compare/v0.12.1...v0.13.0) (2020-08-17)
+
+
+### Features
+
+* complete module redesign ([7a1b1a2](https://github.com/rafamel/supersour/commit/7a1b1a2bda6b69994828c5d74e884aa47ef186fa))
+
+
+### BREAKING CHANGES
+
+* There are numerous breaking changes. Please check the latest documentation.
+
+
+
 ## [0.12.1](https://github.com/rafamel/supersour/compare/v0.12.0...v0.12.1) (2020-04-06)
 
 

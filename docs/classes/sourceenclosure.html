@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Enclosure | supersour 0.12.1</title>
+	<title>SourceEnclosure | supersour 0.13.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">supersour 0.12.1</a>
+					<a href="../index.html" class="title">supersour 0.13.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="enclosure.html">Enclosure</a>
+					<a href="sourceenclosure.html">SourceEnclosure</a>
 				</li>
 			</ul>
-			<h1>Class Enclosure&lt;S, T, D&gt;</h1>
+			<h1>Class SourceEnclosure&lt;T, D&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -65,7 +65,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The most basic abstract class.
+						<p>The most basic Source abstract class.
 							The <code>state</code> and <code>state$</code> properties, as well as the <code>next</code> method,
 							are set as <code>protected</code> instead of <code>public</code>.
 						For cases when the state is only to be used internally by the class.</p>
@@ -75,9 +75,6 @@
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
-					<li>
-						<h4>S</h4>
-					</li>
 					<li>
 						<h4>T</h4>
 					</li>
@@ -90,10 +87,13 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Enclosure</span>
+						<span class="target">SourceEnclosure</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<a href="supersource.html" class="tsd-signature-type">SuperSource</a>
+							</li>
+							<li>
+								<a href="resourceenclosure.html" class="tsd-signature-type">ResourceEnclosure</a>
 							</li>
 						</ul>
 					</li>
@@ -106,27 +106,26 @@
 						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-protected"><a href="enclosure.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-protected"><a href="sourceenclosure.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enclosure.html#deps" class="tsd-kind-icon">deps</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="sourceenclosure.html#deps" class="tsd-kind-icon">deps</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected"><a href="enclosure.html#source" class="tsd-kind-icon">source</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected"><a href="enclosure.html#state" class="tsd-kind-icon">state</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected"><a href="enclosure.html#state_" class="tsd-kind-icon">state$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected"><a href="sourceenclosure.html#state" class="tsd-kind-icon">state</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected"><a href="sourceenclosure.html#state_" class="tsd-kind-icon">state$</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="enclosure.html#next" class="tsd-kind-icon">next</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="sourceenclosure.html#next" class="tsd-kind-icon">next</a></li>
 							</ul>
 						</section>
 					</div>
@@ -138,28 +137,25 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Enclosure<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, deps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">D</span>, map<span class="tsd-signature-symbol">: </span><a href="../globals.html#statemap" class="tsd-signature-type">StateMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="enclosure.html" class="tsd-signature-type">Enclosure</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Source<wbr>Enclosure<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, deps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="sourceenclosure.html" class="tsd-signature-type">SourceEnclosure</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/0a1060e/src/super/Enclosure.ts#L20">super/Enclosure.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/7a1b1a2/src/super/Source.ts#L18">super/Source.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>state: <span class="tsd-signature-type">S</span></h5>
+									<h5>state: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
 									<h5>deps: <span class="tsd-signature-type">D</span></h5>
 								</li>
-								<li>
-									<h5>map: <a href="../globals.html#statemap" class="tsd-signature-type">StateMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="enclosure.html" class="tsd-signature-type">Enclosure</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="sourceenclosure.html" class="tsd-signature-type">SourceEnclosure</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -172,35 +168,13 @@
 					<div class="tsd-signature tsd-kind-icon">deps<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">D</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rafamel/supersour/blob/0a1060e/src/super/Enclosure.ts#L20">super/Enclosure.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/rafamel/supersour/blob/7a1b1a2/src/super/Source.ts#L18">super/Source.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected">
-					<a name="source" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> source</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> source<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/source.html" class="tsd-signature-type">Source</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/0a1060e/src/super/Enclosure.ts#L54">super/Enclosure.ts:54</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A <code>Source</code> without the state map applied.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/source.html" class="tsd-signature-type">Source</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected">
 					<a name="state" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> state</h3>
@@ -211,7 +185,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/0a1060e/src/super/Enclosure.ts#L60">super/Enclosure.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/7a1b1a2/src/super/Source.ts#L32">super/Source.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -233,7 +207,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/0a1060e/src/super/Enclosure.ts#L67">super/Enclosure.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/7a1b1a2/src/super/Source.ts#L39">super/Source.ts:39</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -253,13 +227,13 @@
 					<a name="next" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> next</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">next<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span>, compare<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">next<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, compare<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/0a1060e/src/super/Enclosure.ts#L77">super/Enclosure.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/rafamel/supersour/blob/7a1b1a2/src/super/Source.ts#L49">super/Source.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -267,14 +241,14 @@
 									<p>Updates the instance <code>state</code>.
 										If it is an <em>object,</em> it will create a new state <em>object</em>
 										by merging <code>state</code> with the current instance state.
-										If <code>compare</code> is <code>true</code> and the current <code>state</code> is shallow
-									equal to its update, it won&#39;t emit.</p>
+										If the current <code>state</code> is shallow equal to its update
+									and <code>compare</code> is <code>true</code>, it won&#39;t emit.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>state: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>state: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> compare: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
@@ -296,33 +270,126 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="machineenclosure.html" class="tsd-kind-icon">Machine<wbr>Enclosure</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="machinesubject.html" class="tsd-kind-icon">Machine<wbr>Subject</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="resourceenclosure.html" class="tsd-kind-icon">Resource<wbr>Enclosure</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="resourcesubject.html" class="tsd-kind-icon">Resource<wbr>Subject</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-has-type-parameter">
-						<a href="enclosure.html" class="tsd-kind-icon">Enclosure</a>
+						<a href="sourceenclosure.html" class="tsd-kind-icon">Source<wbr>Enclosure</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-protected">
-								<a href="enclosure.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="sourceenclosure.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="enclosure.html#deps" class="tsd-kind-icon">deps</a>
+								<a href="sourceenclosure.html#deps" class="tsd-kind-icon">deps</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected">
-								<a href="enclosure.html#source" class="tsd-kind-icon">source</a>
+								<a href="sourceenclosure.html#state" class="tsd-kind-icon">state</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected">
-								<a href="enclosure.html#state" class="tsd-kind-icon">state</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected">
-								<a href="enclosure.html#state_" class="tsd-kind-icon">state$</a>
+								<a href="sourceenclosure.html#state_" class="tsd-kind-icon">state$</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="enclosure.html#next" class="tsd-kind-icon">next</a>
+								<a href="sourceenclosure.html#next" class="tsd-kind-icon">next</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="sourcesubject.html" class="tsd-kind-icon">Source<wbr>Subject</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="supermachine.html" class="tsd-kind-icon">Super<wbr>Machine</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="superresource.html" class="tsd-kind-icon">Super<wbr>Resource</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="supersource.html" class="tsd-kind-icon">Super<wbr>Source</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/machine.html" class="tsd-kind-icon">Machine</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/source.html" class="tsd-kind-icon">Source</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#emptyunion" class="tsd-kind-icon">Empty<wbr>Union</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#machinedisable" class="tsd-kind-icon">Machine<wbr>Disable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#machinedisablefn" class="tsd-kind-icon">Machine<wbr>Disable<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#machineenable" class="tsd-kind-icon">Machine<wbr>Enable</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#machineenablefn" class="tsd-kind-icon">Machine<wbr>Enable<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#machinefn" class="tsd-kind-icon">Machine<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#nondefinedunion" class="tsd-kind-icon">Non<wbr>Defined<wbr>Union</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#observablefn" class="tsd-kind-icon">Observable<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#resource" class="tsd-kind-icon">Resource</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#resourcefn" class="tsd-kind-icon">Resource<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#sourcefn" class="tsd-kind-icon">Source<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#sourcerecord" class="tsd-kind-icon">Source<wbr>Record</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#sourcerecordstates" class="tsd-kind-icon">Source<wbr>Record<wbr>States</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#valuefn" class="tsd-kind-icon">Value<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#compute" class="tsd-kind-icon">compute</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#states" class="tsd-kind-icon">states</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#states_" class="tsd-kind-icon">states$</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#usemachine" class="tsd-kind-icon">use<wbr>Machine</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#useobservable" class="tsd-kind-icon">use<wbr>Observable</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#useresource" class="tsd-kind-icon">use<wbr>Resource</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#usesource" class="tsd-kind-icon">use<wbr>Source</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
