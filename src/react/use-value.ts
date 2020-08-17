@@ -1,39 +1,32 @@
 import { useMemo } from 'react';
 import { SourceSubject, Source } from '../super';
-import { EmptyUnion } from '../types';
+import { NonDefinedUnion } from '../types';
 import { into } from 'pipettes';
 
-export type ValueFn<T, D = undefined> = (
-  deps: D extends EmptyUnion ? undefined : Source<D>
+export type ValueFn<T, P = void> = (
+  props: P extends NonDefinedUnion ? undefined : Source<P>
 ) => T;
 
 export function useValue<T>(value: ValueFn<T>): T;
-export function useValue<T, D>(deps: D, value: ValueFn<T, D>): T;
+export function useValue<T, P = void>(props: P, value: ValueFn<T, P>): T;
 
 /**
  * Returns the memoized result of the `value` function,
- * optionally passing dependencies as a `Source`.
+ * optionally passing `props` as a `Source`.
  */
-export function useValue<T, D = undefined>(
-  a: D | ValueFn<T>,
-  b?: ValueFn<T, D>
-): T {
+export function useValue<T, P = void>(a: P | ValueFn<T>, b?: ValueFn<T, P>): T {
   return into(
-    (): [D, ValueFn<T, D>] => {
+    (): [P, ValueFn<T, P>] => {
       return b ? [a, b] : ([undefined, a] as any);
     },
     (params) => {
-      const [deps, value] = params();
+      const [props, value] = params();
       const subject = useMemo(
-        () =>
-          deps === undefined || deps === null
-            ? undefined
-            : new SourceSubject(deps),
+        () => (props === undefined ? undefined : new SourceSubject(props)),
         []
       );
 
-      if (subject) subject.next(deps);
-
+      if (subject) subject.next(props);
       return useMemo(() => value(subject as any), []);
     }
   );

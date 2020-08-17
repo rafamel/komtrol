@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { shallow } from 'equal-strategies';
 import { SourceRecord, SourceRecordStates } from './types';
 
+// TODO: modularize
 /**
  * Simple last value memoization for `fn`.
  * If the values of a given object of dependencies provided by `deps`,

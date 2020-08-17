@@ -1,36 +1,50 @@
+import { useRef } from 'react';
 import { Source } from '../super';
 import { into } from 'pipettes';
 import { useObservable } from './use-observable';
-import { EmptyUnion } from '../types';
+import { NonDefinedUnion } from '../types';
 import { useValue } from './use-value';
 
-export type SourceFn<T extends Source<any>, D = undefined> = (
-  deps: D extends EmptyUnion ? undefined : Source<D>
+const noblock = (): boolean => false;
+
+export type SourceFn<T extends Source<any>, P = void> = (
+  props: P extends NonDefinedUnion ? undefined : Source<P>
 ) => T;
 
 export function useSource<T extends Source<any>>(source: SourceFn<T>): T;
-export function useSource<T extends Source<any>, D = undefined>(
-  deps: D,
-  source: SourceFn<T, D>
+export function useSource<T extends Source<any>, P = void>(
+  props: P,
+  source: SourceFn<T, P>,
+  block?: () => boolean
 ): T;
 
 /**
- * Subscribes to a `Source`, optionally passing
- * dependencies as a `Source`.
+ * Subscribes to a `Source`, optionally passing `props` as a `Source`.
  */
-export function useSource<T extends Source<any>, D = undefined>(
-  a: SourceFn<T, D> | D,
-  b?: SourceFn<T, D>
+export function useSource<T extends Source<any>, P = void>(
+  a: SourceFn<T, P> | P,
+  b?: SourceFn<T, P>,
+  c?: () => boolean
 ): T {
   return into(
-    (): [D, SourceFn<T, D>] => {
-      return b ? [a, b] : ([undefined, a] as any);
+    (): [P, SourceFn<T, P>, () => boolean] => {
+      return b ? [a, b, c || noblock] : ([undefined, a, noblock] as any);
     },
     (params) => {
-      const [deps, source] = params();
-      const instance = useValue(deps, source);
-      useObservable(null, instance.state, () => instance.state$);
+      const [props, source, block] = params();
 
+      const running = useRef<boolean>(true);
+      running.current = true;
+
+      const instance = useValue(props, source);
+      useObservable(
+        undefined,
+        instance.state,
+        () => instance.state$,
+        () => running.current || block()
+      );
+
+      running.current = false;
       return instance;
     }
   );

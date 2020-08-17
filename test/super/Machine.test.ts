@@ -1,24 +1,13 @@
 import { subscribe } from 'promist';
-import {
-  SuperMachine,
-  MachineSubject,
-  ReporterMachineSubject,
-  ResourceSubject,
-  MachineSourceSubject
-} from '~/super';
+import { MachineEnclosure, MachineSubject, ResourceSubject } from '~/super';
 
 const mocks = {
-  enable: jest.spyOn(SuperMachine.prototype as any, 'enable'),
-  disable: jest.spyOn(SuperMachine.prototype as any, 'disable')
+  enable: jest.spyOn(MachineEnclosure.prototype as any, 'enable'),
+  disable: jest.spyOn(MachineEnclosure.prototype as any, 'disable')
 };
 
 test(`methods call super`, () => {
-  const subjects = [
-    new MachineSubject(),
-    new ReporterMachineSubject(),
-    new MachineSourceSubject(null),
-    new ResourceSubject(null)
-  ];
+  const subjects = [new MachineSubject(), new ResourceSubject(null)];
 
   for (const subject of subjects) {
     Object.values(mocks).map((mock) => mock.mockClear());
@@ -36,12 +25,8 @@ test(`methods call super`, () => {
 
 test(`enable and disable call constructor parameters once`, () => {
   const [a, b] = [jest.fn(), jest.fn()];
-  const subjects = [
-    new MachineSubject(a, b),
-    new ReporterMachineSubject(a, b),
-    new MachineSourceSubject(null, null, a, b),
-    new ResourceSubject(null, null, a, b)
-  ];
+  const fn = (): any => a() || b;
+  const subjects = [new MachineSubject(fn), new ResourceSubject(null, fn)];
 
   for (const subject of subjects) {
     [a, b].map((mock) => mock.mockClear());
@@ -65,9 +50,7 @@ test(`a subscription returned by enable is unsubscribed on disable`, () => {
   const subscription: any = { unsubscribe: jest.fn() };
   const subjects = [
     new MachineSubject(() => subscription),
-    new ReporterMachineSubject(() => subscription),
-    new MachineSourceSubject(null, null, () => subscription),
-    new ResourceSubject(null, null, () => subscription)
+    new ResourceSubject(null, () => subscription)
   ];
 
   for (const subject of subjects) {
@@ -94,9 +77,7 @@ test(`a subscription array returned by enable is unsubscribed on disable`, () =>
   ];
   const subjects = [
     new MachineSubject(() => subscriptions),
-    new ReporterMachineSubject(() => subscriptions),
-    new MachineSourceSubject(null, null, () => subscriptions),
-    new ResourceSubject(null, null, () => subscriptions)
+    new ResourceSubject(null, () => subscriptions)
   ];
 
   for (const subject of subjects) {
@@ -126,12 +107,7 @@ test(`a subscription array returned by enable is unsubscribed on disable`, () =>
 });
 
 test(`active is false`, () => {
-  const subjects = [
-    new MachineSubject(),
-    new ReporterMachineSubject(),
-    new MachineSourceSubject(null),
-    new ResourceSubject(null)
-  ];
+  const subjects = [new MachineSubject(), new ResourceSubject(null)];
 
   for (const subject of subjects) {
     expect(subject.active).toBe(false);
@@ -139,12 +115,7 @@ test(`active is false`, () => {
 });
 
 test(`active$ emits first value (false) synchronously`, () => {
-  const subjects = [
-    new MachineSubject(),
-    new ReporterMachineSubject(),
-    new MachineSourceSubject(null),
-    new ResourceSubject(null)
-  ];
+  const subjects = [new MachineSubject(), new ResourceSubject(null)];
 
   for (const subject of subjects) {
     let value: boolean | null = null;
@@ -155,12 +126,7 @@ test(`active$ emits first value (false) synchronously`, () => {
 });
 
 test(`enable/disable set active/active$`, async () => {
-  const subjects = [
-    new MachineSubject(),
-    new ReporterMachineSubject(),
-    new MachineSourceSubject(null),
-    new ResourceSubject(null)
-  ];
+  const subjects = [new MachineSubject(), new ResourceSubject(null)];
 
   for (const subject of subjects) {
     subject.enable();
@@ -174,12 +140,7 @@ test(`enable/disable set active/active$`, async () => {
 });
 
 test(`active$ is a stream with unique sequential values`, () => {
-  const subjects = [
-    new MachineSubject(),
-    new ReporterMachineSubject(),
-    new MachineSourceSubject(null),
-    new ResourceSubject(null)
-  ];
+  const subjects = [new MachineSubject(), new ResourceSubject(null)];
 
   for (const subject of subjects) {
     const values: boolean[] = [];
