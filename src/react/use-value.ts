@@ -20,14 +20,14 @@ export function useValue<T, P = void>(a: P | ValueFn<T>, b?: ValueFn<T, P>): T {
       return b ? [a, b] : ([undefined, a] as any);
     },
     (params) => {
-      const [props, value] = params();
+      const [props, valueFn] = params();
       const subject = useMemo(
         () => (props === undefined ? undefined : new SourceSubject(props)),
         []
       );
 
       if (subject) subject.next(props);
-      return useMemo(() => value(subject as any), []);
+      return useMemo(() => valueFn(subject as any), []);
     }
   );
 }

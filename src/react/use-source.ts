@@ -31,12 +31,12 @@ export function useSource<T extends Source<any>, P = void>(
       return b ? [a, b, c || noblock] : ([undefined, a, noblock] as any);
     },
     (params) => {
-      const [props, source, block] = params();
+      const [props, sourceFn, block] = params();
 
       const running = useRef<boolean>(true);
       running.current = true;
 
-      const instance = useValue(props, source);
+      const instance = useValue(props, sourceFn);
       useObservable(
         undefined,
         instance.state,

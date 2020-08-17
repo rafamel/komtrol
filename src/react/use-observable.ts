@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { Source } from '../super';
 import { Observable } from 'rxjs';
 import { NonDefinedUnion } from '../types';
@@ -37,23 +37,22 @@ export function useObservable<F, T, P = void>(
       return c ? [a, b, c, d || noblock] : ([undefined, a, b, noblock] as any);
     },
     (params) => {
-      const [props, fallback, observable, block] = params();
+      const [props, fallback, observableFn, block] = params();
       const running = useRef<boolean>(true);
       running.current = true;
 
-      const instance = useValue(props, observable);
+      const instance = useValue(props, observableFn);
       const value = useRef<F | T>(fallback);
       const update = useState(0)[1];
 
-      useEffect(() => {
+      const subscription = useMemo(() => {
         let i = 0;
-        const subscription = instance.subscribe((item) => {
+        return instance.subscribe((item) => {
           value.current = item;
           if (!running.current && !block()) update((i = i + 1));
         });
-
-        return () => subscription.unsubscribe();
       }, []);
+      useEffect(() => () => subscription.unsubscribe(), []);
 
       running.current = false;
       return value.current;

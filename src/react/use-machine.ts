@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Machine, Source } from '../super';
 import { NonDefinedUnion } from '../types';
 import { useValue } from './use-value';
@@ -27,13 +27,11 @@ export function useMachine<T extends Machine, P = void>(
       return b ? [a, b] : ([undefined, a] as any);
     },
     (params) => {
-      const [props, machine] = params();
-      const instance = useValue(props, machine);
+      const [props, machineFn] = params();
+      const instance = useValue(props, machineFn);
 
-      useEffect(() => {
-        instance.enable();
-        return () => instance.disable();
-      }, []);
+      useMemo(() => instance.enable(), []);
+      useEffect(() => () => instance.disable(), []);
 
       return instance;
     }

@@ -36,14 +36,14 @@ export function useResource<T extends Resource<any>, P = void>(
       return b ? [a, b, c || noblock] : ([undefined, a, noblock] as any);
     },
     (params) => {
-      const [props, resource, block] = params();
+      const [props, resourceFn, block] = params();
 
       const running = useRef<boolean>(true);
       running.current = true;
 
       const instance = useSource(
         props,
-        resource,
+        resourceFn,
         () => running.current || block()
       );
       useMachine(() => instance);
