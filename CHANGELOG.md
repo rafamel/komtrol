@@ -1,3 +1,12 @@
+## [0.13.1](https://github.com/rafamel/supersour/compare/v0.13.0...v0.13.1) (2020-08-17)
+
+
+### Bug Fixes
+
+* **react:** prevents first synchronous observable values to cause a render; runs Machine.enable befo ([fabd77b](https://github.com/rafamel/supersour/commit/fabd77b36ce5f933df3953fb482fb8db008ea94f))
+
+
+
 # [0.13.0](https://github.com/rafamel/supersour/compare/v0.12.1...v0.13.0) (2020-08-17)
 
 
