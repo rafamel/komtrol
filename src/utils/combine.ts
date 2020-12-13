@@ -10,6 +10,9 @@ export declare namespace Combine {
 }
 
 export class Combine {
+  /**
+   * Combines the `state` of a number of sources.
+   */
   public static states<T extends Members<Source>>(
     sources: T
   ): Combine.States<T> {
@@ -18,6 +21,9 @@ export class Combine {
       return acc;
     }, {});
   }
+  /**
+   * Combines the `state$` of a number of sources.
+   */
   public static states$<T extends Members<Source>>(
     sources: T
   ): Push.Observable<Combine.States<T>> {

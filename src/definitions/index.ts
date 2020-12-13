@@ -9,7 +9,7 @@ export interface Source<T = any> {
 }
 
 /**
- * An object with with a boolean and boolean stream properties indicating activity.
+ * A basic definition of a `Machine`.
  */
 export interface Machine {
   active: boolean;
@@ -19,6 +19,6 @@ export interface Machine {
 }
 
 /**
- * A `Source` that is also a `Machine`.
+ * An intersection of a `Source` and a `Machine`
  */
 export type Resource<T = any> = Source<T> & Machine;

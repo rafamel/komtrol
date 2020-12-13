@@ -3,7 +3,7 @@ import { NullaryFn } from 'type-core';
 import { useObservable, ReactHooksDependency } from 'multitude/push';
 
 /**
- * Subscribes to a `Source` changes.
+ * Subscribes to a `Source` state changes.
  */
 export function useSource<T extends Source<any>>(
   React: ReactHooksDependency,

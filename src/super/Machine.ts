@@ -11,6 +11,13 @@ export type MachineDisable =
   | Push.Subscription
   | Push.Subscription[];
 
+/**
+ * The most basic Machine abstract class.
+ * The `active` and `active$` properties,
+ * as well as the `enable` and `disable` methods,
+ * are set as `protected` instead of `public`.
+ * For cases when these are only to be used internally.
+ */
 export abstract class MachineEnclosure<D = Empty> {
   #enable: MachineEnable;
   #disable: MachineDisable;
@@ -32,7 +39,7 @@ export abstract class MachineEnclosure<D = Empty> {
   }
   /**
    * Sets `active` to `true` and runs the `enable` function
-   * passed as a constructor parameter.
+   * passed as a constructor argument.
    */
   protected enable(): void {
     if (this.active) return;
@@ -44,7 +51,7 @@ export abstract class MachineEnclosure<D = Empty> {
   }
   /**
    * Sets `active` to `false`, runs the `disable` function
-   * passed as a constructor parameter, if any, and unsubscribes
+   * passed as a constructor argument, if any, and unsubscribes
    * from all subscriptions returned by `enable`, if any.
    */
   protected disable(): void {
@@ -84,6 +91,9 @@ export abstract class SuperMachine<D = Empty>
   }
 }
 
+/**
+ * A `Machine` implementation as a concrete class.
+ */
 export class MachineSubject extends SuperMachine implements Machine {
   public constructor(enable: MachineEnable) {
     super(null, enable);

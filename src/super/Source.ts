@@ -6,9 +6,10 @@ import { into } from 'pipettes';
 
 /**
  * The most basic Source abstract class.
- * The `state` and `state$` properties, as well as the `next` method,
+ * The `state` and `state$` properties,
+ * as well as the `next` method,
  * are set as `protected` instead of `public`.
- * For cases when the state is only to be used internally by the class.
+ * For cases when these are only to be used internally.
  */
 export abstract class SourceEnclosure<T = any, D = Empty, U = T> {
   #projection: UnaryFn<T, U>;

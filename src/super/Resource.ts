@@ -4,6 +4,13 @@ import { SourceEnclosure } from './Source';
 import { Empty, UnaryFn } from 'type-core';
 import { Push } from 'multitude/definitions';
 
+/**
+ * The most basic Resource abstract class.
+ * The `source`, `active`, `source$`, and `active$` properties,
+ * as well as the `next`, `enable`, and `disable` methods,
+ * are set as `protected` instead of `public`.
+ * For cases when these are only to be used internally.
+ */
 export abstract class ResourceEnclosure<
   T = any,
   D = Empty,
@@ -33,6 +40,9 @@ export abstract class ResourceEnclosure<
   }
 }
 
+/**
+ * A `Resource` implementation as an abstract class.
+ */
 export abstract class SuperResource<T = any, D = Empty, U = T>
   extends ResourceEnclosure<T, D, U>
   implements Resource<U> {
@@ -56,6 +66,9 @@ export abstract class SuperResource<T = any, D = Empty, U = T>
   }
 }
 
+/**
+ * A `Resource` implementation as a concrete class.
+ */
 export class ResourceSubject<T = any, U = T> extends SuperResource<
   T,
   Empty,

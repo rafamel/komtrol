@@ -3,8 +3,7 @@ import { NullaryFn } from 'type-core';
 import { ReactHooksDependency } from 'multitude/push';
 
 /**
- * Calls `Machine.enable` before render and `Machine.disable`
- * upon unmount.
+ * Calls `Machine.enable` before render and `Machine.disable` on unmount.
  */
 export function useMachine<T extends Machine>(
   React: ReactHooksDependency,

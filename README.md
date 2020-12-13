@@ -16,6 +16,26 @@
 
 ## Documentation
 
-[See *Supersour* docs.](https://rafamel.github.io/supersour/globals.html)
+* Source:
+  * [Source](https://rafamel.github.io/supersour/interfaces/source.html)
+  * [SourceEnclosure](https://rafamel.github.io/supersour/classes/sourceenclosure.html)
+  * [SuperSource](https://rafamel.github.io/supersour/classes/supersource.html)
+  * [SourceSubject](https://rafamel.github.io/supersour/classes/sourcesubject.html)
+* Machine:
+  * [Machine](https://rafamel.github.io/supersour/interfaces/machine.html)
+  * [MachineEnclosure](https://rafamel.github.io/supersour/classes/machineenclosure.html)
+  * [SuperMachine](https://rafamel.github.io/supersour/classes/supermachine.html)
+  * [MachineSubject](https://rafamel.github.io/supersour/classes/machinesubject.html)
+* Resource:
+  * [Resource](https://rafamel.github.io/supersour/globals.html#resource)
+  * [ResourceEnclosure](https://rafamel.github.io/supersour/classes/resourceenclosure.html)
+  * [SuperResource](https://rafamel.github.io/supersour/classes/superresource.html)
+  * [ResourceSubject](https://rafamel.github.io/supersour/classes/resourcesubject.html)
+* Utils:
+  * [Combine](https://rafamel.github.io/supersour/classes/combine.html)
+  * React
+    * [useSource](https://rafamel.github.io/supersour/globals.html#usesource)
+    * [useMachine](https://rafamel.github.io/supersour/globals.html#usemachine)
+    * [useResource](https://rafamel.github.io/supersour/globals.html#useresource)
 
 ![UML Diagram](https://raw.githubusercontent.com/rafamel/supersour/master/assets/diagram.png)
