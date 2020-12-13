@@ -1,45 +1,46 @@
-import { Observable, BehaviorSubject } from 'rxjs';
-import { Machine, MachineEnable, MachineDisable } from './definitions';
-import { EmptyUnion } from '../types';
+import { Machine } from '../definitions';
+import { Empty, NullaryFn } from 'type-core';
+import { Push } from 'multitude/definitions';
+import { Observable, Subject } from 'multitude/push';
 
-const _enable = Symbol('enable');
-const _disable = Symbol('disable');
-const _active = Symbol('active');
+export type MachineEnable = Empty | NullaryFn<MachineDisable>;
 
-export abstract class MachineEnclosure<D = EmptyUnion> {
-  private [_enable]: MachineEnable;
-  private [_disable]: MachineDisable;
-  private [_active]: BehaviorSubject<boolean>;
+export type MachineDisable =
+  | Empty
+  | NullaryFn
+  | Push.Subscription
+  | Push.Subscription[];
+
+export abstract class MachineEnclosure<D = Empty> {
+  #enable: MachineEnable;
+  #disable: MachineDisable;
+  #subject: Push.Subject<boolean, boolean>;
+  #observable: Push.Observable<boolean>;
   protected deps: D;
   protected constructor(deps: D, enable: MachineEnable) {
     this.deps = deps;
-    this[_enable] = enable;
-    this[_disable] = null;
-    this[_active] = new BehaviorSubject<boolean>(false);
+    this.#enable = enable;
+    this.#disable = null;
+    this.#subject = Subject.of(false, { replay: true });
+    this.#observable = Observable.from(this.#subject);
   }
-  /**
-   * Whether there are tasks in the queue currently executing.
-   */
   protected get active(): boolean {
-    return this[_active].value;
+    return this.#subject.value;
   }
-  /**
-   * Observable streaming changes in `instance.busy`.
-   */
-  protected get active$(): Observable<boolean> {
-    return this[_active].asObservable();
+  protected get active$(): Push.Observable<boolean> {
+    return this.#observable;
   }
   /**
    * Sets `active` to `true` and runs the `enable` function
    * passed as a constructor parameter.
    */
   protected enable(): void {
-    if (this[_active].value) return;
+    if (this.active) return;
 
-    const fn = this[_enable];
-    if (fn) this[_disable] = fn();
+    const fn = this.#enable;
+    if (fn) this.#disable = fn();
 
-    this[_active].next(true);
+    this.#subject.next(true);
   }
   /**
    * Sets `active` to `false`, runs the `disable` function
@@ -47,9 +48,9 @@ export abstract class MachineEnclosure<D = EmptyUnion> {
    * from all subscriptions returned by `enable`, if any.
    */
   protected disable(): void {
-    if (!this[_active].value) return;
+    if (!this.active) return;
 
-    const disable = this[_disable];
+    const disable = this.#disable;
     if (typeof disable === 'function') {
       disable();
     } else if (Array.isArray(disable)) {
@@ -58,20 +59,21 @@ export abstract class MachineEnclosure<D = EmptyUnion> {
       disable.unsubscribe();
     }
 
-    this[_disable] = null;
-    this[_active].next(false);
+    this.#disable = null;
+    this.#subject.next(false);
   }
 }
 
 /**
  * A `Machine` implementation as an abstract class.
  */
-export abstract class SuperMachine<D = EmptyUnion> extends MachineEnclosure<D>
+export abstract class SuperMachine<D = Empty>
+  extends MachineEnclosure<D>
   implements Machine {
   public get active(): boolean {
     return super.active;
   }
-  public get active$(): Observable<boolean> {
+  public get active$(): Push.Observable<boolean> {
     return super.active$;
   }
   public enable(): void {
@@ -83,7 +85,7 @@ export abstract class SuperMachine<D = EmptyUnion> extends MachineEnclosure<D>
 }
 
 export class MachineSubject extends SuperMachine implements Machine {
-  public constructor(enable?: MachineEnable) {
+  public constructor(enable: MachineEnable) {
     super(null, enable);
   }
 }

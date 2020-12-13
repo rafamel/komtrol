@@ -1,11 +1,11 @@
-import { Observable } from 'rxjs';
+import { Push } from 'multitude/definitions';
 
 /**
  * A basic definition of a `Source`.
  */
-export interface Source<T> {
+export interface Source<T = any> {
   state: T;
-  state$: Observable<T>;
+  state$: Push.Observable<T>;
 }
 
 /**
@@ -13,7 +13,7 @@ export interface Source<T> {
  */
 export interface Machine {
   active: boolean;
-  active$: Observable<boolean>;
+  active$: Push.Observable<boolean>;
   enable(): void;
   disable(): void;
 }
@@ -21,4 +21,4 @@ export interface Machine {
 /**
  * A `Source` that is also a `Machine`.
  */
-export type Resource<T> = Source<T> & Machine;
+export type Resource<T = any> = Source<T> & Machine;

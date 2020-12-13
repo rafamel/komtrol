@@ -1,47 +1,51 @@
-import { MachineEnable, Resource } from './definitions';
-import { MachineSubject } from './Machine';
+import { Resource } from '../definitions';
+import { MachineEnable, MachineSubject } from './Machine';
 import { SourceEnclosure } from './Source';
-import { Observable } from 'rxjs';
-import { EmptyUnion } from '../types';
-
-const _machine = Symbol('machine');
+import { Empty, UnaryFn } from 'type-core';
+import { Push } from 'multitude/definitions';
 
 export abstract class ResourceEnclosure<
-  T,
-  D = EmptyUnion
-> extends SourceEnclosure<T, D> {
-  private [_machine]: MachineSubject;
-  protected constructor(state: T, deps: D, enable: MachineEnable) {
-    super(state, deps);
-    this[_machine] = new MachineSubject(enable);
+  T = any,
+  D = Empty,
+  U = T
+> extends SourceEnclosure<T, D, U> {
+  #machine: MachineSubject;
+  protected constructor(
+    state: T,
+    deps: D,
+    enable: MachineEnable,
+    projection: UnaryFn<T, U> | Empty
+  ) {
+    super(state, deps, projection);
+    this.#machine = new MachineSubject(enable);
   }
   protected get active(): boolean {
-    return this[_machine].active;
+    return this.#machine.active;
   }
-  protected get active$(): Observable<boolean> {
-    return this[_machine].active$;
+  protected get active$(): Push.Observable<boolean> {
+    return this.#machine.active$;
   }
   protected enable(): void {
-    return this[_machine].enable();
+    return this.#machine.enable();
   }
   protected disable(): void {
-    return this[_machine].disable();
+    return this.#machine.disable();
   }
 }
 
-export abstract class SuperResource<T, D = EmptyUnion>
-  extends ResourceEnclosure<T, D>
-  implements Resource<T> {
-  public get state(): T {
+export abstract class SuperResource<T = any, D = Empty, U = T>
+  extends ResourceEnclosure<T, D, U>
+  implements Resource<U> {
+  public get state(): U {
     return super.state;
   }
   public get active(): boolean {
     return super.active;
   }
-  public get state$(): Observable<T> {
+  public get state$(): Push.Observable<U> {
     return super.state$;
   }
-  public get active$(): Observable<boolean> {
+  public get active$(): Push.Observable<boolean> {
     return super.active$;
   }
   public enable(): void {
@@ -52,11 +56,19 @@ export abstract class SuperResource<T, D = EmptyUnion>
   }
 }
 
-export class ResourceSubject<T> extends SuperResource<T> {
-  public constructor(state: T, enable?: MachineEnable) {
-    super(state, null, enable);
+export class ResourceSubject<T = any, U = T> extends SuperResource<
+  T,
+  Empty,
+  U
+> {
+  public constructor(
+    state: T,
+    enable: MachineEnable,
+    projection: UnaryFn<T, U> | Empty
+  ) {
+    super(state, null, enable, projection);
   }
-  public next(state: Partial<T>, compare?: boolean): void {
-    return super.next(state, compare);
+  public next(state: Partial<T>): void {
+    return super.next(state);
   }
 }

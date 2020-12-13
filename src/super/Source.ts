@@ -1,10 +1,8 @@
-import { Observable, BehaviorSubject } from 'rxjs';
-import { shallow } from 'equal-strategies';
-import { EmptyUnion } from '../types';
-import { Source } from './definitions';
-
-const _subject = Symbol('subject');
-const _observable = Symbol('observable');
+import { Source } from '../definitions';
+import { Empty, TypeGuard, UnaryFn } from 'type-core';
+import { Push } from 'multitude/definitions';
+import { Observable, Subject, changes, share } from 'multitude/push';
+import { into } from 'pipettes';
 
 /**
  * The most basic Source abstract class.
@@ -12,78 +10,65 @@ const _observable = Symbol('observable');
  * are set as `protected` instead of `public`.
  * For cases when the state is only to be used internally by the class.
  */
-export abstract class SourceEnclosure<T, D = EmptyUnion> {
-  private [_subject]: BehaviorSubject<T>;
-  private [_observable]: Observable<T>;
+export abstract class SourceEnclosure<T = any, D = Empty, U = T> {
+  #projection: UnaryFn<T, U>;
+  #subject: Push.Subject<U, U>;
+  #observable: Push.Observable<U>;
   protected deps: D;
-  protected constructor(state: T, deps: D) {
-    const value =
-      typeof state === 'object' && state !== null && !Array.isArray(state)
-        ? { ...state }
-        : state;
+  protected source: T;
+  protected constructor(state: T, deps: D, projection: UnaryFn<T, U> | Empty) {
+    const value = TypeGuard.isRecord(state) ? { ...state } : state;
+    const project = projection || ((value: T): U => value as any);
 
     this.deps = deps;
-    this[_subject] = new BehaviorSubject<T>(value);
-    this[_observable] = this[_subject].asObservable();
+    this.source = value;
+    this.#projection = project;
+    this.#subject = Subject.of(project(value), { replay: true });
+    this.#observable = into(
+      this.#subject,
+      changes('shallow'),
+      share({ policy: 'on-demand', replay: true }),
+      Observable.from
+    );
   }
   /**
    * Current instance state.
    */
-  protected get state(): T {
-    return this[_subject].value;
+  protected get state(): U {
+    return this.#subject.value;
   }
   /**
-   * An `Observable` that emits the new `state`
+   * An multicast *Observable* that emits the new `state`
    * when updated through the `next` method.
    */
-  protected get state$(): Observable<T> {
-    return this[_observable];
+  protected get state$(): Push.Observable<U> {
+    return this.#observable;
   }
   /**
    * Updates the instance `state`.
    * If it is an *object,* it will create a new state *object*
    * by merging `state` with the current instance state.
-   * If the current `state` is shallow equal to its update
-   * and `compare` is `true`, it won't emit.
    */
-  protected next(state: Partial<T>, compare?: boolean): void {
-    const subject = this[_subject];
+  protected next(state: Partial<T>): void {
+    const source = this.source;
+    const subject = this.#subject;
 
-    if (typeof state === 'object' && state !== null) {
-      /* Array */
-      if (Array.isArray(state)) {
-        if (compare && shallow(state, subject.value)) return;
-        return subject.next(state as any);
-      }
-
-      /* Object */
-      const value = { ...subject.value, ...state };
-      if (compare && shallow(value, subject.value)) return;
-      return subject.next(value);
-    }
-
-    /* Other types */
-    if (compare && subject.value === state) return;
-    return subject.next(state);
+    const next = TypeGuard.isRecord(state) ? { ...source, ...state } : state;
+    this.source = next;
+    subject.next(this.#projection(next));
   }
 }
 
 /**
- * A `Source` implementation as an abstract class.
+ * A `Source` implementation as an abstract class. See `SourceEnclosure`.
  */
-export abstract class SuperSource<T, D = EmptyUnion>
-  extends SourceEnclosure<T, D>
-  implements Source<T> {
-  /**
-   * See `Enclosure.state`.
-   */
-  public get state(): T {
+export abstract class SuperSource<T = any, D = Empty, U = T>
+  extends SourceEnclosure<T, D, U>
+  implements Source<U> {
+  public get state(): U {
     return super.state;
   }
-  /**
-   * See `Enclosure.state$`.
-   */
-  public get state$(): Observable<T> {
+  public get state$(): Push.Observable<U> {
     return super.state$;
   }
 }
@@ -91,11 +76,13 @@ export abstract class SuperSource<T, D = EmptyUnion>
 /**
  * A `Source` whose `state` can be externally updated.
  */
-export class SourceSubject<T> extends SuperSource<T> implements Source<T> {
-  public constructor(state: T) {
-    super(state, null);
+export class SourceSubject<T = any, U = T>
+  extends SuperSource<T, Empty, U>
+  implements Source<U> {
+  public constructor(state: T, projection: UnaryFn<T, U> | Empty) {
+    super(state, null, projection);
   }
-  public next(state: Partial<T>, compare?: boolean): void {
-    return super.next(state, compare);
+  public next(state: Partial<T>): void {
+    return super.next(state);
   }
 }

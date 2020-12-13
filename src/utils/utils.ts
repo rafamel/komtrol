@@ -1,9 +1,15 @@
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Source } from '../definitions';
+import { Members } from 'type-core';
+import { Push } from 'multitude/definitions';
+import { combine } from 'multitude/push';
 import { shallow } from 'equal-strategies';
-import { SourceRecord, SourceRecordStates } from './types';
 
-// TODO: modularize
+export type SourceRecord<T extends Source<any> = Source<any>> = Record<any, T>;
+
+export type SourceRecordStates<T extends SourceRecord> = {
+  [P in keyof T]: T[P]['state'];
+};
+
 /**
  * Simple last value memoization for `fn`.
  * If the values of a given object of dependencies provided by `deps`,
@@ -32,29 +38,22 @@ export function compute<I, O>(deps: () => I, fn: (deps: I) => O): () => O {
   };
 }
 
-export function states<T extends SourceRecord>(
+export function states<T extends Members<Source>>(
   sources: T
 ): SourceRecordStates<T> {
-  return Object.entries(sources).reduce(
-    (acc, [key, value]) => Object.assign(acc, { [key]: value.state }),
-    {} as any
-  );
+  return Object.entries(sources).reduce((acc: any, [key, value]) => {
+    acc[key] = value.state;
+    return acc;
+  }, {});
 }
 
-export function states$<T extends SourceRecord>(
+export function states$<T extends Members<Source>>(
   sources: T
-): Observable<SourceRecordStates<T>> {
-  const entries = Object.entries(sources);
-  const observables = entries.map((items) => items[1].state$);
+): Push.Observable<SourceRecordStates<T>> {
+  const states = Object.entries(sources).reduce((acc: any, [key, value]) => {
+    acc[key] = value.state$;
+    return acc;
+  }, {});
 
-  return combineLatest(observables).pipe(
-    map((arr) => {
-      const states: any = {};
-      for (let i = 0; i < arr.length; i++) {
-        const [key] = entries[i];
-        states[key] = arr[i];
-      }
-      return states;
-    })
-  );
+  return combine(states) as Push.Observable<SourceRecordStates<T>>;
 }

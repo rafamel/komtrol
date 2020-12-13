@@ -15,8 +15,8 @@ describe(`preconditions`, () => {
       Object.values(mocks).map((mock) => mock.mockClear());
 
       expect(mocks.next).not.toHaveBeenCalled();
-      subject.next(null, true);
-      expect(mocks.next).toHaveBeenLastCalledWith(null, true);
+      subject.next(null);
+      expect(mocks.next).toHaveBeenLastCalledWith(null);
     }
   });
 });
@@ -119,7 +119,7 @@ describe(`next`, () => {
       });
     }
   });
-  test(`emits for equal values wo/ compare`, () => {
+  test(`doesn't emit for equal values`, () => {
     const subjects = [new SourceSubject(true), new ResourceSubject(true)];
 
     for (const subject of subjects) {
@@ -127,13 +127,13 @@ describe(`next`, () => {
       const subscription = subject.state$.subscribe(() => count++);
 
       subject.next(true);
-      subject.next(true, false);
+      subject.next(true);
       subscription.unsubscribe();
 
-      expect(count).toBe(3);
+      expect(count).toBe(1);
     }
   });
-  test(`emits for equal object inner values wo/ compare`, () => {
+  test(`doesn't emit for equal object inner values`, () => {
     const a = [
       new SourceSubject({ ...state }),
       new ResourceSubject({ ...state })
@@ -143,10 +143,10 @@ describe(`next`, () => {
       const subscription = subject.state$.subscribe(() => count++);
 
       subject.next({ foo: state.foo });
-      subject.next({ ...state }, false);
+      subject.next({ ...state });
       subscription.unsubscribe();
 
-      expect(count).toBe(3);
+      expect(count).toBe(1);
     }
 
     const b = [
@@ -158,13 +158,13 @@ describe(`next`, () => {
       const subscription = subject.state$.subscribe(() => count++);
 
       subject.next({});
-      subject.next({}, false);
+      subject.next({});
       subscription.unsubscribe();
 
-      expect(count).toBe(3);
+      expect(count).toBe(1);
     }
   });
-  test(`emits for equal array inner values wo/ compare`, () => {
+  test(`doesn't emit for equal array inner values`, () => {
     const value = ['foo', 'bar'];
 
     const a = [new SourceSubject([...value]), new ResourceSubject([...value])];
@@ -173,10 +173,10 @@ describe(`next`, () => {
       const subscription = subject.state$.subscribe(() => count++);
 
       subject.next([...value]);
-      subject.next([...value], false);
+      subject.next([...value]);
       subscription.unsubscribe();
 
-      expect(count).toBe(3);
+      expect(count).toBe(1);
     }
 
     const b = [new SourceSubject(['baz']), new ResourceSubject(['baz'])];
@@ -185,79 +185,7 @@ describe(`next`, () => {
       const subscription = subject.state$.subscribe(() => count++);
 
       subject.next(['baz']);
-      subject.next(['baz'], false);
-      subscription.unsubscribe();
-
-      expect(count).toBe(3);
-    }
-  });
-  test(`doesn't emit for equal values w/ compare`, () => {
-    const subjects = [new SourceSubject(true), new ResourceSubject(true)];
-
-    for (const subject of subjects) {
-      let count = 0;
-      const subscription = subject.state$.subscribe(() => count++);
-
-      subject.next(true, true);
-      subject.next(true, true);
-      subscription.unsubscribe();
-
-      expect(count).toBe(1);
-    }
-  });
-  test(`doesn't emit for equal object inner values w/ compare`, () => {
-    const a = [
-      new SourceSubject({ ...state }),
-      new ResourceSubject({ ...state })
-    ];
-    for (const subject of a) {
-      let count = 0;
-      const subscription = subject.state$.subscribe(() => count++);
-
-      subject.next({ foo: state.foo }, true);
-      subject.next({ ...state }, true);
-      subscription.unsubscribe();
-
-      expect(count).toBe(1);
-    }
-
-    const b = [
-      new SourceSubject({ ...state }),
-      new ResourceSubject({ ...state })
-    ];
-    for (const subject of b) {
-      let count = 0;
-      const subscription = subject.state$.subscribe(() => count++);
-
-      subject.next({}, true);
-      subject.next({}, true);
-      subscription.unsubscribe();
-
-      expect(count).toBe(1);
-    }
-  });
-  test(`doesn't emit for equal array inner values w/ compare`, () => {
-    const value = ['foo', 'bar'];
-
-    const a = [new SourceSubject([...value]), new ResourceSubject([...value])];
-    for (const subject of a) {
-      let count = 0;
-      const subscription = subject.state$.subscribe(() => count++);
-
-      subject.next([...value], true);
-      subject.next([...value], true);
-      subscription.unsubscribe();
-
-      expect(count).toBe(1);
-    }
-
-    const b = [new SourceSubject(['baz']), new ResourceSubject(['baz'])];
-    for (const subject of b) {
-      let count = 0;
-      const subscription = subject.state$.subscribe(() => count++);
-
-      subject.next(['baz'], true);
-      subject.next(['baz'], true);
+      subject.next(['baz']);
       subscription.unsubscribe();
 
       expect(count).toBe(1);
