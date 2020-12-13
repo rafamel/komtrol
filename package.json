@@ -75,6 +75,7 @@
     "onchange": "^7.1.0",
     "prettier": "^2.2.1",
     "promist": "^4.0.0",
+    "typedoc": "^0.19.2",
     "typescript": "^3.9.7"
   },
   "dependencies": {
