@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>supersour 0.13.1</title>
-	<meta name="description" content="">
+	<title>supersour 0.14.0</title>
+	<meta name="description" content="Documentation for supersour 0.14.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -13,7 +13,7 @@
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">supersour 0.13.1</a>
+					<a href="index.html" class="title">supersour 0.14.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> supersour 0.13.1</h1>
+			<h1>supersour 0.14.0</h1>
 		</div>
 	</div>
 </header>
@@ -80,7 +80,39 @@
 				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
 					<h2>Documentation</h2>
 				</a>
-				<p><a href="https://rafamel.github.io/supersour/globals.html">See <em>Supersour</em> docs.</a></p>
+				<ul>
+					<li>Source:<ul>
+							<li><a href="https://rafamel.github.io/supersour/interfaces/source.html">Source</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/sourceenclosure.html">SourceEnclosure</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/supersource.html">SuperSource</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/sourcesubject.html">SourceSubject</a></li>
+						</ul>
+					</li>
+					<li>Machine:<ul>
+							<li><a href="https://rafamel.github.io/supersour/interfaces/machine.html">Machine</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/machineenclosure.html">MachineEnclosure</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/supermachine.html">SuperMachine</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/machinesubject.html">MachineSubject</a></li>
+						</ul>
+					</li>
+					<li>Resource:<ul>
+							<li><a href="https://rafamel.github.io/supersour/globals.html#resource">Resource</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/resourceenclosure.html">ResourceEnclosure</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/superresource.html">SuperResource</a></li>
+							<li><a href="https://rafamel.github.io/supersour/classes/resourcesubject.html">ResourceSubject</a></li>
+						</ul>
+					</li>
+					<li>Utils:<ul>
+							<li><a href="https://rafamel.github.io/supersour/classes/combine.html">Combine</a></li>
+							<li>React<ul>
+									<li><a href="https://rafamel.github.io/supersour/globals.html#usesource">useSource</a></li>
+									<li><a href="https://rafamel.github.io/supersour/globals.html#usemachine">useMachine</a></li>
+									<li><a href="https://rafamel.github.io/supersour/globals.html#useresource">useResource</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
 				<p><img src="https://raw.githubusercontent.com/rafamel/supersour/master/assets/diagram.png" alt="UML Diagram"></p>
 			</div>
 		</div>
@@ -94,10 +126,13 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/combine.html" class="tsd-kind-icon">Combine</a>
+					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="classes/machineenclosure.html" class="tsd-kind-icon">Machine<wbr>Enclosure</a>
 					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
+					<li class=" tsd-kind-class">
 						<a href="classes/machinesubject.html" class="tsd-kind-icon">Machine<wbr>Subject</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
@@ -128,70 +163,22 @@
 						<a href="interfaces/source.html" class="tsd-kind-icon">Source</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#emptyunion" class="tsd-kind-icon">Empty<wbr>Union</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#machinedisable" class="tsd-kind-icon">Machine<wbr>Disable</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#machinedisablefn" class="tsd-kind-icon">Machine<wbr>Disable<wbr>Fn</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#machineenable" class="tsd-kind-icon">Machine<wbr>Enable</a>
 					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#machineenablefn" class="tsd-kind-icon">Machine<wbr>Enable<wbr>Fn</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#machinefn" class="tsd-kind-icon">Machine<wbr>Fn</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#nondefinedunion" class="tsd-kind-icon">Non<wbr>Defined<wbr>Union</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#observablefn" class="tsd-kind-icon">Observable<wbr>Fn</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#resource" class="tsd-kind-icon">Resource</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#resourcefn" class="tsd-kind-icon">Resource<wbr>Fn</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#sourcefn" class="tsd-kind-icon">Source<wbr>Fn</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#sourcerecord" class="tsd-kind-icon">Source<wbr>Record</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#sourcerecordstates" class="tsd-kind-icon">Source<wbr>Record<wbr>States</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#valuefn" class="tsd-kind-icon">Value<wbr>Fn</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#compute" class="tsd-kind-icon">compute</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#states" class="tsd-kind-icon">states</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#states_" class="tsd-kind-icon">states$</a>
-					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#usemachine" class="tsd-kind-icon">use<wbr>Machine</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#useobservable" class="tsd-kind-icon">use<wbr>Observable</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#useresource" class="tsd-kind-icon">use<wbr>Resource</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#usesource" class="tsd-kind-icon">use<wbr>Source</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a>
 					</li>
 				</ul>
 			</nav>
@@ -203,57 +190,19 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 		</div>
 	</div>
@@ -263,6 +212,5 @@
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

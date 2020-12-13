@@ -1,9 +1,29 @@
-## [0.13.1](https://github.com/rafamel/supersour/compare/v0.13.0...v0.13.1) (2020-08-17)
+# [0.14.0](https://github.com/rafamel/supersour/compare/v0.13.0...v0.14.0) (2020-12-13)
 
 
 ### Bug Fixes
 
+* **deps:** updates dependencies ([c60aa7c](https://github.com/rafamel/supersour/commit/c60aa7c46018a8b708d3fdce8d29630d0b9f82fd))
 * **react:** prevents first synchronous observable values to cause a render; runs Machine.enable befo ([fabd77b](https://github.com/rafamel/supersour/commit/fabd77b36ce5f933df3953fb482fb8db008ea94f))
+
+
+### improvement
+
+* **utils:** implements states and states$ utilities as Combine static methods; removes compu ([23659cd](https://github.com/rafamel/supersour/commit/23659cda83ef26c1f1f69d985ae4c04debd4c3bf))
+* implements w/ ES Observable via multitude; uses DI for react hooks ([6117034](https://github.com/rafamel/supersour/commit/6117034e229a934cf1d44a05c2036031cef74f77))
+
+
+### BREAKING CHANGES
+
+* **utils:** Combination utility functions states() and states$() are now Combine.states() and
+Combine.states$(); the compute() utility function has been removed
+* Observables: uses multitude Observables (ES Observable compatible) instead of RxJS;
+multitude is set as a dependency instead of as a peerDependency. Source: Source.next no longer takes
+a boolean as a second argument for comparison; shallow object comparison is always enabled. React
+hooks: are no longer exported separately from "supersour/react", but instead are available from the
+main entry point; take a first React argument for hooks to be injected instead of depending directly
+on react; no longer offer props handling (use multitude's usePropsMulticast instead); useValue and
+useObservable have been removed (use multitude's useObservable instead).
 
 
 
